@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +20,7 @@ import com.earth2me.essentials.Essentials;
 public class MamiyaFumin extends JavaPlugin implements Listener{
 
 	static MamiyaFumin plugin;
-	static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
+	public Essentials ess =  (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
 	static int Magnification = 20*2;
 
 	Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言

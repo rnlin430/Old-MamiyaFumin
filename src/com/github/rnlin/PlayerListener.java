@@ -57,12 +57,12 @@ public class PlayerListener implements Listener{
 		// System.out.println("AFKchange");
 		Player player = Bukkit.getPlayer(e.getController().getName());
 
-		// AFK状態から非AFK状態に変化したとき、現在のランキングリストに追加する
-	 	if(MamiyaFumin.ess.getUser(player).isAfk()){
+		// AFK状態から非AFK状態に変化したとき
+	 	if(plugin.ess.getUser(player).isAfk()){
 	 	}
 
-	 	//累積スコアとして保存する プレイヤーが非AFK状態からAFKになったときに統計値がリセットされプレイヤーのスコアconfigに保存される
-	 	if(!(MamiyaFumin.ess.getUser(player).isAfk())){
+	 	//　累積スコアとして保存する プレイヤーが非AFK状態からAFKになったときに統計値がリセットされプレイヤーのスコアconfigに保存される
+	 	if(!(plugin.ess.getUser(player).isAfk())){
 	 		updateScore(player);
 			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
 
@@ -81,22 +81,25 @@ public class PlayerListener implements Listener{
 	}
 
 	// プレイヤーの統計が増加したときに呼び出される
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onChangePlayerStatistic(PlayerStatisticIncrementEvent e) {
 		Player player = e.getPlayer();
 		//
-		if(MamiyaFumin.ess.getUser(player).isAfk()){
-			//UUID uuid = player.getUniqueId();
-			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
-	    }
-
+		try {
+			if(plugin.ess.getUser(player).isAfk()){
+				//UUID uuid = player.getUniqueId();
+				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
+		    }
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}
 	}
 
 	// プレイヤーがベッドを右クリックしたときのイベントハンドラ
 	@EventHandler
 	public void onPlayerBedEnter(PlayerBedEnterEvent e) {
 		Player player = e.getPlayer();
-		updateScore(player);
+		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		// UUID uuid = UUID.fromString(uuid.toString());
 	}
 
