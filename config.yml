@@ -1,0 +1,8 @@
+#
+# Configuration MamiyaFumin
+# Version: 0.0.2
+# Author: rnlin
+#
+
+enablefumin: true
+ScoreboardDisplayHours: 10
