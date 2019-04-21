@@ -3,7 +3,6 @@ package com.github.rnlin;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,8 +36,10 @@ public class PlayerListener implements Listener{
 		MamiyaFumin.scorelist.put(u,scoredata);
 
 		// ログの出力
+		/*
 		String playername = player.getName();
 		System.out.println("\u001b[32m" + playername + "さんがまみや不眠に参加しました" + "\u001b[m");
+		*/
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ
@@ -54,17 +55,29 @@ public class PlayerListener implements Listener{
 	@EventHandler
 	public void onAfkChange(final AfkStatusChangeEvent e){
 		// System.out.println("AFKchange");
-		Player player = Bukkit.getPlayer(e.getController().getName());
+		Player player;
+		try {
+			player = plugin.getServer().getPlayer(e.getController().getName());
+		} catch (Exception e2) {
+			// TODO: handle exception
+			player = (Player) plugin.getServer().getOfflinePlayer(e.getController().getName());
+		}
 
 		// AFK状態から非AFK状態に変化したとき
+		/*
 	 	if(plugin.ess.getUser(player).isAfk()){
 	 	}
+	 	*/
 
-	 	//　累積スコアとして保存する プレイヤーが非AFK状態からAFKになったときに統計値がリセットされプレイヤーのスコアconfigに保存される
-	 	if(!(plugin.ess.getUser(player).isAfk())){
-	 		updateScore(player);
-			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
-	 	}
+	 	try {
+		 	//　累積スコアとして保存する プレイヤーが非AFK状態からAFKになったときに統計値がリセットされプレイヤーのスコアconfigに保存される
+		 	if(!(plugin.ess.getUser(player).isAfk())){
+		 		updateScore(player);
+				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
+		 	}
+		} catch (Exception e2) {
+			// TODO: handle exception
+		}
 	}
 
 	// プレイヤーの統計が増加したときのイベントハンドラ

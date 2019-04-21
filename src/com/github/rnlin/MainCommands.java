@@ -168,7 +168,7 @@ public class MainCommands implements CommandExecutor{
 				}
 				if(RANKING.size() >= 10) {
 					try {
-						List<Entry<String, Integer>> sbList = RANKING.subList(0, 9);
+						List<Entry<String, Integer>> sbList = RANKING.subList(0, 10);
 						int[] value = new int[10];
 						String[] name = new String[10];
 						for(int i = 0; i < 10; i++) {
@@ -216,14 +216,14 @@ public class MainCommands implements CommandExecutor{
 						return true;
 					}
 
-					List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi);
+					List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi + 1);
 					int[] valuei = new int[10];
 					String[] namei = new String[10];
 					for(int i = 0; i < 10; i++) {
 						Entry<String, Integer> temp = sbListi.get(i);
 						valuei[i] = temp.getValue();
 						namei[i] = temp.getKey();
-						String rank = String.valueOf(i + 1);
+						String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
 						sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA +  namei[i] + " - " +
 						ChatColor.WHITE + valuei[i]);
 					}
@@ -313,7 +313,7 @@ public class MainCommands implements CommandExecutor{
                 }
                 if(RANKING.size() >= 10) {
                     try {
-                        List<Entry<String, Integer>> sbList = RANKING.subList(0, 9);
+                        List<Entry<String, Integer>> sbList = RANKING.subList(0, 10);
                         int[] value = new int[10];
                         String[] name = new String[10];
                         for(int i = 0; i < 10; i++) {
@@ -361,14 +361,14 @@ public class MainCommands implements CommandExecutor{
                         return true;
                     }
 
-                    List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi);
+                    List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi + 1);
                     int[] valuei = new int[10];
                     String[] namei = new String[10];
                     for(int i = 0; i < 10; i++) {
                         Entry<String, Integer> temp = sbListi.get(i);
                         valuei[i] = temp.getValue();
                         namei[i] = temp.getKey();
-                        String rank = String.valueOf(i + 1);
+                        String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
                         sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA +  namei[i] + " - " +
                         ChatColor.WHITE + valuei[i]);
                     }

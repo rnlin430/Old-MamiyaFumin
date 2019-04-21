@@ -39,7 +39,7 @@ public class ForReorderingPlayerScore {
 			}
 		}
 
-		// BestScoreリスト作成
+		// TotalScoreリスト作成
 		Set<String> keys =  plugin.cumulativeplayerscoreConfig.getKeys(false);
 		for(String key : keys) {
 			String stringname;
