@@ -48,7 +48,6 @@ public class PlayerListener implements Listener{
 		Player player = (Player) e.getPlayer();
 		UUID u = player.getUniqueId();
 		if(!MamiyaFumin.scorelist.containsKey(u)) return;
-		// MamiyaFumin.scorelist.remove(u);
 	}
 
 	// AFK状態が変化したときのイベントハンドラ
@@ -65,22 +64,10 @@ public class PlayerListener implements Listener{
 	 	if(!(plugin.ess.getUser(player).isAfk())){
 	 		updateScore(player);
 			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
-
-			ScoreboardManagement sbm1 = new ScoreboardManagement(player, plugin);
-			sbm1.setPlayerScoreboad();
-			sbm1.removeScoreboard(player);
-			if(!MainCommands.scoreboadkeeper.containsKey(player)) return;
-			try {
-				int usb = MainCommands.scoreboadkeeper.get(player);
-				plugin.getServer().getScheduler().cancelTask(usb);
-			} catch (Exception ex) {
-				// TODO: handle exception
-				System.out.println("onAfkChange:" + ex);
-			}
 	 	}
 	}
 
-	// プレイヤーの統計が増加したときに呼び出される
+	// プレイヤーの統計が増加したときのイベントハンドラ
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onChangePlayerStatistic(PlayerStatisticIncrementEvent e) {
 		Player player = e.getPlayer();
@@ -99,6 +86,7 @@ public class PlayerListener implements Listener{
 	@EventHandler
 	public void onPlayerBedEnter(PlayerBedEnterEvent e) {
 		Player player = e.getPlayer();
+		updateScore(player);
 		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		// UUID uuid = UUID.fromString(uuid.toString());
 	}
