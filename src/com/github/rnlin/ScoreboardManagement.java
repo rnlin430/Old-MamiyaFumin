@@ -29,6 +29,7 @@ public class ScoreboardManagement {
 		UUID uuid = player.getUniqueId();
 		score = MamiyaFumin.scorelist.get(uuid);
 
+		// player.dataの値（ベッドに寝る、ベッド右クリック、afk時のトータルスコア + 現在のスコアを計算
 		totalscore = plugin.cumulativeplayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_TOTALSCORE_KEY)
 				+ MamiyaFumin.scorelist.get(uuid);
 		bestscore = plugin.cumulativeplayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_BESTSCORE_KEY);

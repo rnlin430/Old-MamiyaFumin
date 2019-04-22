@@ -176,7 +176,7 @@ public class MainCommands implements CommandExecutor{
 							value[i] = temp.getValue();
 							name[i] = temp.getKey();
 							String rank = String.valueOf(i + 1);
-							sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] + " " + ChatColor.WHITE + value[i]);
+							sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] + " - " + ChatColor.WHITE + value[i]);
 						}
 						sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fumintop [PageNumber]"
 								+ ChatColor.GOLD + "  - ページ数を切り替えます。");
@@ -321,7 +321,7 @@ public class MainCommands implements CommandExecutor{
                             value[i] = temp.getValue();
                             name[i] = temp.getKey();
                             String rank = String.valueOf(i + 1);
-                            sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] + " " + ChatColor.WHITE + value[i]);
+                            sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] + " - " + ChatColor.WHITE + value[i]);
                         }
                         sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
                                 + ChatColor.GOLD + "  - ページ数を切り替えます。");

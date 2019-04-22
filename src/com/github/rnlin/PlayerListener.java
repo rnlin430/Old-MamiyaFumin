@@ -59,15 +59,9 @@ public class PlayerListener implements Listener{
 		try {
 			player = plugin.getServer().getPlayer(e.getController().getName());
 		} catch (Exception e2) {
-			// TODO: handle exception
+			System.out.println("1:" + e2);
 			player = (Player) plugin.getServer().getOfflinePlayer(e.getController().getName());
 		}
-
-		// AFK状態から非AFK状態に変化したとき
-		/*
-	 	if(plugin.ess.getUser(player).isAfk()){
-	 	}
-	 	*/
 
 	 	try {
 		 	//　累積スコアとして保存する プレイヤーが非AFK状態からAFKになったときに統計値がリセットされプレイヤーのスコアconfigに保存される
@@ -76,6 +70,7 @@ public class PlayerListener implements Listener{
 				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
 		 	}
 		} catch (Exception e2) {
+			System.out.println("2:" + e2);
 			// TODO: handle exception
 		}
 	}
