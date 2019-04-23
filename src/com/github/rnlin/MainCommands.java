@@ -22,7 +22,7 @@ public class MainCommands implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlabel, String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
-		if (cmd.getName().equalsIgnoreCase("mamiyafumin")) {
+		if (cmd.getName().equalsIgnoreCase(plugin.commands[0])) {
 			if(!sender.hasPermission("mamiya.fumin.command.main.mamiyafumin")) {
 				sender.sendMessage(ChatColor.GRAY + cmd.getPermissionMessage());
 				return true;
@@ -129,7 +129,7 @@ public class MainCommands implements CommandExecutor{
 				}
 			case 3:
 			}
-		}else if(cmd.getName().equalsIgnoreCase("fumintop")) {
+		}else if(cmd.getName().equalsIgnoreCase(plugin.commands[2])) {
 			switch(args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
@@ -204,11 +204,11 @@ public class MainCommands implements CommandExecutor{
 						List<Entry<String, Integer>> sbList = RANKINGi.subList(mini, RANKINGi.size());
 						int[] value = new int[RANKINGi.size()];
 						String[] name = new String[RANKINGi.size()];
-						for(int i = 0; i < RANKINGi.size(); i++) {
+						for(int i = 0; i < RANKINGi.size() - 1; i++) {
 							Entry<String, Integer> temp = sbList.get(i);
 							value[i] = temp.getValue();
 							name[i] = temp.getKey();
-							String rank = String.valueOf(i + 1);
+							String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
 							sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] +
 									" - " + ChatColor.WHITE + value[i]);
 						}
@@ -234,7 +234,7 @@ public class MainCommands implements CommandExecutor{
 				}
 
 			}
-		}else if(cmd.getName().equalsIgnoreCase("fuminstats")) {
+		}else if(cmd.getName().equalsIgnoreCase(plugin.commands[3])) {
 			if(!(sender instanceof Player)) {
 				sender.sendMessage("ゲーム内から実行してください");
 				return true;
@@ -274,7 +274,7 @@ public class MainCommands implements CommandExecutor{
 				}
 			}
 
-		}else if (cmd.getName().equalsIgnoreCase("fuminrank")) {
+		}else if (cmd.getName().equalsIgnoreCase(plugin.commands[1])) {
 			switch(args.length) {
             case 0:
                 sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
@@ -349,11 +349,11 @@ public class MainCommands implements CommandExecutor{
                         List<Entry<String, Integer>> sbList = RANKINGi.subList(mini, RANKINGi.size());
                         int[] value = new int[RANKINGi.size()];
                         String[] name = new String[RANKINGi.size()];
-                        for(int i = 0; i < RANKINGi.size(); i++) {
+                        for(int i = 0; i < RANKINGi.size() - 1; i++) {
                             Entry<String, Integer> temp = sbList.get(i);
                             value[i] = temp.getValue();
                             name[i] = temp.getKey();
-                            String rank = String.valueOf(i + 1);
+                            String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
                             sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] +
                                     " - " + ChatColor.WHITE + value[i]);
                         }
@@ -379,10 +379,10 @@ public class MainCommands implements CommandExecutor{
                 }
                 return false;
             }
-        }else if (cmd.getName().equalsIgnoreCase("fuminlevel")) {
+        }else if (cmd.getName().equalsIgnoreCase(plugin.commands[4])) {
         	sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
         	return true;
-        }else if (cmd.getName().equalsIgnoreCase("fuminitemlist")) {
+        }else if (cmd.getName().equalsIgnoreCase(plugin.commands[5])) {
         	sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
         	return true;
         }

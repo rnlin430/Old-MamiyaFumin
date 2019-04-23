@@ -18,7 +18,7 @@ public class ForReorderingPlayerScore {
 	public ForReorderingPlayerScore(MamiyaFumin p) {
 		this.plugin = p;
 
-		// scorelist中間作成
+		// scorelist順位表示用リスト作成
 		for(UUID uuid : MamiyaFumin.scorelist.keySet()) {
 			// uuidからプレイヤーネームに変換
 
@@ -39,7 +39,7 @@ public class ForReorderingPlayerScore {
 			}
 		}
 
-		// TotalScoreリスト作成
+		// TotalScore順位表示用リスト作成
 		Set<String> keys =  plugin.cumulativeplayerscoreConfig.getKeys(false);
 		for(String key : keys) {
 			String stringname;
@@ -52,17 +52,17 @@ public class ForReorderingPlayerScore {
 				stringname = plugin.getServer().getOfflinePlayer(UUID.fromString(key)).getName();
 			}
 			try {
-				// player.dataの値（ベッドに寝る、ベッド右クリック、afk時のトータルスコア + 現在のスコアを計算
+				// player.dataの値(ベッドに寝る、ベッド右クリック、afk時のトータルスコア) + 現在のスコアを計算
 				value = value + MamiyaFumin.scorelist.get(plugin.getServer().getPlayer(stringname).getUniqueId());
 			} catch (Exception e) {
 				value = value + MamiyaFumin.scorelist.get(plugin.getServer().getOfflinePlayer(stringname).getUniqueId());
 			}
 			STRING_TOTAL_SCORELIST.put(stringname, value);
 		}
-		// トータルスコアがplayer.dataに保存されていないプレイヤーの現在のスコアをトータルスコアとしてリストに保存
+		// トータルスコアがplayer.dataに保存されていないプレイヤーの現在のスコアをトータルスコアとして順位表示用リストに保存
 		for(String name : STRING_SCORELIST.keySet()) {
 			if(!STRING_TOTAL_SCORELIST.containsKey(name)) {
-				STRING_TOTAL_SCORELIST.put(name,STRING_SCORELIST.get(name));
+				STRING_TOTAL_SCORELIST.put(name, STRING_SCORELIST.get(name));
 			}
 		}
 	}

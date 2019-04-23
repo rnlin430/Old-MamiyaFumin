@@ -26,10 +26,11 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 	Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言
 	public static HashMap<UUID, Integer> scorelist = new HashMap<UUID, Integer>(); //UUIDとScoreDataを格納するHashMapを宣言
 	public ScoreboardManagement scoreboardmanagement;
-	String[] commands = {"MamiyaFumin", "fuminrank", "fumintop", "fuminstats"};
+	String[] commands = {"MamiyaFumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist"};
 	public FileConfiguration settingConfig;
 	public PlayerListener pl = null;
 	static int DisplayHours;
+	TempFileManagement tfm;
 
 	// playerdata.yml
 	public CustomConfig customconfigCumulative;
@@ -42,7 +43,6 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 		public void onDisable() {
 			// TODO 自動生成されたメソッド・スタブ
 			super.onDisable();
-			TempFileManagement tfm = new TempFileManagement(this);
 			tfm.saveScorelist();
 		}
 		@Override
@@ -91,18 +91,17 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 
 			for(Player player : playerlist) {
 				UUID player_uuid = player.getUniqueId();
-				Integer new_scoredata = new Integer(0);
-				scorelist.put(player_uuid, new_scoredata);
-		        System.out.println("creatscore");
+				Integer scoredata = player.getStatistic(Statistic.TIME_SINCE_REST)/Magnification;
+				scorelist.put(player_uuid, scoredata);
 			}
-			TempFileManagement tfm = new TempFileManagement(this);
+			tfm = new TempFileManagement(this);
 			try {
 				for(UUID uuid : tfm.restoreScorelist().keySet()) {
-					int value = tfm.restoreScorelist().get(uuid)/Magnification;
+					int value = tfm.restoreScorelist().get(uuid);
 					scorelist.put(uuid, value);
 				}
 			} catch (NullPointerException e) {
-				System.out.println("It is the first boot!");
+				// System.out.println("It is the first boot!");
 			}
 
 			return scorelist;

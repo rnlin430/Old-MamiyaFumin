@@ -41,10 +41,7 @@ public class PlayerListener implements Listener{
 	// プレイヤーがログアウトするときのイベントハンドラ
 	@EventHandler
 	public void onLogout(PlayerQuitEvent e) {
-		// scorelistからプレイヤーのスコアを削除
-		Player player = (Player) e.getPlayer();
-		UUID u = player.getUniqueId();
-		if(!MamiyaFumin.scorelist.containsKey(u)) return;
+		plugin.tfm.saveScorelist();
 	}
 
 	// AFK状態が変化したときのイベントハンドラ
@@ -102,7 +99,7 @@ public class PlayerListener implements Listener{
 		updateScore(player);
 	}
 
-	// プレイヤーの現在のスコアを加算&最大スコア
+	// プレイヤーの現在のスコアを加算&最大スコアを保存&更新
 	public void updateScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
@@ -122,8 +119,10 @@ public class PlayerListener implements Listener{
 			plugin.customconfigCumulative.saveConfig();
 			return;
 		}
+		else {
 		plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
 		plugin.customconfigCumulative.saveConfig();
+		}
 	}
 
 	public void updateBestScore(Player player) {
