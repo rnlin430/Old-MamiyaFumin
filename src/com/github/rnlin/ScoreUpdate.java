@@ -16,7 +16,7 @@ public class ScoreUpdate extends BukkitRunnable {
 	@Override
 	public void run() {
 		// TODO 自動生成されたメソッド・スタブ
-
+		plugin.playerlist = plugin.getServer().getOnlinePlayers();
 		// プレイヤーリストにいる（現在参加中のプレイヤー）一人一人の現在の統計値をスコアリストに格納
 		for(Player player : plugin.playerlist) {
 			int temp = player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.Magnification;

@@ -156,7 +156,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 		public URL getSiteURL(){
 			URL url = null;
 			try{
-			  url = new URL("");
+			  url = new URL("https://github.com/rnlin430/MamiyaFumin/releases");
 			}catch(MalformedURLException e){
 			  info(ChatColor.GRAY + "未設定です。");
 			}

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -35,11 +36,6 @@ public class PlayerListener implements Listener{
 		Integer scoredata = new Integer(0);
 		MamiyaFumin.scorelist.put(u,scoredata);
 
-		// ログの出力
-		/*
-		String playername = player.getName();
-		System.out.println("\u001b[32m" + playername + "さんがまみや不眠に参加しました" + "\u001b[m");
-		*/
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ
@@ -63,12 +59,11 @@ public class PlayerListener implements Listener{
 			player = (Player) plugin.getServer().getOfflinePlayer(e.getController().getName());
 		}
 
-	 	try {
-		 	//　累積スコアとして保存する プレイヤーが非AFK状態からAFKになったときに統計値がリセットされプレイヤーのスコアconfigに保存される
-		 	if(!(plugin.ess.getUser(player).isAfk())){
-		 		updateScore(player);
+		try {
+			if(!(plugin.ess.getUser(player).isAfk())){
+				updateScore(player);
 				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
-		 	}
+			}
 		} catch (Exception e2) {
 			System.out.println("2:" + e2);
 			// TODO: handle exception
@@ -79,10 +74,9 @@ public class PlayerListener implements Listener{
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onChangePlayerStatistic(PlayerStatisticIncrementEvent e) {
 		Player player = e.getPlayer();
-		//
+
 		try {
-			if(plugin.ess.getUser(player).isAfk()){
-				//UUID uuid = player.getUniqueId();
+			if(plugin.ess.getUser(player).isAfk() || player.isDead()){
 				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
 		    }
 		} catch (Exception e2) {
@@ -96,7 +90,16 @@ public class PlayerListener implements Listener{
 		Player player = e.getPlayer();
 		updateScore(player);
 		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
-		// UUID uuid = UUID.fromString(uuid.toString());
+
+	}
+
+	// プレイヤーが死んだときのイベントハンドラ
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		if(!(e.getEntity() instanceof Player)) return;
+		Player player = e.getEntity();
+		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+		updateScore(player);
 	}
 
 	// プレイヤーの現在のスコアを加算&最大スコア
