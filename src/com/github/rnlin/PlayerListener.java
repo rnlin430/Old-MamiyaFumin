@@ -6,13 +6,14 @@ import java.util.UUID;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
+
+import com.earth2me.essentials.Essentials;
 
 import net.ess3.api.events.AfkStatusChangeEvent;
 
@@ -55,7 +56,7 @@ public class PlayerListener implements Listener{
 		}
 
 		try {
-			if(!(plugin.ess.getUser(player).isAfk())){
+			if(!(e.getController().isAfk())){
 				updateScore(player);
 				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
 			}
@@ -66,17 +67,19 @@ public class PlayerListener implements Listener{
 	}
 
 	// プレイヤーの統計が増加したときのイベントハンドラ
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onChangePlayerStatistic(PlayerStatisticIncrementEvent e) {
 		Player player = e.getPlayer();
 
-		try {
-			if(plugin.ess.getUser(player).isAfk() || player.isDead()){
-				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
-		    }
-		} catch (Exception e2) {
-			// TODO: handle exception
+		Essentials ess =  (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
+		if(ess.getUser(player).isAfk()){
+			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
+			player.sendMessage("test");
+	    }
+		if(player.isDead()){
+			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
 		}
+
 	}
 
 	// プレイヤーがベッドを右クリックしたときのイベントハンドラ

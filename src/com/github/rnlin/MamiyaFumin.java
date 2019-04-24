@@ -54,8 +54,6 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 
 			// config.ymlが存在しない場合ファイルに出力
 			saveDefaultConfig();
-			// cinfig,ymlを読み込む
-			settingConfig = getConfig();
 			// 設定を初期化
 			InitializingSetting();
 
@@ -148,8 +146,11 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 
 		// 設定を読み込み
 		void InitializingSetting() {
+			// cinfig.ymlを読み込む
+			settingConfig = getConfig();
 			settingConfig.getBoolean("enablefumin");
 			DisplayHours = settingConfig.getInt("ScoreboardDisplayHours");
+			Magnification = settingConfig.getInt("FuminPointMagnification");
 		}
 
 		public URL getSiteURL(){

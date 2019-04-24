@@ -1,8 +1,9 @@
 #
 # Configuration MamiyaFumin
-# Version: 0.0.2
+# Version: 0.4.14
 # Author: rnlin
 #
 
 enablefumin: true
 ScoreboardDisplayHours: 10
+FuminPointMagnification: 40

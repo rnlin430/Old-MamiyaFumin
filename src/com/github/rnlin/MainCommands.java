@@ -53,6 +53,7 @@ public class MainCommands implements CommandExecutor{
 					return true;
 				}else if(args[0].equalsIgnoreCase("reload")) {
 					plugin.reloadConfig();
+					plugin.InitializingSetting();
 					sender.sendMessage(ChatColor.GOLD + "リロードしました。");
 					return true;
 				}else if(args[0].equalsIgnoreCase("command")) {
