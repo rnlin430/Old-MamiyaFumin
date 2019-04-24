@@ -29,13 +29,11 @@ public class PlayerListener implements Listener{
 	// プレイヤーがログインするときのイベントハンドラ
 	@EventHandler
 	public void onLogin(PlayerJoinEvent e) {
-
 		//ログインしたプレイヤーのスコアデータを追加
 		Player player = (Player) e.getPlayer();
 		UUID u = player.getUniqueId();
 		Integer scoredata = new Integer(0);
 		MamiyaFumin.scorelist.put(u,scoredata);
-
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ
@@ -87,7 +85,6 @@ public class PlayerListener implements Listener{
 		Player player = e.getPlayer();
 		updateScore(player);
 		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
-
 	}
 
 	// プレイヤーが死んだときのイベントハンドラ
@@ -95,8 +92,9 @@ public class PlayerListener implements Listener{
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		if(!(e.getEntity() instanceof Player)) return;
 		Player player = e.getEntity();
-		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		updateScore(player);
+		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+
 	}
 
 	// プレイヤーの現在のスコアを加算&最大スコアを保存&更新

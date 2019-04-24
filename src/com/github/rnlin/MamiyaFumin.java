@@ -60,7 +60,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener{
 			InitializingSetting();
 
 			// プレイヤーデータ
-			customconfigCumulative = new CustomConfig(this,"playerdata.yml");
+			customconfigCumulative = new CustomConfig(this, "playerdata.yml");
 			customconfigCumulative.saveDefaultConfig();
 			cumulativeplayerscoreConfig = customconfigCumulative.getConfig();
 

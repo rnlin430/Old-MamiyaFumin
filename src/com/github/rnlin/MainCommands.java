@@ -77,13 +77,15 @@ public class MainCommands implements CommandExecutor{
 					sender.sendMessage(ChatColor.LIGHT_PURPLE+ "fuminitemlist");
 					sender.sendMessage(ChatColor.WHITE + "- 未実装です。");
 					sender.sendMessage(ChatColor.WHITE + "- aliases: [fi,fmitemlist,fmil]");
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/permissions");
+					sender.sendMessage(ChatColor.WHITE + "- パーミッションを表示します");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin reload");
 					sender.sendMessage(ChatColor.WHITE + "- コンフィグをリロードします。");
 					return true;
 				}else if(args[0].equalsIgnoreCase("permissions")) {
 					sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "- MamiyaFumin - パーミッション一覧 -");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin [command/reload/pemissions]");
-					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.main.mamiyafumin");
+					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.main.mamiyafumin"  + ChatColor.RED + "OPコマンドです。");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fumintop [PageNumber]");
 					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.fumintop");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "fuminstats [keep/clear]");
