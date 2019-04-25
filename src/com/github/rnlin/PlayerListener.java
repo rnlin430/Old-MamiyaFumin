@@ -74,7 +74,7 @@ public class PlayerListener implements Listener{
 		Essentials ess =  (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
 		if(ess.getUser(player).isAfk()){
 			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
-			player.sendMessage("test");
+
 	    }
 		if(player.isDead()){
 			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
