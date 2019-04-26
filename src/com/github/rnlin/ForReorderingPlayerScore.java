@@ -15,6 +15,7 @@ public class ForReorderingPlayerScore {
 	private HashMap<String, Integer> STRING_TOTAL_SCORELIST = new HashMap<>();
 	private String playername;
 	private Integer value;
+	enum scoretype{CURRENT, TOTAL, BEST}
 	public ForReorderingPlayerScore(MamiyaFumin p) {
 		this.plugin = p;
 
@@ -67,23 +68,19 @@ public class ForReorderingPlayerScore {
 		}
 	}
 
-	// 昇順
-	public List<Entry<String, Integer>> getAscendingOrder() {
-
-        List<Entry<String, Integer>> list_entries =
-        		new ArrayList<Entry<String, Integer>>(STRING_SCORELIST.entrySet());
-
-        Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-            public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
-                // 昇順
-                return obj1.getValue().compareTo(obj2.getValue());
-            }
-        });
-        return list_entries;
-    }
+	public List<Entry<String, Integer>> getRankingList(scoretype type){
+		if(type == scoretype.CURRENT) {
+			return getDescendingOrderScore();
+		}else if(type == scoretype.TOTAL) {
+			return getDescendingOrderTotalScore();
+		}else if(type == scoretype.BEST) {
+			return getDescendingOrderScore();
+		}
+		return null;
+	}
 
 	// 降順
-	public List<Entry<String, Integer>> getDescendingOrderScore() {
+	private List<Entry<String, Integer>> getDescendingOrderScore() {
 
 
         List<Entry<String, Integer>> list_entries = null;
@@ -109,7 +106,7 @@ public class ForReorderingPlayerScore {
         }
 
 
-	public List<Entry<String, Integer>> getDescendingOrderTotalScore() {
+	private List<Entry<String, Integer>> getDescendingOrderTotalScore() {
 
         List<Entry<String, Integer>> list_entries = null;
         try {

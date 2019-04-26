@@ -11,6 +11,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import com.github.rnlin.ForReorderingPlayerScore.scoretype;
+
 public class ScoreboardManagement {
 	private MamiyaFumin plugin;
 	private ScoreboardManager manager; // ScoreboardManager
@@ -35,7 +37,7 @@ public class ScoreboardManagement {
 		bestscore = plugin.cumulativeplayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_BESTSCORE_KEY);
 		ForReorderingPlayerScore frps = new ForReorderingPlayerScore(plugin);
 		// プレイヤーネームでランクを検索
-		List<Entry<String, Integer>> list = frps.getDescendingOrderScore();
+		List<Entry<String, Integer>> list = frps.getRankingList(scoretype.CURRENT);
 		Entry<String, Integer> temp = null;
 
 		for(Entry<String, Integer> entry : list) {
@@ -47,7 +49,7 @@ public class ScoreboardManagement {
 		rank = list.indexOf(temp) + 1;
 
 		// プレイヤーネームでトータルスコアランクを検索
-		list = frps.getDescendingOrderTotalScore();
+		list = frps.getRankingList(scoretype.TOTAL);
 		for(Entry<String, Integer> entry : list) {
 			if(player.getName() == entry.getKey()) {
 				temp = entry;
@@ -92,7 +94,7 @@ public class ScoreboardManagement {
 				MamiyaFumin.scorelist.get(uuid));
 		ForReorderingPlayerScore frps = new ForReorderingPlayerScore(plugin);
 		// プレイヤーネームでランクを検索
-		List<Entry<String, Integer>> list = frps.getDescendingOrderScore();
+		List<Entry<String, Integer>> list = frps.getRankingList(scoretype.CURRENT);
 		Entry<String, Integer> temp = null;
 
 		for(Entry<String, Integer> entry : list) {
@@ -104,7 +106,7 @@ public class ScoreboardManagement {
 		rank = list.indexOf(temp) + 1;
 
 		// プレイヤーネームでトータルスコアランクを検索
-		list = frps.getDescendingOrderTotalScore();
+		list = frps.getRankingList(scoretype.TOTAL);
 		for(Entry<String, Integer> entry : list) {
 			if(player.getName() == entry.getKey()) {
 				temp = entry;

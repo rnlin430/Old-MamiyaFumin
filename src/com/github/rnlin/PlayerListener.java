@@ -19,8 +19,8 @@ import net.ess3.api.events.AfkStatusChangeEvent;
 
 public class PlayerListener implements Listener{
 	private MamiyaFumin plugin;
-	protected static String FUMIN_TOTALSCORE_KEY = ".FuminTotalScore";
-	protected static String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
+	protected static final String FUMIN_TOTALSCORE_KEY = ".FuminTotalScore";
+	protected static final String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
 
 	public PlayerListener(MamiyaFumin plugin) {
 		this.plugin = plugin;

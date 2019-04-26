@@ -1,14 +1,14 @@
 package com.github.rnlin;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.github.rnlin.ForReorderingPlayerScore.scoretype;
 
 public class MainCommands implements CommandExecutor{
 
@@ -75,7 +75,7 @@ public class MainCommands implements CommandExecutor{
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "fuminlevel");
 					sender.sendMessage(ChatColor.WHITE + "- 未実装です。");
 					sender.sendMessage(ChatColor.WHITE + "- aliases: [fi,fmitemlist,fmil]");
-					sender.sendMessage(ChatColor.LIGHT_PURPLE+ "fuminitemlist");
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + "fuminitemlist");
 					sender.sendMessage(ChatColor.WHITE + "- 未実装です。");
 					sender.sendMessage(ChatColor.WHITE + "- aliases: [fi,fmitemlist,fmil]");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/permissions");
@@ -132,111 +132,24 @@ public class MainCommands implements CommandExecutor{
 				}
 			case 3:
 			}
+		// fumintop
 		}else if(cmd.getName().equalsIgnoreCase(plugin.commands[2])) {
 			switch(args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
 						+ ChatColor.YELLOW + " Leaderboard---");
-				if(!(sender instanceof Player)) return true;
-				ForReorderingPlayerScore playerscore = new ForReorderingPlayerScore(plugin);
-				List<Entry<String, Integer>> RANKING = playerscore.getDescendingOrderScore();
-				try {
-					if(RANKING.size() < 10) {
-						if(RANKING.size() == 1) {
-							Entry<String, Integer> temp = RANKING.get(0);
-							int value = temp.getValue();
-							String name = temp.getKey();
-							sender.sendMessage(ChatColor.WHITE + "1. " + ChatColor.AQUA + name +
-									" - " + ChatColor.WHITE + value);
-							return true;
-						}
-						List<Entry<String, Integer>> sbList = RANKING.subList(0, RANKING.size());
-						int[] value = new int[RANKING.size()];
-						String[] name = new String[RANKING.size()];
-						for(int i = 0; i < RANKING.size(); i++) {
-							Entry<String, Integer> temp = sbList.get(i);
-							value[i] = temp.getValue();
-							name[i] = temp.getKey();
-							String rank = String.valueOf(i + 1);
-							sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] +
-									" - " + ChatColor.WHITE + value[i]);
-						}
-						sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fumintop [PageNumber]"
+				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.CURRENT);
+				sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fumintop [PageNumber]"
 								+ ChatColor.GOLD + "  - ページ数を切り替えます。");
-						return true;
-					}
-				} catch (NullPointerException e) {
-					System.out.println("fumintop1:" + e);
-					return true;
-				}
-				if(RANKING.size() >= 10) {
-					try {
-						List<Entry<String, Integer>> sbList = RANKING.subList(0, 10);
-						int[] value = new int[10];
-						String[] name = new String[10];
-						for(int i = 0; i < 10; i++) {
-							Entry<String, Integer> temp = sbList.get(i);
-							value[i] = temp.getValue();
-							name[i] = temp.getKey();
-							String rank = String.valueOf(i + 1);
-							sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] + " - " + ChatColor.WHITE + value[i]);
-						}
-						sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fumintop [PageNumber]"
-								+ ChatColor.GOLD + "  - ページ数を切り替えます。");
-						return true;
-					} catch (NullPointerException e) {
-						System.out.println("fumintop2:" + e);
-						return true;
-					}
-				}
-
+				return result;
 			case 1:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
 						+ ChatColor.YELLOW + " Leaderboard---");
-				try {
-					ForReorderingPlayerScore playerscorei = new ForReorderingPlayerScore(plugin);
-					List<Entry<String, Integer>> RANKINGi = playerscorei.getDescendingOrderScore();
-					int mini = (Integer.parseInt(args[0]) * 10) - 10;
-					int maxi= (Integer.parseInt(args[0]) * 10) - 1;
-					if(RANKINGi.size() < mini + 1) {
-						sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ページがありません。");
-						return true;
-					}
-					// ページに表示する人数が10人以下の場合
-					if(RANKINGi.size() - mini < 10) {
-						List<Entry<String, Integer>> sbList = RANKINGi.subList(mini, RANKINGi.size());
-						int[] value = new int[RANKINGi.size()];
-						String[] name = new String[RANKINGi.size()];
-						for(int i = 0; i < RANKINGi.size() - 1; i++) {
-							Entry<String, Integer> temp = sbList.get(i);
-							value[i] = temp.getValue();
-							name[i] = temp.getKey();
-							String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
-							sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] +
-									" - " + ChatColor.WHITE + value[i]);
-						}
-						sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
-						return true;
-					}
-
-					List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi + 1);
-					int[] valuei = new int[10];
-					String[] namei = new String[10];
-					for(int i = 0; i < 10; i++) {
-						Entry<String, Integer> temp = sbListi.get(i);
-						valuei[i] = temp.getValue();
-						namei[i] = temp.getKey();
-						String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
-						sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA +  namei[i] + " - " +
-						ChatColor.WHITE + valuei[i]);
-					}
-					sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
-					return true;
-				} catch (NullPointerException e) {
-					System.out.println("fumintop3:" + e);
-				}
-
+				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.CURRENT);
+				sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
+				return result1;
 			}
+		// fuminstats
 		}else if(cmd.getName().equalsIgnoreCase(plugin.commands[3])) {
 			if(!(sender instanceof Player)) {
 				sender.sendMessage("ゲーム内から実行してください");
@@ -276,111 +189,23 @@ public class MainCommands implements CommandExecutor{
 					}
 				}
 			}
-
+		// fuminrank
 		}else if (cmd.getName().equalsIgnoreCase(plugin.commands[1])) {
 			switch(args.length) {
             case 0:
-                sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
-                        + ChatColor.YELLOW + " Leaderboard===");
-                if(!(sender instanceof Player)) return true;
-                ForReorderingPlayerScore playerscore = new ForReorderingPlayerScore(plugin);
-                List<Entry<String, Integer>> RANKING = playerscore.getDescendingOrderTotalScore();
-                try {
-                    if(RANKING.size() < 10) {
-                        if(RANKING.size() == 1) {
-                            Entry<String, Integer> temp = RANKING.get(0);
-                            int value = temp.getValue();
-                            String name = temp.getKey();
-                            sender.sendMessage(ChatColor.WHITE + "1. " + ChatColor.AQUA + name +
-                                    " - " + ChatColor.WHITE + value);
-                            return true;
-                        }
-                        List<Entry<String, Integer>> sbList = RANKING.subList(0, RANKING.size());
-                        int[] value = new int[RANKING.size()];
-                        String[] name = new String[RANKING.size()];
-                        for(int i = 0; i < RANKING.size(); i++) {
-                            Entry<String, Integer> temp = sbList.get(i);
-                            value[i] = temp.getValue();
-                            name[i] = temp.getKey();
-                            String rank = String.valueOf(i + 1);
-                            sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] +
-                                    " - " + ChatColor.WHITE + value[i]);
-                        }
-                        sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
-                                + ChatColor.GOLD + "  - ページ数を切り替えます。");
-                        return true;
-                    }
-                } catch (NullPointerException e) {
-                    System.out.println("fumintop1:" + e);
-                    return true;
-                }
-                if(RANKING.size() >= 10) {
-                    try {
-                        List<Entry<String, Integer>> sbList = RANKING.subList(0, 10);
-                        int[] value = new int[10];
-                        String[] name = new String[10];
-                        for(int i = 0; i < 10; i++) {
-                            Entry<String, Integer> temp = sbList.get(i);
-                            value[i] = temp.getValue();
-                            name[i] = temp.getKey();
-                            String rank = String.valueOf(i + 1);
-                            sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] + " - " + ChatColor.WHITE + value[i]);
-                        }
-                        sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
-                                + ChatColor.GOLD + "  - ページ数を切り替えます。");
-                        return true;
-                    } catch (NullPointerException e) {
-                        System.out.println("fumintop2:" + e);
-                        return true;
-                    }
-                }
+            sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
+            			+ ChatColor.YELLOW + " Leaderboard===");
+            boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.CURRENT);
+            sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
+            			+ ChatColor.GOLD + "  - ページ数を切り替えます。");
+            return result;
 
             case 1:
-                sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
+            sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
                         + ChatColor.YELLOW + " Leaderboard===");
-                try {
-                    ForReorderingPlayerScore playerscorei = new ForReorderingPlayerScore(plugin);
-                    List<Entry<String, Integer>> RANKINGi = playerscorei.getDescendingOrderTotalScore();
-                    int mini = (Integer.parseInt(args[0]) * 10) - 10;
-                    int maxi= (Integer.parseInt(args[0]) * 10) - 1;
-                    if(RANKINGi.size() < mini + 1) {
-                        sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ページがありません。");
-                        return true;
-                    }
-                    // ページに表示する人数が10人以下の場合
-                    if(RANKINGi.size() - mini < 10) {
-                        List<Entry<String, Integer>> sbList = RANKINGi.subList(mini, RANKINGi.size());
-                        int[] value = new int[RANKINGi.size()];
-                        String[] name = new String[RANKINGi.size()];
-                        for(int i = 0; i < RANKINGi.size() - 1; i++) {
-                            Entry<String, Integer> temp = sbList.get(i);
-                            value[i] = temp.getValue();
-                            name[i] = temp.getKey();
-                            String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
-                            sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA + name[i] +
-                                    " - " + ChatColor.WHITE + value[i]);
-                        }
+            boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.CURRENT);
                         sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
-                        return true;
-                    }
-
-                    List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi + 1);
-                    int[] valuei = new int[10];
-                    String[] namei = new String[10];
-                    for(int i = 0; i < 10; i++) {
-                        Entry<String, Integer> temp = sbListi.get(i);
-                        valuei[i] = temp.getValue();
-                        namei[i] = temp.getKey();
-                        String rank = String.valueOf(i + 1 + ((Integer.parseInt(args[0]) - 1) * 10));
-                        sender.sendMessage(ChatColor.WHITE + rank + ". " + ChatColor.AQUA +  namei[i] + " - " +
-                        ChatColor.WHITE + valuei[i]);
-                    }
-                    sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
-                    return true;
-                } catch (NullPointerException e) {
-                    System.out.println("fumintop3:" + e);
-                }
-                return false;
+            return result1;
             }
         }else if (cmd.getName().equalsIgnoreCase(plugin.commands[4])) {
         	sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
