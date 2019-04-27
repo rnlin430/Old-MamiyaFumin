@@ -185,7 +185,7 @@ public class MainCommands implements CommandExecutor{
 						plugin.getServer().getScheduler().cancelTask(usb);
 					} catch (Exception e) {
 						// TODO: handle exception
-						System.out.println("fumintop4:" + e);
+						System.out.println("fuminstats:" + e);
 					}
 				}
 			}
@@ -195,7 +195,7 @@ public class MainCommands implements CommandExecutor{
             case 0:
             sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
             			+ ChatColor.YELLOW + " Leaderboard===");
-            boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.CURRENT);
+            boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.TOTAL);
             sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
             			+ ChatColor.GOLD + "  - ページ数を切り替えます。");
             return result;
@@ -203,7 +203,7 @@ public class MainCommands implements CommandExecutor{
             case 1:
             sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
                         + ChatColor.YELLOW + " Leaderboard===");
-            boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.CURRENT);
+            boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.TOTAL);
                         sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
             return result1;
             }
