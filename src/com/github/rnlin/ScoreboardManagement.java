@@ -81,8 +81,8 @@ public class ScoreboardManagement {
 		main.getScore("§3§l―――――――――――――――――――――").setScore(0);
 		this.setScoreboard(player);
 	}
-	// スコアボードを更新する
-	public void updateScoreboard() {
+	// スコアボードを更新する(ランキングは更新しない）
+	public void updateScoreboardScore() {
 		UUID uuid = player.getUniqueId();
 		score = MamiyaFumin.scorelist.get(uuid);
 		// プレイヤーの現在のスコアを加算&最大スコアを保存
@@ -92,28 +92,31 @@ public class ScoreboardManagement {
 				+ MamiyaFumin.scorelist.get(uuid);
 		bestscore = Math.max(plugin.cumulativeplayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_BESTSCORE_KEY),
 				MamiyaFumin.scorelist.get(uuid));
+	}
+
+	public void updateScoreboarsRank() {
 		ForReorderingPlayerScore frps = new ForReorderingPlayerScore(plugin);
 		// プレイヤーネームでランクを検索
-		List<Entry<String, Integer>> list = frps.getRankingList(scoretype.CURRENT);
-		Entry<String, Integer> temp = null;
+				List<Entry<String, Integer>> list = frps.getRankingList(scoretype.CURRENT);
+				Entry<String, Integer> temp = null;
 
-		for(Entry<String, Integer> entry : list) {
-			if(player.getName() == entry.getKey()) {
-				temp = entry;
-				break;
-			}
-		}
-		rank = list.indexOf(temp) + 1;
+				for(Entry<String, Integer> entry : list) {
+					if(player.getName() == entry.getKey()) {
+						temp = entry;
+						break;
+					}
+				}
+				rank = list.indexOf(temp) + 1;
 
-		// プレイヤーネームでトータルスコアランクを検索
-		list = frps.getRankingList(scoretype.TOTAL);
-		for(Entry<String, Integer> entry : list) {
-			if(player.getName() == entry.getKey()) {
-				temp = entry;
-				break;
-			}
-		}
-		totalrank = list.indexOf(temp) + 1;
+				// プレイヤーネームでトータルスコアランクを検索
+				list = frps.getRankingList(scoretype.TOTAL);
+				for(Entry<String, Integer> entry : list) {
+					if(player.getName() == entry.getKey()) {
+						temp = entry;
+						break;
+					}
+				}
+				totalrank = list.indexOf(temp) + 1;
 	}
 
 	// プレイヤーのスコアボードをプレイヤーに表示する

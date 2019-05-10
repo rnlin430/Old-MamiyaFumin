@@ -1,72 +1,72 @@
 name: MamiyaFumin
 main: com.github.rnlin.MamiyaFumin
-version: 0.4.15
+version: 0.4.16
 author: rnlin
 description: MamiyaFumin for Spigot ver.1.13.2
 
 commands:
-  MamiyaFumin:
+  mamiyafumin:
     description: It's main commands of this plugin.
     aliases: [mf,mfm]
     usage: 
            /<command>
-    permisson: mamiya.fumin.command.main.mamiyafumin
+    permisson: mamiyafumin.command.main.mamiyafumin
     permission-message: You don't have the permission <permission>.
   fumintop:
     description: It's fumintop
     aliases: [ft,fmtop,fmt]
     usage: 
            /<command>
-    permisson: mamiya.fumin.command.fumintop
+    permisson: mamiyafumin.command.fumintop
     permission-message: You don't have the permission <permission>.
   fuminstats:
     description: It's fuminstats
     aliases: [fs,fmstats,fms]
     usage: 
            /<command>
-    permisson: mamiya.fumin.command.fuminstats
+    permisson: mamiyafumin.command.fuminstats
     permission-message: You don't have the permission <permission>.
   fuminrank:
     description: it's fuminrank
     aliases: [fr,fmrank,fmr]
     usage: 
            /<command>
-    permisson: mamiya.fumin.command.fuminrank
+    permisson: mamiyafumin.command.fuminrank
     permission-message: You don't have the permission <permission>.
   fuminlevel:
     description: it's fuminlevel
     aliases: [fl,fmlevel,fmr]
     usage: 
            /<command>
-    permisson: mamiya.fumin.command.fuminlevel
+    permisson: mamiyafumin.command.fuminlevel
     permission-message: You don't have the permission <permission>.
   fuminitemlist:
     description: it's fuminitemlist
     aliases: [fi,fmitemlist,fmil]
     usage: 
            /<command>
-    permisson: mamiya.fumin.command.fuminitemlist
+    permisson: mamiyafumin.command.fuminitemlist
     permission-message: You don't have the permission <permission>.
       
 permissions:
-  mamiya.fumin.command.main.mamiyafumin:
+  mamiyafumin.command.main.mamiyafumin:
     description: mamiyafumin permissions.
     default: op
-  mamiya.fumin.command.fumintop:
+  mamiyafumin.command.fumintop:
     description: mamiyafumin permissions.
     default: true
-  mamiya.fumin.command.fuminstats:
+  mamiyafumin.command.fuminstats:
     description: mamiyafumin permissions.
     default: true
-  mamiya.fumin.command.fuminrank:
+  mamiyafumin.command.fuminrank:
     description: mamiyafumin permissions.
     default: true
-  mamiya.fumin.command.fuminlevel:
+  mamiyafumin.command.fuminlevel:
     description: mamiyafumin permissions.
     default: true
-  mamiya.fumin.command.main.mamiyafumin:
+  mamiyafumin.command.main.mamiyafumin:
     description: mamiyafumin permissions.
     default: true
-  mamiya.fumin.command.fuminitemlist:
+  mamiyafumin.command.fuminitemlist:
     description: mamiyafumin permissions.
     default: true

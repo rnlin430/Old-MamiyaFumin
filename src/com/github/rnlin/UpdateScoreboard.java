@@ -22,7 +22,7 @@ public class UpdateScoreboard extends BukkitRunnable{
 		// TODO 自動生成されたメソッド・スタブ
 		if (count > 0) {
 			count--;
-			sbm.updateScoreboard();
+			sbm.updateScoreboardScore();
 			sbm.setPlayerScoreboad();
         } else {
             this.cancel();

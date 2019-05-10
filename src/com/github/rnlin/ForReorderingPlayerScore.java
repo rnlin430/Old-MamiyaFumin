@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.OfflinePlayer;
+
 public class ForReorderingPlayerScore {
 	MamiyaFumin plugin = null;
 	private HashMap<String, Integer> STRING_SCORELIST = new HashMap<>();
@@ -44,19 +46,23 @@ public class ForReorderingPlayerScore {
 		Set<String> keys =  plugin.cumulativeplayerscoreConfig.getKeys(false);
 		for(String key : keys) {
 			String stringname;
+			UUID uuid = UUID.fromString(key);
 
 			int value = Integer.parseInt(plugin.cumulativeplayerscoreConfig.getString(
 					key + "." + PlayerListener.FUMIN_TOTALSCORE_KEY));
 			try {
-				stringname = plugin.getServer().getPlayer(UUID.fromString(key)).getName();
+				stringname = plugin.getServer().getPlayer(uuid).getName();
 			} catch (Exception e) {
-				stringname = plugin.getServer().getOfflinePlayer(UUID.fromString(key)).getName();
+				stringname = plugin.getServer().getOfflinePlayer(uuid).getName();
 			}
 			try {
 				// player.dataの値(ベッドに寝る、ベッド右クリック、afk時のトータルスコア) + 現在のスコアを計算
 				value = value + MamiyaFumin.scorelist.get(plugin.getServer().getPlayer(stringname).getUniqueId());
 			} catch (Exception e) {
-				value = value + MamiyaFumin.scorelist.get(plugin.getServer().getOfflinePlayer(stringname).getUniqueId());
+				OfflinePlayer op = plugin.getServer().getOfflinePlayer(uuid);
+				if(op.hasPlayedBefore()) {
+					value = value + MamiyaFumin.scorelist.get(op.getUniqueId());
+				}
 			}
 			STRING_TOTAL_SCORELIST.put(stringname, value);
 		}

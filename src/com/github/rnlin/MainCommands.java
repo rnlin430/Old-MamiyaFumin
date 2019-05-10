@@ -23,8 +23,8 @@ public class MainCommands implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlabel, String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		if (cmd.getName().equalsIgnoreCase(plugin.commands[0])) {
-			if(!sender.hasPermission("mamiya.fumin.command.main.mamiyafumin")) {
-				sender.sendMessage(ChatColor.GRAY + cmd.getPermissionMessage());
+			if(!sender.hasPermission("mamiyafumin.command.main.mamiyafumin")) {
+				sender.sendMessage(ChatColor.RED + cmd.getPermissionMessage());
 				return true;
 			}
 
@@ -159,6 +159,7 @@ public class MainCommands implements CommandExecutor{
 			case 0:
 			Player player = (Player) sender;
 			ScoreboardManagement sbm = new ScoreboardManagement(player, plugin);
+			sbm.updateScoreboarsRank(); // ランキングを更新
 			sbm.setPlayerScoreboad();
 			// MamiyaFumin.DisplayHours秒後に非表示
 			new Countscheduler(plugin, sbm, player).runTaskLater(plugin, 20*MamiyaFumin.DisplayHours);
@@ -170,6 +171,7 @@ public class MainCommands implements CommandExecutor{
 				if(args[0].equalsIgnoreCase("keep")){
 					Player player1 = (Player) sender;
 					sbm1 = new ScoreboardManagement(player1, plugin);
+					sbm1.updateScoreboarsRank();
 					sbm1.setPlayerScoreboad();
 					Integer value = new UpdateScoreboard(plugin, 50000, sbm1).runTaskTimer(plugin, 0, 15).getTaskId();
 					scoreboadkeeper.put(player1, Integer.valueOf(value));
