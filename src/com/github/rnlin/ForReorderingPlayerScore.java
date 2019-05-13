@@ -17,12 +17,16 @@ public class ForReorderingPlayerScore {
 	private HashMap<String, Integer> STRING_TOTAL_SCORELIST = new HashMap<>();
 	private String playername;
 	private Integer value;
-	enum scoretype{CURRENT, TOTAL, BEST}
+
+	enum scoretype {
+		CURRENT, TOTAL, BEST
+	}
+
 	public ForReorderingPlayerScore(MamiyaFumin p) {
 		this.plugin = p;
 
 		// scorelist順位表示用リスト作成
-		for(UUID uuid : MamiyaFumin.scorelist.keySet()) {
+		for (UUID uuid : MamiyaFumin.scorelist.keySet()) {
 			// uuidからプレイヤーネームに変換
 
 			try {
@@ -33,7 +37,7 @@ public class ForReorderingPlayerScore {
 			}
 			this.value = MamiyaFumin.scorelist.get(uuid);
 			try {
-				for(String a : STRING_SCORELIST.keySet()){
+				for (String a : STRING_SCORELIST.keySet()) {
 					// System.out.println(a);
 				}
 				STRING_SCORELIST.put(playername, value);
@@ -43,8 +47,8 @@ public class ForReorderingPlayerScore {
 		}
 
 		// TotalScore順位表示用リスト作成
-		Set<String> keys =  plugin.cumulativeplayerscoreConfig.getKeys(false);
-		for(String key : keys) {
+		Set<String> keys = plugin.cumulativeplayerscoreConfig.getKeys(false);
+		for (String key : keys) {
 			String stringname;
 			UUID uuid = UUID.fromString(key);
 
@@ -60,26 +64,26 @@ public class ForReorderingPlayerScore {
 				value = value + MamiyaFumin.scorelist.get(plugin.getServer().getPlayer(stringname).getUniqueId());
 			} catch (Exception e) {
 				OfflinePlayer op = plugin.getServer().getOfflinePlayer(uuid);
-				if(op.hasPlayedBefore()) {
+				if (op.hasPlayedBefore()) {
 					value = value + MamiyaFumin.scorelist.get(op.getUniqueId());
 				}
 			}
 			STRING_TOTAL_SCORELIST.put(stringname, value);
 		}
 		// トータルスコアがplayer.dataに保存されていないプレイヤーの現在のスコアをトータルスコアとして順位表示用リストに保存
-		for(String name : STRING_SCORELIST.keySet()) {
-			if(!STRING_TOTAL_SCORELIST.containsKey(name)) {
+		for (String name : STRING_SCORELIST.keySet()) {
+			if (!STRING_TOTAL_SCORELIST.containsKey(name)) {
 				STRING_TOTAL_SCORELIST.put(name, STRING_SCORELIST.get(name));
 			}
 		}
 	}
 
-	public List<Entry<String, Integer>> getRankingList(scoretype type){
-		if(type == scoretype.CURRENT) {
+	public List<Entry<String, Integer>> getRankingList(scoretype type) {
+		if (type == scoretype.CURRENT) {
 			return getDescendingOrderScore();
-		}else if(type == scoretype.TOTAL) {
+		} else if (type == scoretype.TOTAL) {
 			return getDescendingOrderTotalScore();
-		}else if(type == scoretype.BEST) {
+		} else if (type == scoretype.BEST) {
 			return getDescendingOrderScore();
 		}
 		return null;
@@ -88,52 +92,47 @@ public class ForReorderingPlayerScore {
 	// 降順
 	private List<Entry<String, Integer>> getDescendingOrderScore() {
 
+		List<Entry<String, Integer>> list_entries = null;
+		try {
+			list_entries = new ArrayList<Entry<String, Integer>>(STRING_SCORELIST.entrySet());
 
-        List<Entry<String, Integer>> list_entries = null;
-        try {
-        	list_entries = new ArrayList<Entry<String, Integer>>(STRING_SCORELIST.entrySet());
+			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
+				//compareを使用して値を比較する
+				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
+					// 降順
+					return obj2.getValue().compareTo(obj1.getValue());
+				}
+			});
 
-            Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-                //compareを使用して値を比較する
-                public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2)
-                {
-                    // 降順
-                    return obj2.getValue().compareTo(obj1.getValue());
-                }
-            });
-
-            for(Entry<String, Integer> entry : list_entries) {
-                // System.out.println(entry.getKey() + " : " + entry.getValue());
-            }
+			for (Entry<String, Integer> entry : list_entries) {
+				// System.out.println(entry.getKey() + " : " + entry.getValue());
+			}
 		} catch (NullPointerException e) {
 			System.out.println("2:" + e);
 		}
-        return list_entries;
-        }
-
+		return list_entries;
+	}
 
 	private List<Entry<String, Integer>> getDescendingOrderTotalScore() {
 
-        List<Entry<String, Integer>> list_entries = null;
-        try {
-        	list_entries = new ArrayList<Entry<String, Integer>>(STRING_TOTAL_SCORELIST.entrySet());
+		List<Entry<String, Integer>> list_entries = null;
+		try {
+			list_entries = new ArrayList<Entry<String, Integer>>(STRING_TOTAL_SCORELIST.entrySet());
 
-            Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-                //compareを使用して値を比較する
-                public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2)
-                {
-                    // 降順
-                    return obj2.getValue().compareTo(obj1.getValue());
-                }
-            });
+			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
+				//compareを使用して値を比較する
+				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
+					// 降順
+					return obj2.getValue().compareTo(obj1.getValue());
+				}
+			});
 
-            for(Entry<String, Integer> entry : list_entries) {
-                // System.out.println(entry.getKey() + " : " + entry.getValue());
-            }
+			for (Entry<String, Integer> entry : list_entries) {
+				// System.out.println(entry.getKey() + " : " + entry.getValue());
+			}
 		} catch (NullPointerException e) {
 			System.out.println("2:" + e);
 		}
-        return list_entries;
-        }
+		return list_entries;
 	}
-
+}

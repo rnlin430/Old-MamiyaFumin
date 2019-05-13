@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ScoreUpdate extends BukkitRunnable {
 
 	MamiyaFumin plugin;
+
 	public ScoreUpdate(MamiyaFumin p) {
 		plugin = p;
 	}
@@ -18,12 +19,12 @@ public class ScoreUpdate extends BukkitRunnable {
 		// TODO 自動生成されたメソッド・スタブ
 		plugin.playerlist = plugin.getServer().getOnlinePlayers();
 		// プレイヤーリストにいる（現在参加中のプレイヤー）一人一人の現在の統計値をスコアリストに格納
-		for(Player player : plugin.playerlist) {
-			int temp = player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.Magnification;
+		for (Player player : plugin.playerlist) {
+			int temp = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.Magnification;
 			UUID uuid = player.getUniqueId();
 			// Integer scoredata = MamiyaFumin.scorelist.get(uuid);
 			Integer new_scoredata = new Integer(temp);
-			MamiyaFumin.scorelist.put(uuid,new_scoredata);
+			MamiyaFumin.scorelist.put(uuid, new_scoredata);
 		}
 
 	}

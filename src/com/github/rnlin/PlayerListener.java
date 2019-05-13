@@ -1,6 +1,5 @@
 package com.github.rnlin;
 
-
 import java.util.UUID;
 
 import org.bukkit.Statistic;
@@ -17,7 +16,7 @@ import com.earth2me.essentials.Essentials;
 
 import net.ess3.api.events.AfkStatusChangeEvent;
 
-public class PlayerListener implements Listener{
+public class PlayerListener implements Listener {
 	private MamiyaFumin plugin;
 	protected static final String FUMIN_TOTALSCORE_KEY = ".FuminTotalScore";
 	protected static final String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
@@ -34,7 +33,7 @@ public class PlayerListener implements Listener{
 		Player player = (Player) e.getPlayer();
 		UUID u = player.getUniqueId();
 		Integer scoredata = new Integer(0);
-		MamiyaFumin.scorelist.put(u,scoredata);
+		MamiyaFumin.scorelist.put(u, scoredata);
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ
@@ -45,7 +44,7 @@ public class PlayerListener implements Listener{
 
 	// AFK状態が変化したときのイベントハンドラ
 	@EventHandler
-	public void onAfkChange(final AfkStatusChangeEvent e){
+	public void onAfkChange(final AfkStatusChangeEvent e) {
 		// System.out.println("AFKchange");
 		Player player;
 		try {
@@ -56,9 +55,9 @@ public class PlayerListener implements Listener{
 		}
 
 		try {
-			if(!(e.getController().isAfk())){
+			if (!(e.getController().isAfk())) {
 				updateScore(player);
-				MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
+				MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 			}
 		} catch (Exception e2) {
 			System.out.println("2:" + e2);
@@ -71,13 +70,13 @@ public class PlayerListener implements Listener{
 	public void onChangePlayerStatistic(PlayerStatisticIncrementEvent e) {
 		Player player = e.getPlayer();
 
-		Essentials ess =  (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
-		if(ess.getUser(player).isAfk()){
-			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
+		Essentials ess = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
+		if (ess.getUser(player).isAfk()) {
+			MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 
-	    }
-		if(player.isDead()){
-			MamiyaFumin.resetStatistic(player,Statistic.TIME_SINCE_REST);
+		}
+		if (player.isDead()) {
+			MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		}
 
 	}
@@ -93,7 +92,8 @@ public class PlayerListener implements Listener{
 	// プレイヤーが死んだときのイベントハンドラ
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
-		if(!(e.getEntity() instanceof Player)) return;
+		if (!(e.getEntity() instanceof Player))
+			return;
 		Player player = e.getEntity();
 		updateScore(player);
 		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
@@ -104,35 +104,33 @@ public class PlayerListener implements Listener{
 	public void updateScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
-		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.Magnification;
-		if(!(plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_TOTALSCORE_KEY))) {
+		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.Magnification;
+		if (!(plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_TOTALSCORE_KEY))) {
 			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY, currentscore);
-		}
-		else {
-		plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY,
-				plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_TOTALSCORE_KEY) + currentscore);
+		} else {
+			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY,
+					plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_TOTALSCORE_KEY) + currentscore);
 		}
 
-		if(plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
-			int result = Math.max(currentscore, plugin.cumulativeplayerscoreConfig.
-					getInt(stringuuid + FUMIN_BESTSCORE_KEY));
+		if (plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
+			int result = Math.max(currentscore,
+					plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
 			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
 			plugin.customconfigCumulative.saveConfig();
 			return;
-		}
-		else {
-		plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
-		plugin.customconfigCumulative.saveConfig();
+		} else {
+			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
+			plugin.customconfigCumulative.saveConfig();
 		}
 	}
 
 	public void updateBestScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
-		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.Magnification;
-		if(plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
-			int result = Math.max(currentscore, plugin.cumulativeplayerscoreConfig.
-					getInt(stringuuid + FUMIN_BESTSCORE_KEY));
+		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.Magnification;
+		if (plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
+			int result = Math.max(currentscore,
+					plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
 			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
 			plugin.customconfigCumulative.saveConfig();
 			return;

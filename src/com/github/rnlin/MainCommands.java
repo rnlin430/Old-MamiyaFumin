@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 
 import com.github.rnlin.ForReorderingPlayerScore.scoretype;
 
-public class MainCommands implements CommandExecutor{
+public class MainCommands implements CommandExecutor {
 
 	private MamiyaFumin plugin = MamiyaFumin.getPlugin();
-	public static HashMap<Player, Integer> scoreboadkeeper= new HashMap<Player, Integer>();
+	private static HashMap<Player, Integer> scoreboadkeeper = new HashMap<Player, Integer>();
 
 	public MainCommands() {
 		// TODO 自動生成されたコンストラクター・スタブ
@@ -23,15 +23,15 @@ public class MainCommands implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlabel, String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		if (cmd.getName().equalsIgnoreCase(plugin.commands[0])) {
-			if(!sender.hasPermission("mamiyafumin.command.main.mamiyafumin")) {
+			if (!sender.hasPermission("mamiyafumin.command.main.mamiyafumin")) {
 				sender.sendMessage(ChatColor.RED + cmd.getPermissionMessage());
 				return true;
 			}
 
 			Player player = (Player) sender;
-			switch(args.length) {
+			switch (args.length) {
 			case 0:
-				sender.sendMessage(ChatColor.GOLD+ "" + ChatColor.BOLD + "■ MamiyaFumin ■");
+				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "■ MamiyaFumin ■");
 				sender.sendMessage(ChatColor.WHITE + "Spigotバージョン : 1.13.2");
 				sender.sendMessage(ChatColor.WHITE + "Pluginバージョン : " + plugin.getDescription().getVersion());
 				sender.sendMessage(ChatColor.AQUA + "ダウンロードURL : " + plugin.getSiteURL());
@@ -40,23 +40,22 @@ public class MainCommands implements CommandExecutor{
 				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "--------");
 				return true;
 			case 1:
-				if(args[0].equalsIgnoreCase("on")){
+				if (args[0].equalsIgnoreCase("on")) {
 					plugin.settingConfig.set("enablefumin", true);
 					plugin.saveConfig();
 					sender.sendMessage(ChatColor.AQUA + "まみや不眠が有効になりました。");
 					return true;
-				}
-				else if(args[0].equalsIgnoreCase("off")) {
+				} else if (args[0].equalsIgnoreCase("off")) {
 					plugin.settingConfig.set("enablefumin", false);
 					plugin.saveConfig();
 					sender.sendMessage(ChatColor.AQUA + "まみや不眠が無効になりました。");
 					return true;
-				}else if(args[0].equalsIgnoreCase("reload")) {
+				} else if (args[0].equalsIgnoreCase("reload")) {
 					plugin.reloadConfig();
 					plugin.InitializingSetting();
 					sender.sendMessage(ChatColor.GOLD + "リロードしました。");
 					return true;
-				}else if(args[0].equalsIgnoreCase("command")) {
+				} else if (args[0].equalsIgnoreCase("command")) {
 					sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "- MamiyaFumin - コマンド一覧");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin");
 					sender.sendMessage(ChatColor.WHITE + "- MamiyaFuminの詳細な情報です。");
@@ -83,10 +82,11 @@ public class MainCommands implements CommandExecutor{
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin reload");
 					sender.sendMessage(ChatColor.WHITE + "- コンフィグをリロードします。");
 					return true;
-				}else if(args[0].equalsIgnoreCase("permissions")) {
+				} else if (args[0].equalsIgnoreCase("permissions")) {
 					sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "- MamiyaFumin - パーミッション一覧 -");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin [command/reload/pemissions]");
-					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.main.mamiyafumin"  + ChatColor.RED + "OPコマンドです。");
+					sender.sendMessage(
+							ChatColor.WHITE + "mamiya.fumin.command.main.mamiyafumin" + ChatColor.RED + "OPコマンドです。");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fumintop [PageNumber]");
 					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.fumintop");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "fuminstats [keep/clear]");
@@ -95,80 +95,81 @@ public class MainCommands implements CommandExecutor{
 					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.fuminrank");
 					sender.sendMessage(ChatColor.LIGHT_PURPLE + "fuminlevel");
 					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.fuminlevel");
-					sender.sendMessage(ChatColor.LIGHT_PURPLE+ "fuminitemlist");
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + "fuminitemlist");
 					sender.sendMessage(ChatColor.WHITE + "mamiya.fumin.command.fuminitemlist");
 					return true;
-				}else {
+				} else {
 					return false;
 				}
 			case 2:
-				if(args[0].equalsIgnoreCase("getPlayerScore")) {
+				if (args[0].equalsIgnoreCase("getPlayerScore")) {
 					// 他プレイヤーのトータルスコア、スコア、順位を取得
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("setPlayerScore")) {
+				if (args[0].equalsIgnoreCase("setPlayerScore")) {
 					// 他プレイヤーのトータルスコアをセット
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("addPlayerScore")) {
+				if (args[0].equalsIgnoreCase("addPlayerScore")) {
 
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("reducePlayerScore")) {
+				if (args[0].equalsIgnoreCase("reducePlayerScore")) {
 
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("getitem")) {
+				if (args[0].equalsIgnoreCase("getitem")) {
 
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("addPlayerScore")) {
+				if (args[0].equalsIgnoreCase("addPlayerScore")) {
 
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("setMagnification")) {
+				if (args[0].equalsIgnoreCase("setMagnification")) {
 
 					return true;
 				}
 			case 3:
 			}
-		// fumintop
-		}else if(cmd.getName().equalsIgnoreCase(plugin.commands[2])) {
-			switch(args.length) {
+			// fumintop
+		} else if (cmd.getName().equalsIgnoreCase(plugin.commands[2])) {
+			switch (args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
 						+ ChatColor.YELLOW + " Leaderboard---");
 				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.CURRENT);
 				sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fumintop [PageNumber]"
-								+ ChatColor.GOLD + "  - ページ数を切り替えます。");
+						+ ChatColor.GOLD + "  - ページ数を切り替えます。");
 				return result;
 			case 1:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
 						+ ChatColor.YELLOW + " Leaderboard---");
 				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.CURRENT);
-				sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
+				sender.sendMessage(
+						ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
 				return result1;
 			}
-		// fuminstats
-		}else if(cmd.getName().equalsIgnoreCase(plugin.commands[3])) {
-			if(!(sender instanceof Player)) {
+			// fuminstats
+		} else if (cmd.getName().equalsIgnoreCase(plugin.commands[3])) {
+			if (!(sender instanceof Player)) {
 				sender.sendMessage("ゲーム内から実行してください");
 				return true;
 			}
-			switch(args.length) {
+			switch (args.length) {
 			case 0:
-			Player player = (Player) sender;
-			ScoreboardManagement sbm = new ScoreboardManagement(player, plugin);
-			sbm.updateScoreboarsRank(); // ランキングを更新
-			sbm.setPlayerScoreboad();
-			// MamiyaFumin.DisplayHours秒後に非表示
-			new Countscheduler(plugin, sbm, player).runTaskLater(plugin, 20*MamiyaFumin.DisplayHours);
-			// 15tick毎に更新&MamiyaFumin.DisplayHours秒で更新を終了
-			new UpdateScoreboard(plugin, MamiyaFumin.DisplayHours*(20/15), sbm).runTaskTimer(plugin, 0, 15);
-			return true;
+				Player player = (Player) sender;
+				ScoreboardManagement sbm = new ScoreboardManagement(player, plugin);
+				sbm.updateScoreboarsRank(); // ランキングを更新
+				sbm.setPlayerScoreboad();
+				// MamiyaFumin.DisplayHours秒後に非表示
+				new Countscheduler(plugin, sbm, player).runTaskLater(plugin, 20 * MamiyaFumin.DisplayHours);
+				// 15tick毎に更新&MamiyaFumin.DisplayHours秒で更新を終了
+				new UpdateScoreboard(plugin, MamiyaFumin.DisplayHours * (20 / 15), sbm).runTaskTimer(plugin, 0, 15);
+				return true;
 			case 1:
 				ScoreboardManagement sbm1;
-				if(args[0].equalsIgnoreCase("keep")){
+				if (args[0].equalsIgnoreCase("keep")) {
 					Player player1 = (Player) sender;
 					sbm1 = new ScoreboardManagement(player1, plugin);
 					sbm1.updateScoreboarsRank();
@@ -176,8 +177,7 @@ public class MainCommands implements CommandExecutor{
 					Integer value = new UpdateScoreboard(plugin, 50000, sbm1).runTaskTimer(plugin, 0, 15).getTaskId();
 					scoreboadkeeper.put(player1, Integer.valueOf(value));
 					return true;
-				}
-				else if(args[0].equalsIgnoreCase("clear")) {
+				} else if (args[0].equalsIgnoreCase("clear")) {
 					Player player1 = (Player) sender;
 					sbm1 = new ScoreboardManagement(player1, plugin);
 					sbm1.setPlayerScoreboad();
@@ -191,31 +191,32 @@ public class MainCommands implements CommandExecutor{
 					}
 				}
 			}
-		// fuminrank
-		}else if (cmd.getName().equalsIgnoreCase(plugin.commands[1])) {
-			switch(args.length) {
-            case 0:
-            sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
-            			+ ChatColor.YELLOW + " Leaderboard===");
-            boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.TOTAL);
-            sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
-            			+ ChatColor.GOLD + "  - ページ数を切り替えます。");
-            return result;
+			// fuminrank
+		} else if (cmd.getName().equalsIgnoreCase(plugin.commands[1])) {
+			switch (args.length) {
+			case 0:
+				sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
+						+ ChatColor.YELLOW + " Leaderboard===");
+				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.TOTAL);
+				sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
+						+ ChatColor.GOLD + "  - ページ数を切り替えます。");
+				return result;
 
-            case 1:
-            sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
-                        + ChatColor.YELLOW + " Leaderboard===");
-            boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.TOTAL);
-                        sender.sendMessage(ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
-            return result1;
-            }
-        }else if (cmd.getName().equalsIgnoreCase(plugin.commands[4])) {
-        	sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
-        	return true;
-        }else if (cmd.getName().equalsIgnoreCase(plugin.commands[5])) {
-        	sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
-        	return true;
-        }
+			case 1:
+				sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
+						+ ChatColor.YELLOW + " Leaderboard===");
+				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.TOTAL);
+				sender.sendMessage(
+						ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
+				return result1;
+			}
+		} else if (cmd.getName().equalsIgnoreCase(plugin.commands[4])) {
+			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
+			return true;
+		} else if (cmd.getName().equalsIgnoreCase(plugin.commands[5])) {
+			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
+			return true;
+		}
 		return false;
 	}
 }

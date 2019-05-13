@@ -12,7 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CustomConfig {
 	private FileConfiguration config = null;
-    final File configFile;
+	final File configFile;
 	private final String filename;
 	private final MamiyaFumin plugin;
 
@@ -20,6 +20,7 @@ public class CustomConfig {
 	public CustomConfig(MamiyaFumin plugin) {
 		this(plugin, "playerdata.yml");
 	}
+
 	public CustomConfig(MamiyaFumin plugin, String fileName) {
 		this.plugin = plugin;
 		this.filename = fileName;
@@ -50,7 +51,7 @@ public class CustomConfig {
 			reloadConfig();
 		}
 		// System.out.println("getconfig finish");
-		if(!(config == null)) {
+		if (!(config == null)) {
 			// System.out.println("config is not null");
 		}
 		return config;
