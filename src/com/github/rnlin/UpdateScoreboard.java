@@ -2,6 +2,7 @@ package com.github.rnlin;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+// このクラスのインスタンスは一定時間毎にスコアボードの値を更新します
 public class UpdateScoreboard extends BukkitRunnable {
 	private ScoreboardManagement sbm;
 	private int count;
@@ -30,5 +31,4 @@ public class UpdateScoreboard extends BukkitRunnable {
 		}
 
 	}
-
 }

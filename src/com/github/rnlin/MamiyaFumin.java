@@ -18,25 +18,31 @@ import com.earth2me.essentials.Essentials;
 public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	static MamiyaFumin plugin;
-	public Essentials ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
-	static int Magnification = 20 * 2;
+	static int magnification = 20 * 2;
+	static int displayHours;
 
-	Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言
+	final String[] COMMANDS = { "MamiyaFumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
+
+	protected Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言
+
 	public static HashMap<UUID, Integer> scorelist = new HashMap<UUID, Integer>(); //UUIDとScoreDataを格納するHashMapを宣言
-	public ScoreboardManagement scoreboardmanagement;
-	String[] commands = { "MamiyaFumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist" };
+	public static HashMap<UUID, Integer> scoreTotallist = new HashMap<UUID, Integer>(); // 未使用
+	public static HashMap<UUID, Integer> scoreBestlist = new HashMap<UUID, Integer>();
+
+	public Essentials ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
+	public ScoreboardManagement scoreboardManagement;
 	public FileConfiguration settingConfig;
 	public PlayerListener pl = null;
-	static int DisplayHours;
-	TempFileManagement tfm;
 
 	// playerdata.yml
 	public CustomConfig customconfigCumulative;
-	public FileConfiguration cumulativeplayerscoreConfig;
+	public FileConfiguration cumulativePlayerscoreConfig;
 
 	// temp.yml
 	public CustomConfig customconfigTemp;
 	public FileConfiguration tempConfig;
+
+	TempFileManagement tfm;
 
 	@Override
 	public void onDisable() {
@@ -55,25 +61,29 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		// config.ymlが存在しない場合ファイルに出力
 		saveDefaultConfig();
 		// 設定を初期化
-		InitializingSetting();
+		initializingSetting();
 
 		// プレイヤーデータ
 		customconfigCumulative = new CustomConfig(this, "playerdata.yml");
 		customconfigCumulative.saveDefaultConfig();
-		cumulativeplayerscoreConfig = customconfigCumulative.getConfig();
+		cumulativePlayerscoreConfig = customconfigCumulative.getConfig();
 
 		// 一時ファイル
 		customconfigTemp = new CustomConfig(this, "temp.yml");
 		customconfigTemp.saveDefaultConfig();
 		tempConfig = customconfigTemp.getConfig();
 
-		//プラグインロード時にスコアデータを作成
-		this.creatScore();
+		// "world"にいる全プレイヤーの名前をリストに格納
+		playerlist = this.getServer().getOnlinePlayers();
+
+		//プラグインロード時に各スコアデータを作成
+		creatScore();
+		creatBestScore();
 
 		plugin = this;
 		MainCommands maincommand = new MainCommands();
 
-		for (String command : commands) {
+		for (String command : COMMANDS) {
 			getCommand(command).setExecutor(maincommand);
 		}
 
@@ -82,14 +92,11 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	}
 
 	// 現在のワールドにいるプレイヤーとTempからスコアデータを作成
-	public HashMap<UUID, Integer> creatScore() {
-		// "world"にいる全プレイヤーの名前をリストに格納
-		playerlist = this.getServer().getOnlinePlayers();
+	private void creatScore() {
 		// プレイヤーをUUIDに変換し点数0とセットでリストに格納
-
 		for (Player player : playerlist) {
 			UUID player_uuid = player.getUniqueId();
-			Integer scoredata = player.getStatistic(Statistic.TIME_SINCE_REST) / Magnification;
+			Integer scoredata = player.getStatistic(Statistic.TIME_SINCE_REST) / magnification;
 			scorelist.put(player_uuid, scoredata);
 		}
 		tfm = new TempFileManagement(this);
@@ -101,8 +108,20 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		} catch (NullPointerException e) {
 			// System.out.println("It is the first boot!");
 		}
+		return;
+	}
 
-		return scorelist;
+	// player.ymlからベストスコアデータを作成
+	private void creatBestScore() {
+
+		for (String key : cumulativePlayerscoreConfig.getKeys(false)) {
+// System.out.println("\u001b[31m" + key + "\u001b[00m");
+			int value = cumulativePlayerscoreConfig.getInt(key + ".FuminBestScore");
+// System.out.println("\u001b[31m" + value + "\u001b[00m");
+			UUID uuid = UUID.fromString(key);
+			scoreBestlist.put(uuid, value);
+		}
+System.out.println("\u001b[33m" + scoreBestlist + "\u001b[00m");
 	}
 
 	// プレイヤーのスコアに指定ポイント付与
@@ -147,12 +166,12 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	}
 
 	// 設定を読み込み
-	void InitializingSetting() {
+	void initializingSetting() {
 		// cinfig.ymlを読み込む
 		settingConfig = getConfig();
 		settingConfig.getBoolean("enablefumin");
-		DisplayHours = settingConfig.getInt("ScoreboardDisplayHours");
-		Magnification = settingConfig.getInt("FuminPointMagnification");
+		displayHours = settingConfig.getInt("ScoreboardDisplayHours");
+		magnification = settingConfig.getInt("FuminPointMagnification");
 	}
 
 	public URL getSiteURL() {
@@ -164,5 +183,4 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		}
 		return url;
 	}
-
 }

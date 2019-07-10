@@ -47,7 +47,13 @@ commands:
            /<command>
     permisson: mamiyafumin.command.fuminitemlist
     permission-message: You don't have the permission <permission>.
-      
+  fuminbest:
+    description: it's fuminbest
+    aliases: [fb,fmbest,fmb]
+    usage:
+      /<command>
+    permisson: mamiyafumin.command.fuminbest
+    permission-message: You don't have the permission <permission>.
 permissions:
   mamiyafumin.command.main.mamiyafumin:
     description: mamiyafumin permissions.
@@ -64,9 +70,9 @@ permissions:
   mamiyafumin.command.fuminlevel:
     description: mamiyafumin permissions.
     default: true
-  mamiyafumin.command.main.mamiyafumin:
+  mamiyafumin.command.fuminitemlist:
     description: mamiyafumin permissions.
     default: true
-  mamiyafumin.command.fuminitemlist:
+  mamiyafumin.command.fuminbest:
     description: mamiyafumin permissions.
     default: true

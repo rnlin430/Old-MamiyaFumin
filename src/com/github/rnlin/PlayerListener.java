@@ -104,22 +104,22 @@ public class PlayerListener implements Listener {
 	public void updateScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
-		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.Magnification;
-		if (!(plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_TOTALSCORE_KEY))) {
-			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY, currentscore);
+		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
+		if (!(plugin.cumulativePlayerscoreConfig.contains(stringuuid + FUMIN_TOTALSCORE_KEY))) {
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY, currentscore);
 		} else {
-			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY,
-					plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_TOTALSCORE_KEY) + currentscore);
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY,
+					plugin.cumulativePlayerscoreConfig.getInt(stringuuid + FUMIN_TOTALSCORE_KEY) + currentscore);
 		}
 
-		if (plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
+		if (plugin.cumulativePlayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
 			int result = Math.max(currentscore,
-					plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
-			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
+					plugin.cumulativePlayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
 			plugin.customconfigCumulative.saveConfig();
 			return;
 		} else {
-			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
 			plugin.customconfigCumulative.saveConfig();
 		}
 	}
@@ -127,15 +127,15 @@ public class PlayerListener implements Listener {
 	public void updateBestScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
-		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.Magnification;
-		if (plugin.cumulativeplayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
+		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
+		if (plugin.cumulativePlayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
 			int result = Math.max(currentscore,
-					plugin.cumulativeplayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
-			plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
+					plugin.cumulativePlayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
 			plugin.customconfigCumulative.saveConfig();
 			return;
 		}
-		plugin.cumulativeplayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
+		plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
 		plugin.customconfigCumulative.saveConfig();
 	}
 

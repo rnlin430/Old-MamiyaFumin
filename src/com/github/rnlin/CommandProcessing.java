@@ -1,12 +1,11 @@
 package com.github.rnlin;
 
-import java.util.List;
-import java.util.Map.Entry;
-
+import com.github.rnlin.ForReorderingPlayerScore.scoretype;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.github.rnlin.ForReorderingPlayerScore.scoretype;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class CommandProcessing {
 
@@ -45,6 +44,7 @@ public class CommandProcessing {
 				}
 				return true;
 			}
+
 			// ページに表示する人数が10人以上の場合
 			if(RANKINGi.size() - mini >= 10) {
 				List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi);
@@ -64,6 +64,5 @@ public class CommandProcessing {
 			System.out.println("displayRanking:" + e);
 		}
 		return false;
-
 	}
 }
