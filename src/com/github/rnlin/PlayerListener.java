@@ -33,7 +33,7 @@ public class PlayerListener implements Listener {
 		Player player = (Player) e.getPlayer();
 		UUID u = player.getUniqueId();
 		Integer scoredata = new Integer(0);
-		MamiyaFumin.scorelist.put(u, scoredata);
+		MamiyaFumin.scoreList.put(u, scoredata);
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ

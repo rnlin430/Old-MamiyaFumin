@@ -14,10 +14,10 @@ public class TempFileManagement {
 	// scorelistをtemp.ymlに保存
 	public void saveScorelist() {
 		HashMap<String, Integer> STRING_SCORELIST = new HashMap<String, Integer>();
-		if (MamiyaFumin.scorelist == null)
+		if (MamiyaFumin.scoreList == null)
 			return;
-		for (UUID uuid : MamiyaFumin.scorelist.keySet()) {
-			Integer temp = MamiyaFumin.scorelist.get(uuid);
+		for (UUID uuid : MamiyaFumin.scoreList.keySet()) {
+			Integer temp = MamiyaFumin.scoreList.get(uuid);
 			STRING_SCORELIST.put(uuid.toString(), temp);
 		}
 		plugin.tempConfig.createSection(FUMIN_TEMP_KEY, STRING_SCORELIST);

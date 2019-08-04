@@ -21,13 +21,13 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	static int magnification = 20 * 2;
 	static int displayHours;
 
-	final String[] COMMANDS = { "MamiyaFumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
+	protected final String[] COMMANDS = { "MamiyaFumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
 
 	protected Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言
 
-	public static HashMap<UUID, Integer> scorelist = new HashMap<UUID, Integer>(); //UUIDとScoreDataを格納するHashMapを宣言
+	public static HashMap<UUID, Integer> scoreList = new HashMap<UUID, Integer>(); // UUIDとScoreDataを格納するHashMapを宣言
 	public static HashMap<UUID, Integer> scoreTotallist = new HashMap<UUID, Integer>(); // 未使用
-	public static HashMap<UUID, Integer> scoreBestlist = new HashMap<UUID, Integer>();
+	public static HashMap<UUID, Integer> scoreBestlist  = new HashMap<UUID, Integer>();
 
 	public Essentials ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
 	public ScoreboardManagement scoreboardManagement;
@@ -97,13 +97,13 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		for (Player player : playerlist) {
 			UUID player_uuid = player.getUniqueId();
 			Integer scoredata = player.getStatistic(Statistic.TIME_SINCE_REST) / magnification;
-			scorelist.put(player_uuid, scoredata);
+			scoreList.put(player_uuid, scoredata);
 		}
 		tfm = new TempFileManagement(this);
 		try {
 			for (UUID uuid : tfm.restoreScorelist().keySet()) {
 				int value = tfm.restoreScorelist().get(uuid);
-				scorelist.put(uuid, value);
+				scoreList.put(uuid, value);
 			}
 		} catch (NullPointerException e) {
 			// System.out.println("It is the first boot!");
@@ -127,20 +127,20 @@ System.out.println("\u001b[33m" + scoreBestlist + "\u001b[00m");
 	// プレイヤーのスコアに指定ポイント付与
 	public void addScore(Player player, int point) {
 		UUID uuid = player.getUniqueId();
-		Integer temp = scorelist.get(uuid);
+		Integer temp = scoreList.get(uuid);
 		int value = temp.intValue();
 		value = value + point;
 		Integer new_scoredata = new Integer(value);
-		scorelist.put(uuid, new_scoredata);
+		scoreList.put(uuid, new_scoredata);
 	}
 
 	// プレイヤーのスコアに指定ポイント付与
 	public void addScore(UUID uuid, int point) {
-		Integer temp = scorelist.get(uuid);
+		Integer temp = scoreList.get(uuid);
 		int value = temp.intValue();
 		value = value + point;
 		Integer new_scoredata = new Integer(value);
-		scorelist.put(uuid, new_scoredata);
+		scoreList.put(uuid, new_scoredata);
 	}
 
 	public static MamiyaFumin getPlugin() {

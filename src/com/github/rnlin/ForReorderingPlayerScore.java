@@ -12,6 +12,10 @@ public class ForReorderingPlayerScore {
 	private HashMap<String, Integer> stringTotalScorelist;
 	private HashMap<String, Integer> stringBestScorelist;
 
+	private static List<Entry<String, Integer>> rankingScore;
+	private static List<Entry<String, Integer>> rankingTotal;
+	private static List<Entry<String, Integer>> rankingBest;
+
 	enum scoretype {
 		CURRENT, TOTAL, BEST
 	}
@@ -33,7 +37,7 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 		String playername;
 		Integer value;
 		// scorelist順位表示用リスト作成
-		for (UUID uuid : MamiyaFumin.scorelist.keySet()) {
+		for (UUID uuid : MamiyaFumin.scoreList.keySet()) {
 			// uuidからプレイヤーネームに変換
 			try {
 				playername = Objects.requireNonNull(plugin.getServer().getPlayer(uuid)).getName();
@@ -41,7 +45,7 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 				// プレイヤーがオフラインの場合の処理
 				playername = plugin.getServer().getOfflinePlayer(uuid).getName();
 			}
-			value = MamiyaFumin.scorelist.get(uuid);
+			value = MamiyaFumin.scoreList.get(uuid);
 			try {
 				stringScorelist.put(playername, value);
 			} catch (NullPointerException e) {
@@ -66,11 +70,11 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 			}
 			try {
 				// player.dataの値(ベッドに寝る、ベッド右クリック、afk時のトータルスコア) + 現在のスコアを計算
-				value1 = value1 + MamiyaFumin.scorelist.get(plugin.getServer().getPlayer(stringname).getUniqueId());
+				value1 = value1 + MamiyaFumin.scoreList.get(plugin.getServer().getPlayer(stringname).getUniqueId());
 			} catch (Exception e) {
 				OfflinePlayer op = plugin.getServer().getOfflinePlayer(uuid);
 				if (op.hasPlayedBefore()) {
-					value1 = value1 + MamiyaFumin.scorelist.get(op.getUniqueId());
+					value1 = value1 + MamiyaFumin.scoreList.get(op.getUniqueId());
 				}
 			}
 			stringTotalScorelist.put(stringname, value1);
@@ -123,7 +127,7 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 			list_entries = new ArrayList<Entry<String, Integer>>(stringScorelist.entrySet());
 
 			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-				//compareを使用して値を比較する
+				// compareを使用して値を比較する
 				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
 					// 降順
 					return obj2.getValue().compareTo(obj1.getValue());
@@ -145,7 +149,7 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 			list_entries = new ArrayList<Entry<String, Integer>>(stringTotalScorelist.entrySet());
 
 			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-				//compareを使用して値を比較する
+				// compareを使用して値を比較する
 				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
 					// 降順
 					return obj2.getValue().compareTo(obj1.getValue());
@@ -175,7 +179,7 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 			});
 
 			for (Entry<String, Integer> entry : list_entries) {
-				// System.out.println(entry.getKey() + " : " + entry.getValue());
+// System.out.println(entry.getKey() + " : " + entry.getValue());
 			}
 		} catch (NullPointerException e) {
 			System.out.println("getDescendingOrderBestScore():" + e);

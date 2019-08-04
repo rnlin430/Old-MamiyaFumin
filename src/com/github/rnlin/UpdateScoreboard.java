@@ -29,6 +29,5 @@ public class UpdateScoreboard extends BukkitRunnable {
 		} else {
 			this.cancel();
 		}
-
 	}
 }
