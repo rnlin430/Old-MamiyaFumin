@@ -4,9 +4,11 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
 // 現在のスコア順位オブジェクト
-public class ForReorderingPlayerScore {
+// 一定時間毎に自動更新
+public class ForReorderingPlayerScore extends BukkitRunnable {
 	MamiyaFumin plugin = null;
 	private HashMap<String, Integer> stringScorelist;
 	private HashMap<String, Integer> stringTotalScorelist;
@@ -15,6 +17,13 @@ public class ForReorderingPlayerScore {
 	private static List<Entry<String, Integer>> rankingScore;
 	private static List<Entry<String, Integer>> rankingTotal;
 	private static List<Entry<String, Integer>> rankingBest;
+
+	@Override
+	public void run() {
+		rankingScore = getDescendingOrderScore();
+		rankingTotal = getDescendingOrderTotalScore();
+		rankingBest = getDescendingOrderBestScore();
+	}
 
 	enum scoretype {
 		CURRENT, TOTAL, BEST
@@ -29,7 +38,6 @@ public class ForReorderingPlayerScore {
 		convertToStringScoreList();
 		convertToStringTotalList();
 		convertToStringBestList();
-System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 	}
 
 	// Score順位表示用リスト(StringName, value)作成
@@ -110,11 +118,11 @@ System.out.println("\u001b[35m" + this.stringBestScorelist + "\u001b[00m");
 
 	public List<Entry<String, Integer>> getRankingList(scoretype type) {
 		if (type == scoretype.CURRENT) {
-			return getDescendingOrderScore();
+			return rankingScore;
 		} else if (type == scoretype.TOTAL) {
-			return getDescendingOrderTotalScore();
+			return rankingTotal;
 		} else if (type == scoretype.BEST) {
-			return getDescendingOrderBestScore();
+			return rankingBest;
 		}
 		return null;
 	}

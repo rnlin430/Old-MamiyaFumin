@@ -21,7 +21,9 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	static int magnification = 20 * 2;
 	static int displayHours;
 
-	protected final String[] COMMANDS = { "MamiyaFumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
+	private static long rankingCreateFrequency = 300L; // ランキング生成更新頻度
+
+	protected final String[] COMMANDS = { "mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
 
 	protected Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言
 
@@ -32,7 +34,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	public Essentials ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
 	public ScoreboardManagement scoreboardManagement;
 	public FileConfiguration settingConfig;
-	public PlayerListener pl = null;
+	public PlayerListener playerListener = null;
+	public ForReorderingPlayerScore forReorderingPlayerScore;
 
 	// playerdata.yml
 	public CustomConfig customconfigCumulative;
@@ -56,7 +59,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		// TODO 自動生成されたメソッド・スタブ
 		super.onEnable();
 		info("MamiyaFumin is roading!");
-		pl = new PlayerListener(this);
+		playerListener = new PlayerListener(this);
 
 		// config.ymlが存在しない場合ファイルに出力
 		saveDefaultConfig();
@@ -88,7 +91,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		}
 
 		// タスクスケジューラ呼び出し
-		new ScoreUpdate(this).runTaskTimer(this, 0, 20);
+		new ScoreUpdate(this).runTaskTimer(this, 0L, 20L);
+		this.forReorderingPlayerScore = new ForReorderingPlayerScore(this).runTaskTimer(this, 4L, rankingCreateFrequency);
 	}
 
 	// 現在のワールドにいるプレイヤーとTempからスコアデータを作成
@@ -122,6 +126,11 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 			scoreBestlist.put(uuid, value);
 		}
 System.out.println("\u001b[33m" + scoreBestlist + "\u001b[00m");
+	}
+
+	// プレイヤーを追加
+	public void addPlayer(Player player, int currentPoint, int totalPoint, int bestPoint) {
+
 	}
 
 	// プレイヤーのスコアに指定ポイント付与

@@ -46,7 +46,7 @@ public class CommandProcessing {
 			}
 
 			// ページに表示する人数が10人以上の場合
-			if(RANKINGi.size() - mini >= 10) {
+			if(10 <= RANKINGi.size() - mini) {
 				List<Entry<String, Integer>> sbListi = RANKINGi.subList(mini, maxi);
 				int[] valuei = new int[10];
 				String[] namei = new String[10];

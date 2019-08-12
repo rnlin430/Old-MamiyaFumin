@@ -130,7 +130,24 @@ public class MainCommands implements CommandExecutor {
 
 					return true;
 				}
-			case 3:
+			case 5:
+				if(args[0].equalsIgnoreCase("setdummyplayer")){
+					String name = args[1];
+					String currentPoint = args[2];
+					String totalPoint = args[3];
+					String bestPoint = args[4];
+
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("reomvedummyplayer")){
+					String name = args[1];
+					String currentPoint = args[2];
+					String totalPoint = args[3];
+					String bestPoint = args[4];
+
+					return true;
+				}
+				break;
 			}
 			// fumintop
 		} else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[2])) {
@@ -214,13 +231,13 @@ public class MainCommands implements CommandExecutor {
 		}
 		// fuminlevel
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[4])) {
-			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
+			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "");
 			return true;
 
 		}
 		// fuminitemlist
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[5])) {
-			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "未実装なのです。");
+			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "");
 			return true;
 		}
 		// fuminbest
