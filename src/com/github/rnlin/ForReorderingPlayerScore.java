@@ -20,6 +20,11 @@ public class ForReorderingPlayerScore extends BukkitRunnable {
 
 	@Override
 	public void run() {
+ System.out.println("\u001b[31m" + "update" + "\u001b[00m");
+		convertToStringScoreList();
+		convertToStringTotalList();
+		convertToStringBestList();
+
 		rankingScore = getDescendingOrderScore();
 		rankingTotal = getDescendingOrderTotalScore();
 		rankingBest = getDescendingOrderBestScore();
@@ -35,9 +40,6 @@ public class ForReorderingPlayerScore extends BukkitRunnable {
 		stringTotalScorelist = new HashMap<>();
 		stringBestScorelist = new HashMap<>();
 
-		convertToStringScoreList();
-		convertToStringTotalList();
-		convertToStringBestList();
 	}
 
 	// Score順位表示用リスト(StringName, value)作成
