@@ -9,14 +9,12 @@ import java.util.Map.Entry;
 
 public class CommandProcessing {
 
-
 	public CommandProcessing(MamiyaFumin plugin) {
 	}
 
 	static public boolean displayRanking(MamiyaFumin plugin, CommandSender sender, String args, scoretype type){
 		try {
-			ForReorderingPlayerScore playerscorei = new ForReorderingPlayerScore(plugin);
-			List<Entry<String, Integer>> RANKINGi = playerscorei.getRankingList(type);
+			List<Entry<String, Integer>> RANKINGi = plugin.forReorderingPlayerScore.getRankingList(type);
 
 			if(Integer.parseInt(args) <= 0) {
 				sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "1以上を指定してください。");

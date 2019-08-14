@@ -25,7 +25,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	protected final String[] COMMANDS = { "mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
 
-	protected Collection<? extends Player> playerlist; //ワールドにいるプレイヤーリストを格納するListを宣言
+	protected Collection<? extends Player> playerlist; // ワールドにいるプレイヤーリストを格納するListを宣言
 
 	public static HashMap<UUID, Integer> scoreList = new HashMap<UUID, Integer>(); // UUIDとScoreDataを格納するHashMapを宣言
 	public static HashMap<UUID, Integer> scoreTotallist = new HashMap<UUID, Integer>(); // 未使用
@@ -92,7 +92,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 		// タスクスケジューラ呼び出し
 		new ScoreUpdate(this).runTaskTimer(this, 0L, 20L);
-		this.forReorderingPlayerScore = new ForReorderingPlayerScore(this).runTaskTimer(this, 4L, rankingCreateFrequency);
+		this.forReorderingPlayerScore = new ForReorderingPlayerScore(this);
+		this.forReorderingPlayerScore.runTaskTimer(this, 4L, rankingCreateFrequency);
 	}
 
 	// 現在のワールドにいるプレイヤーとTempからスコアデータを作成
@@ -110,9 +111,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 				scoreList.put(uuid, value);
 			}
 		} catch (NullPointerException e) {
-			// System.out.println("It is the first boot!");
+// System.out.println("It is the first boot");
 		}
-		return;
 	}
 
 	// player.ymlからベストスコアデータを作成
@@ -125,7 +125,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 			UUID uuid = UUID.fromString(key);
 			scoreBestlist.put(uuid, value);
 		}
-System.out.println("\u001b[33m" + scoreBestlist + "\u001b[00m");
+// System.out.println("\u001b[33m" + scoreBestlist + "\u001b[00m");
 	}
 
 	// プレイヤーを追加
