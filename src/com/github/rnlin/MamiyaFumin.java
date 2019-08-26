@@ -14,7 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.earth2me.essentials.Essentials;
-
+/*
+ * ランキングリストはRankingManagement.getRankingList(ScoreType)を用いて取得してください。
+ * RankingManagementはgetRankingManagement()で取得します。
+ */
 public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	static MamiyaFumin plugin;
@@ -22,6 +25,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	static int displayHours;
 
 	private static long rankingCreateFrequency = 300L; // ランキング生成更新頻度
+	private RankingManagement rankingManagement;
 
 	protected final String[] COMMANDS = { "mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
 
@@ -35,7 +39,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	public ScoreboardManagement scoreboardManagement;
 	public FileConfiguration settingConfig;
 	public PlayerListener playerListener = null;
-	public ForReorderingPlayerScore forReorderingPlayerScore;
+
 
 	// playerdata.yml
 	public CustomConfig customconfigCumulative;
@@ -92,8 +96,16 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 		// タスクスケジューラ呼び出し
 		new ScoreUpdate(this).runTaskTimer(this, 0L, 20L);
-		this.forReorderingPlayerScore = new ForReorderingPlayerScore(this);
-		this.forReorderingPlayerScore.runTaskTimer(this, 4L, rankingCreateFrequency);
+		this.rankingManagement = new RankingManagement(this);
+		this.rankingManagement.runTaskTimer(this, 4L, rankingCreateFrequency);
+	}
+
+	// RankingManagementオブジェクトを取得します
+	public RankingManagement getRankingManagement() throws NullPointerException {
+		if(rankingManagement == null){
+			throw new NullPointerException();
+		}
+		return this.rankingManagement;
 	}
 
 	// 現在のワールドにいるプレイヤーとTempからスコアデータを作成

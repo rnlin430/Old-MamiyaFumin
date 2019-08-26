@@ -11,7 +11,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import com.github.rnlin.ForReorderingPlayerScore.scoretype;
+import com.github.rnlin.RankingManagement.ScoreType;
 
 // スコアボードを生成し各種操作を行います
 public class ScoreboardManagement {
@@ -37,10 +37,10 @@ public class ScoreboardManagement {
 		totalscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_TOTALSCORE_KEY)
 				+ MamiyaFumin.scoreList.get(uuid);
 		bestscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_BESTSCORE_KEY);
-		ForReorderingPlayerScore frps = new ForReorderingPlayerScore(plugin);
+		RankingManagement frps = new RankingManagement(plugin);
 
 		// プレイヤーネームでランクを検索
-		List<Entry<String, Integer>> list = frps.getRankingList(scoretype.CURRENT);
+		List<Entry<String, Integer>> list = frps.getRankingList(ScoreType.CURRENT);
 		Entry<String, Integer> temp = null;
 
 		for (Entry<String, Integer> entry : list) {
@@ -52,7 +52,7 @@ public class ScoreboardManagement {
 		rank = list.indexOf(temp) + 1;
 
 		// プレイヤーネームでトータルスコアランクを検索
-		list = frps.getRankingList(scoretype.TOTAL);
+		list = frps.getRankingList(ScoreType.TOTAL);
 		for (Entry<String, Integer> entry : list) {
 			if (player.getName() == entry.getKey()) {
 				temp = entry;
@@ -97,9 +97,9 @@ public class ScoreboardManagement {
 	}
 
 	public void updateScoreboarsRank() {
-		ForReorderingPlayerScore frps = new ForReorderingPlayerScore(plugin);
+		RankingManagement frps = new RankingManagement(plugin);
 		// プレイヤーネームでランクを検索
-		List<Entry<String, Integer>> list = frps.getRankingList(scoretype.CURRENT);
+		List<Entry<String, Integer>> list = frps.getRankingList(ScoreType.CURRENT);
 		Entry<String, Integer> temp = null;
 
 		for (Entry<String, Integer> entry : list) {
@@ -111,7 +111,7 @@ public class ScoreboardManagement {
 		rank = list.indexOf(temp) + 1;
 
 		// プレイヤーネームでトータルスコアランクを検索
-		list = frps.getRankingList(scoretype.TOTAL);
+		list = frps.getRankingList(ScoreType.TOTAL);
 		for (Entry<String, Integer> entry : list) {
 			if (player.getName() == entry.getKey()) {
 				temp = entry;

@@ -1,6 +1,6 @@
 package com.github.rnlin;
 
-import com.github.rnlin.ForReorderingPlayerScore.scoretype;
+import com.github.rnlin.RankingManagement.ScoreType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -12,9 +12,9 @@ public class CommandProcessing {
 	public CommandProcessing(MamiyaFumin plugin) {
 	}
 
-	static public boolean displayRanking(MamiyaFumin plugin, CommandSender sender, String args, scoretype type){
+	static public boolean displayRanking(MamiyaFumin plugin, CommandSender sender, String args, ScoreType type){
 		try {
-			List<Entry<String, Integer>> RANKINGi = plugin.forReorderingPlayerScore.getRankingList(type);
+			List<Entry<String, Integer>> RANKINGi = plugin.getRankingManagement().getRankingList(type);
 
 			if(Integer.parseInt(args) <= 0) {
 				sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "1以上を指定してください。");

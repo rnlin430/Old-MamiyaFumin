@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.rnlin.ForReorderingPlayerScore.scoretype;
+import com.github.rnlin.RankingManagement.ScoreType;
 
 public class MainCommands implements CommandExecutor {
 
@@ -136,7 +136,6 @@ public class MainCommands implements CommandExecutor {
 					String currentPoint = args[2];
 					String totalPoint = args[3];
 					String bestPoint = args[4];
-
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("reomvedummyplayer")){
@@ -155,14 +154,14 @@ public class MainCommands implements CommandExecutor {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
 						+ ChatColor.YELLOW + " Leaderboard---");
-				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.CURRENT);
+				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", ScoreType.CURRENT);
 				sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fumintop [PageNumber]"
 						+ ChatColor.GOLD + "  - ページ数を切り替えます。");
 				return result;
 			case 1:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
 						+ ChatColor.YELLOW + " Leaderboard---");
-				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.CURRENT);
+				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], RankingManagement.ScoreType.CURRENT);
 				sender.sendMessage(
 						ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
 				return result1;
@@ -215,7 +214,7 @@ public class MainCommands implements CommandExecutor {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
 						+ ChatColor.YELLOW + " Leaderboard===");
-				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.TOTAL);
+				boolean result = CommandProcessing.displayRanking(plugin, sender, "1", RankingManagement.ScoreType.TOTAL);
 				sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminrank [PageNumber]"
 						+ ChatColor.GOLD + "  - ページ数を切り替えます。");
 				return result;
@@ -223,7 +222,7 @@ public class MainCommands implements CommandExecutor {
 			case 1:
 				sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
 						+ ChatColor.YELLOW + " Leaderboard===");
-				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.TOTAL);
+				boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], RankingManagement.ScoreType.TOTAL);
 				sender.sendMessage(
 						ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
 				return result1;
@@ -246,14 +245,14 @@ public class MainCommands implements CommandExecutor {
 				case 0:
 					sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin BestPoint"
 							+ ChatColor.YELLOW + " Leaderboard---");
-					boolean result = CommandProcessing.displayRanking(plugin, sender, "1", scoretype.BEST);
+					boolean result = CommandProcessing.displayRanking(plugin, sender, "1", RankingManagement.ScoreType.BEST);
 					sender.sendMessage(ChatColor.GOLD + "Tip: " + ChatColor.DARK_RED + "/fuminbest [PageNumber]"
 							+ ChatColor.GOLD + "  - ページ数を切り替えます。");
 					return result;
 				case 1:
 					sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin BestPoint"
 							+ ChatColor.YELLOW + " Leaderboard---");
-					boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], scoretype.BEST);
+					boolean result1 = CommandProcessing.displayRanking(plugin, sender, args[0], ScoreType.BEST);
 					sender.sendMessage(
 							ChatColor.YELLOW + "-- page. " + ChatColor.GRAY + args[0] + ChatColor.YELLOW + " ---");
 					return result1;
