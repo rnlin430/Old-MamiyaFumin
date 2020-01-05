@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="MamiyaFumin Build">
-    <output-path>G:/minecraftserver/1.14.4/plugins</output-path>
+    <output-path>G:/minecraftserver/1.14.4 -2/plugins</output-path>
     <root id="archive" name="MamiyaFumin ver.0.4.16.jar">
       <element id="file-copy" path="$PROJECT_DIR$/playerdata.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />

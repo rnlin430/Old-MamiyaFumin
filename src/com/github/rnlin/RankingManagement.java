@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 // 現在のスコア順位オブジェクト
 // 一定時間毎に自動更新
+// getRankingList()で取得できるリストは一定時間更新のため、遅延があります。
 public class RankingManagement extends BukkitRunnable {
 	MamiyaFumin plugin = null;
 	private HashMap<String, Integer> stringScorelist;
@@ -18,17 +19,6 @@ public class RankingManagement extends BukkitRunnable {
 	private static List<Entry<String, Integer>> rankingTotal;
 	private static List<Entry<String, Integer>> rankingBest;
 
-	@Override
-	public void run() {
- // System.out.println("\u001b[31m" + "update" + "\u001b[00m");
-		convertToStringScoreList();
-		convertToStringTotalList();
-		convertToStringBestList();
-		rankingScore = getDescendingOrderScore();
-		rankingTotal = getDescendingOrderTotalScore();
-		rankingBest = getDescendingOrderBestScore();
-	}
-
 	enum ScoreType {
 		CURRENT, TOTAL, BEST
 	}
@@ -38,6 +28,17 @@ public class RankingManagement extends BukkitRunnable {
 		stringScorelist = new HashMap<>();
 		stringTotalScorelist = new HashMap<>();
 		stringBestScorelist = new HashMap<>();
+	}
+
+	@Override
+	public void run() {
+ // System.out.println("\u001b[31m" + "Class:RankingManagement.run() => update" + "\u001b[00m");
+		convertToStringScoreList();
+		convertToStringTotalList();
+		convertToStringBestList();
+		rankingScore = getDescendingOrderScore();
+		rankingTotal = getDescendingOrderTotalScore();
+		rankingBest = getDescendingOrderBestScore();
 	}
 
 	// Score順位表示用リスト(StringName, value)作成
@@ -57,7 +58,7 @@ public class RankingManagement extends BukkitRunnable {
 			try {
 				stringScorelist.put(playername, value);
 			} catch (NullPointerException e) {
-				System.out.println("1:" + e);
+				System.out.println("RankingManagement.convertToStringScoreList() => " + e);
 			}
 		}
 	}

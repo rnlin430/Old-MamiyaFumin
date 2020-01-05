@@ -92,16 +92,15 @@ public class PlayerListener implements Listener {
 	// プレイヤーが死んだときのイベントハンドラ
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
-		if (!(e.getEntity() instanceof Player))
-			return;
+		if (!(e.getEntity() instanceof Player)) return;
 		Player player = e.getEntity();
 		updateScore(player);
 		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 
 	}
 
-	// プレイヤーの現在のスコアを加算&最大スコアを保存&更新
-	public void updateScore(Player player) {
+	// プレイヤーの現在のスコアを加算&最大スコアをコンフィグに保存&更新
+	private void updateScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
 		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
@@ -117,14 +116,13 @@ public class PlayerListener implements Listener {
 					plugin.cumulativePlayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
 			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
 			plugin.customconfigCumulative.saveConfig();
-			return;
 		} else {
 			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
 			plugin.customconfigCumulative.saveConfig();
 		}
 	}
 
-	public void updateBestScore(Player player) {
+	private void updateBestScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
 		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
@@ -133,10 +131,11 @@ public class PlayerListener implements Listener {
 					plugin.cumulativePlayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
 			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
 			plugin.customconfigCumulative.saveConfig();
-			return;
 		}
-		plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
-		plugin.customconfigCumulative.saveConfig();
+		else {
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
+			plugin.customconfigCumulative.saveConfig();
+		}
 	}
 
 }

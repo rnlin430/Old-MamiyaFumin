@@ -19,9 +19,9 @@ public class ScoreUpdate extends BukkitRunnable {
 	@Override
 	public void run() {
 		// TODO 自動生成されたメソッド・スタブ
-		plugin.playerlist = plugin.getServer().getOnlinePlayers();
+		plugin.playerList = plugin.getServer().getOnlinePlayers();
 		// プレイヤーリストにいる（現在参加中のプレイヤー）一人一人の現在の統計値をscorelistに格納
-		for (Player player : plugin.playerlist) {
+		for (Player player : plugin.playerList) {
 			int temp = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
 			UUID uuid = player.getUniqueId();
 			// Integer scoredata = MamiyaFumin.scoreList.get(uuid);
@@ -29,7 +29,7 @@ public class ScoreUpdate extends BukkitRunnable {
 			MamiyaFumin.scoreList.put(uuid, new_scoredata);
 		}
 		// プレイヤーリストにいる一人一人の現在の統計値をscoreBestlistに格納（負荷軽減のため全てのプレイヤ―はPlugin読み込み時に格納）
-		for (Player player : plugin.playerlist) {
+		for (Player player : plugin.playerList) {
 			UUID uuid = player.getUniqueId();
 			int bestscore = Math.max(
 					plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_BESTSCORE_KEY),
