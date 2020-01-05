@@ -12,7 +12,7 @@ public class CommandProcessing {
 	public CommandProcessing(MamiyaFumin plugin) {
 	}
 
-	static public boolean displayRanking(MamiyaFumin plugin, CommandSender sender, String args, ScoreType type){
+	static boolean displayRanking(MamiyaFumin plugin, CommandSender sender, String args, ScoreType type){
 		try {
 			List<Entry<String, Integer>> RANKINGi = plugin.getRankingManagement().getRankingList(type);
 

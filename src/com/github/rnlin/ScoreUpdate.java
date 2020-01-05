@@ -18,7 +18,6 @@ public class ScoreUpdate extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		// TODO 自動生成されたメソッド・スタブ
 		plugin.playerList = plugin.getServer().getOnlinePlayers();
 		// プレイヤーリストにいる（現在参加中のプレイヤー）一人一人の現在の統計値をscorelistに格納
 		for (Player player : plugin.playerList) {

@@ -2,6 +2,7 @@ package com.github.rnlin;
 
 import java.util.HashMap;
 
+import com.github.rnlin.rnlibrary.ConsoleLog;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,27 +13,22 @@ import com.github.rnlin.RankingManagement.ScoreType;
 
 public class MainCommands implements CommandExecutor {
 
+	private static final String PLAYER_ONLY_MESSAGE = "このコマンドはゲーム内（プレイヤー）からのみ実行できます。";
 	private MamiyaFumin plugin = MamiyaFumin.getPlugin();
-	private static HashMap<Player, Integer> scoreboadkeeper = new HashMap<Player, Integer>();
-
-	public MainCommands() {
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
+	private static HashMap<Player, Integer> scoreboadkeeper = new HashMap<>();
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlabel, String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
 		if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[0])) {
 			if (!sender.hasPermission("mamiyafumin.command.main.mamiyafumin")) {
 				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
 				return true;
 			}
 
-			Player player = (Player) sender;
 			switch (args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "■ MamiyaFumin ■");
-				sender.sendMessage(ChatColor.WHITE + "Spigotバージョン : 1.13.2");
+				sender.sendMessage(ChatColor.WHITE + "Spigotバージョン : 1.14.2");
 				sender.sendMessage(ChatColor.WHITE + "Pluginバージョン : " + plugin.getDescription().getVersion());
 				sender.sendMessage(ChatColor.AQUA + "ダウンロードURL : " + plugin.getSiteURL());
 				sender.sendMessage(ChatColor.AQUA + "コマンド一覧 : " + "/mamiyafumin command");
@@ -104,6 +100,7 @@ public class MainCommands implements CommandExecutor {
 			case 2:
 				if (args[0].equalsIgnoreCase("getPlayerScore")) {
 					// 他プレイヤーのトータルスコア、スコア、順位を取得
+
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("setPlayerScore")) {
@@ -111,7 +108,12 @@ public class MainCommands implements CommandExecutor {
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("addPlayerScore")) {
-
+					if(!(sender instanceof Player)) {
+						ConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
+						return true;
+					}
+					Player player = (Player) sender;
+					PlayerFumin pf = plugin.getPlayerFumin(player);
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("reducePlayerScore")) {
@@ -131,7 +133,7 @@ public class MainCommands implements CommandExecutor {
 					return true;
 				}
 			case 5:
-				if(args[0].equalsIgnoreCase("setdummyplayer")){
+				if(args[0].equalsIgnoreCase("setdummyplayer")) {
 					String name = args[1];
 					String currentPoint = args[2];
 					String totalPoint = args[3];

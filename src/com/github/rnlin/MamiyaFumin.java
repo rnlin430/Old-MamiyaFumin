@@ -27,7 +27,9 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	private static long rankingCreateFrequency = 300L; // ランキング生成更新頻度
 	private static RankingManagement rankingManagement;
 
-	protected final String[] COMMANDS = { "mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest" };
+	protected final String[] COMMANDS = new String[]{
+			"mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest"
+	};
 
 	protected Collection<? extends Player> playerList; // ワールドにいるプレイヤーリストを格納するListを宣言
 
@@ -53,14 +55,12 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	@Override
 	public void onDisable() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onDisable();
 		tfm.saveScorelist();
 	}
 
 	@Override
 	public void onEnable() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onEnable();
 		info("MamiyaFumin is roading!");
 		playerListener = new PlayerListener(this);
