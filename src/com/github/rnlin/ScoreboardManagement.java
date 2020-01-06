@@ -119,6 +119,16 @@ public class ScoreboardManagement {
 			}
 		}
 		totalrank = list.indexOf(temp) + 1;
+
+		// プレイヤーネームでトータルスコアランクを検索
+		list = frps.getRankingList(ScoreType.BEST);
+		for (Entry<String, Integer> entry : list) {
+			if (player.getName() == entry.getKey()) {
+				temp = entry;
+				break;
+			}
+		}
+		bestrank = list.indexOf(temp) + 1;
 	}
 
 	// プレイヤーのスコアボードをプレイヤーに表示する

@@ -10,7 +10,6 @@ public class PlayerMessage {
     public static void sendInfo(CommandSender sender, String message) {
         sender.sendMessage( ChatColor.AQUA + message);
     }
-
     public static void debugMessage(CommandSender sender, String message) {
         sender.sendMessage( "[Debug] " + ChatColor.GRAY + message);
     }

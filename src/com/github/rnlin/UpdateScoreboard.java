@@ -8,8 +8,7 @@ public class UpdateScoreboard extends BukkitRunnable {
 	private int count;
 	private MamiyaFumin plugin;
 
-	public UpdateScoreboard(MamiyaFumin pluguin, int count, ScoreboardManagement sbm) {
-		// TODO 自動生成されたコンストラクター・スタブ
+	public UpdateScoreboard(MamiyaFumin pluguin, int count, ScoreboardManagement sbm) throws IllegalArgumentException {
 		this.sbm = sbm;
 		this.plugin = plugin;
 		if (count < 1) {
@@ -21,7 +20,6 @@ public class UpdateScoreboard extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		// TODO 自動生成されたメソッド・スタブ
 		if (count > 0) {
 			count--;
 			sbm.updateScoreboardScore();

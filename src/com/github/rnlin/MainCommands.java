@@ -3,6 +3,7 @@ package com.github.rnlin;
 import java.util.HashMap;
 
 import com.github.rnlin.rnlibrary.ConsoleLog;
+import com.github.rnlin.rnlibrary.PlayerMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -113,7 +114,20 @@ public class MainCommands implements CommandExecutor {
 						return true;
 					}
 					Player player = (Player) sender;
-					PlayerFumin pf = plugin.getPlayerFumin(player);
+					PlayerFumin playerf = plugin.getPlayerFumin(player);
+					int score = playerf.getCurrentScore();
+					int num = Integer.parseInt(args[1]);
+//					PlayerMessage.sendInfo(
+//							player, player.getDisplayName() + " さんの現在のスコアは" + String.valueOf(score) + "です。");
+					if(0 <= num){
+						playerf.increaseCurrentScore(num);
+					}
+					else if(num <= -1) {
+						playerf.decreaseCurrentScore(num);
+					}
+					score = playerf.getCurrentScore();
+					PlayerMessage.sendInfo(
+							player, player.getDisplayName() + " さんの現在のスコアが" + String.valueOf(score) + "になりました。");
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("reducePlayerScore")) {
@@ -171,7 +185,7 @@ public class MainCommands implements CommandExecutor {
 			// fuminstats
 		} else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[3])) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage("ゲーム内から実行してください");
+				ConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
 				return true;
 			}
 			switch (args.length) {

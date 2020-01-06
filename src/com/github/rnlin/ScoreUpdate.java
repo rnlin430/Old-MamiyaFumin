@@ -35,5 +35,11 @@ public class ScoreUpdate extends BukkitRunnable {
 					MamiyaFumin.scoreList.get(uuid));
 			MamiyaFumin.scoreBestlist.put(uuid, bestscore);
 		}
+
+		for (Player player : plugin.playerList) {
+			UUID uuid = player.getUniqueId();
+			int totalscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_TOTALSCORE_KEY)
+					+ MamiyaFumin.scoreList.get(uuid);
+		}
 	}
 }
