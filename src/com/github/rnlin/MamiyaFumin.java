@@ -30,6 +30,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	protected static final String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
 
 	private static RankingManagement rankingManagement;
+	private static ScoreUpdate scoreUpdate;
 
 	protected final String[] COMMANDS = new String[] {
 			"mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest"
@@ -130,7 +131,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		}
 
 		// タスクスケジューラ呼び出し
-		new ScoreUpdate(this).runTaskTimer(this, 0L, SCORE_UPDATE_FREQUENCY);
+		scoreUpdate = new ScoreUpdate(this);
+		scoreUpdate.runTaskTimer(this, 0L, SCORE_UPDATE_FREQUENCY);
 		rankingManagement = new RankingManagement(this);
 		rankingManagement.runTaskTimer(this, 4L, RANKING_CREATE_FREQUENCY);
 	}
@@ -230,6 +232,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		return new PlayerFumin(player);
 	}
 
-
+	public static ScoreUpdate getScoreUpdate() {
+		return scoreUpdate;
+	}
 
 }
