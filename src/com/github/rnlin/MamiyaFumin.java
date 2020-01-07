@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,13 +21,14 @@ import com.earth2me.essentials.Essentials;
  */
 public class MamiyaFumin extends JavaPlugin implements Listener {
 
+	private static final long SCORE_UPDATE_FREQUENCY = 20L; // スコアアップデート更新頻度
+	private static final long RANKING_CREATE_FREQUENCY = 300L; // ランキング生成更新頻度
 	static MamiyaFumin plugin;
 	static int magnification = 20 * 2;
 	static int displayHours;
 	protected static final String FUMIN_TOTALSCORE_KEY = ".FuminTotalScore";
 	protected static final String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
 
-	private static long rankingCreateFrequency = 300L; // ランキング生成更新頻度
 	private static RankingManagement rankingManagement;
 
 	protected final String[] COMMANDS = new String[] {
@@ -37,15 +37,14 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	Collection<? extends Player> playerList; // ワールドにいるプレイヤーリストを格納するListを宣言
 
-	public static HashMap<UUID, Integer> scoreList = new HashMap<UUID, Integer>(); // UUIDとScoreDataを格納するHashMapを宣言
-	public static HashMap<UUID, Integer> cumulativeScore = new HashMap<UUID, Integer>(); // トータルスコア = 累積スコア+現在のスコア
-	public static HashMap<UUID, Integer> scoreBestlist  = new HashMap<UUID, Integer>();
+	public static HashMap<UUID, Integer> scoreList = new HashMap<>(); // UUIDとScoreDataを格納するHashMapを宣言
+	public static HashMap<UUID, Integer> cumulativeScore = new HashMap<>(); // トータルスコア = 累積スコア+現在のスコア
+	public static HashMap<UUID, Integer> scoreBestlist  = new HashMap<>();
 
 	public Essentials ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
 	public ScoreboardManagement scoreboardManagement;
 	public FileConfiguration settingConfig;
 	public PlayerListener playerListener = null;
-
 
 	// playerdata.yml
 	public CustomConfig customconfigCumulative;
@@ -131,9 +130,9 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		}
 
 		// タスクスケジューラ呼び出し
-		new ScoreUpdate(this).runTaskTimer(this, 0L, 20L);
+		new ScoreUpdate(this).runTaskTimer(this, 0L, SCORE_UPDATE_FREQUENCY);
 		rankingManagement = new RankingManagement(this);
-		rankingManagement.runTaskTimer(this, 4L, rankingCreateFrequency);
+		rankingManagement.runTaskTimer(this, 4L, RANKING_CREATE_FREQUENCY);
 	}
 
 	// RankingManagementオブジェクトを取得します

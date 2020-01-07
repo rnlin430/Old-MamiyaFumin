@@ -36,6 +36,11 @@ public class PlayerListener implements Listener {
 		UUID u = player.getUniqueId();
 		Integer scoredata = new Integer(0);
 		MamiyaFumin.scoreList.put(u, scoredata);
+
+		//ログインしたプレイヤーのベストスコアをメモリ上に追加
+			int bestscore = Math.max(
+					MamiyaFumin.scoreBestlist.get(u), MamiyaFumin.scoreList.get(u));
+			MamiyaFumin.scoreBestlist.put(u, bestscore);
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ
