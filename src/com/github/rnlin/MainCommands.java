@@ -14,6 +14,10 @@ import com.github.rnlin.RankingManagement.ScoreType;
 
 public class MainCommands implements CommandExecutor {
 
+	//tick
+	private static final int SCOREBOAD_KEEP_TIME 				= 100000;
+	private static final long SCOREBOARD_UPDATE_FREQUENCY 	= 15L;
+
 	private static final String PLAYER_ONLY_MESSAGE = "このコマンドはゲーム内（プレイヤー）からのみ実行できます。";
 	private MamiyaFumin plugin = MamiyaFumin.getPlugin();
 	private static HashMap<Player, Integer> scoreboadkeeper = new HashMap<>();
@@ -114,9 +118,9 @@ public class MainCommands implements CommandExecutor {
 						return true;
 					}
 					Player player = (Player) sender;
-					PlayerFumin playerf = plugin.getPlayerFumin(player);
-					int score = playerf.getCurrentScore();
+					PlayerFumin playerf = MamiyaFumin.getPlayerFumin(player);
 					int num = Integer.parseInt(args[1]);
+//					int score = playerf.getCurrentScore();
 //					PlayerMessage.sendInfo(
 //							player, player.getDisplayName() + " さんの現在のスコアは" + String.valueOf(score) + "です。");
 					if(0 <= num){
@@ -125,9 +129,9 @@ public class MainCommands implements CommandExecutor {
 					else if(num <= -1) {
 						playerf.decreaseCurrentScore(num);
 					}
-					score = playerf.getCurrentScore();
+					int score = playerf.getCurrentScore();
 					PlayerMessage.sendInfo(
-							player, player.getDisplayName() + " さんの現在のスコアが" + String.valueOf(score) + "になりました。");
+							player, player.getDisplayName() + " さんの現在のスコアが" + score + "になりました。");
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("reducePlayerScore")) {
@@ -192,21 +196,21 @@ public class MainCommands implements CommandExecutor {
 			case 0:
 				Player player = (Player) sender;
 				ScoreboardManagement sbm = new ScoreboardManagement(player, plugin);
-				sbm.updateScoreboarsRank(); // ランキングを更新
+				//sbm.updateScoreboarsRank(); // ランキングを更新
 				sbm.setPlayerScoreboad();
 				// MamiyaFumin.DisplayHours秒後に非表示
 				new Countscheduler(plugin, sbm, player).runTaskLater(plugin, 20 * MamiyaFumin.displayHours);
 				// 15tick毎に更新&MamiyaFumin.DisplayHours秒で更新を終了
-				new UpdateScoreboard(plugin, MamiyaFumin.displayHours * (20 / 15), sbm).runTaskTimer(plugin, 0, 15);
+				new UpdateScoreboard(plugin, MamiyaFumin.displayHours * (20 / 15), sbm).runTaskTimer(plugin, 0, SCOREBOARD_UPDATE_FREQUENCY);
 				return true;
 			case 1:
 				ScoreboardManagement sbm1;
 				if (args[0].equalsIgnoreCase("keep")) {
 					Player player1 = (Player) sender;
 					sbm1 = new ScoreboardManagement(player1, plugin);
-					sbm1.updateScoreboarsRank();
+					//sbm1.updateScoreboarsRank();
 					sbm1.setPlayerScoreboad();
-					Integer value = new UpdateScoreboard(plugin, 50000, sbm1).runTaskTimer(plugin, 0, 15).getTaskId();
+					Integer value = new UpdateScoreboard(plugin, SCOREBOAD_KEEP_TIME, sbm1).runTaskTimer(plugin, 0, SCOREBOARD_UPDATE_FREQUENCY).getTaskId();
 					scoreboadkeeper.put(player1, Integer.valueOf(value));
 					return true;
 				} else if (args[0].equalsIgnoreCase("clear")) {

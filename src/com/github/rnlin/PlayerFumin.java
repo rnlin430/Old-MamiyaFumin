@@ -1,5 +1,6 @@
 package com.github.rnlin;
 
+import com.github.rnlin.rnlibrary.PlayerMessage;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
@@ -28,10 +29,25 @@ public class PlayerFumin {
     }
 
     //Todo 実装
-    // 現在のトータル不眠ポイントを取得します。
+    // プレイヤーを削除します。
+    public void removePlayer(Player player) {
+    }
+
+    // 現在のトータルスコアを取得します。
     public int getTotalScore() {
-        // logic
-        return 0;
+        UUID uuid = player.getUniqueId();
+        //リセットor減算された累積スコア + 現在のスコア
+        int TotalScore = MamiyaFumin.cumulativeScore.get(uuid) + MamiyaFumin.scoreList.get(uuid);
+        return TotalScore;
+    }
+
+    //Todo 実装
+    // 現在のベストスコアを取得します。
+    public int getBestScore() {
+        UUID uuid = player.getUniqueId();
+        int bestscore = Math.max(player.getStatistic(Statistic.TIME_SINCE_REST),
+                MamiyaFumin.scoreBestlist.get(uuid));
+        return bestscore;
     }
 
     //Todo 実装
@@ -41,9 +57,16 @@ public class PlayerFumin {
         return new int[]{0, 0, 0};
     }
 
-    //Todo 実装
     public boolean increaseTotalScore(int point) {
-        // logic
+        int value = MamiyaFumin.cumulativeScore.get(player.getUniqueId());
+        MamiyaFumin.cumulativeScore.put(player.getUniqueId(), value + point);
+        return true;
+    }
+
+    public boolean decreaseTotalScore(int point) {
+        int value = MamiyaFumin.cumulativeScore.get(player.getUniqueId());
+        if(value < point) return false;
+        MamiyaFumin.cumulativeScore.put(player.getUniqueId(), value - point);
         return true;
     }
 
@@ -54,8 +77,11 @@ public class PlayerFumin {
         UUID uuid = player.getUniqueId();
         int score = MamiyaFumin.scoreList.get(uuid);
         // 現在のスコアからポイントを引いた値と、統計値からポイント分を引いた値が等しいかを確認
+        // メモリ上のスコアは遅延があるため一致しない可能性がある
         if( (score - value == player.getStatistic(Statistic.TIME_SINCE_REST) - value * MamiyaFumin.magnification) ) {
-            System.out.println("値が不正です。失敗しました。");
+            System.out.println("値が不正確な可能性があります。処理を中止しました。");
+            PlayerMessage.debugMessage(player, "PlayerFumin.decreaseCurrentScore():値が不正確な可能性があります。処理を中止しました。" +
+                    "お手数ですが、管理者及び、プラグイン制作者に連絡してください。");
             return false;
         }
         player.decrementStatistic(Statistic.TIME_SINCE_REST, value * MamiyaFumin.magnification);
@@ -67,8 +93,11 @@ public class PlayerFumin {
         UUID uuid = player.getUniqueId();
         int score = MamiyaFumin.scoreList.get(uuid);
         // 現在のスコアからポイントを引いた値と、統計値からポイント分を引いた値が等しいかを確認
+        // メモリ上のスコアは遅延があるため一致しない可能性がある
         if( (score + point == player.getStatistic(Statistic.TIME_SINCE_REST) + point * MamiyaFumin.magnification) ) {
-            System.out.println("値が不正です。失敗しました。");
+            System.out.println("値が不正確な可能性があります。処理を中止しました。");
+            PlayerMessage.debugMessage(player, "PlayerFumin.decreaseCurrentScore():値が不正確な可能性があります。処理を中止しました。" +
+                    "お手数ですが、管理者及び、プラグイン制作者に連絡してください。");
             return false;
         }
         player.incrementStatistic(Statistic.TIME_SINCE_REST, point * MamiyaFumin.magnification);

@@ -22,7 +22,7 @@ import com.earth2me.essentials.Essentials;
 public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	private static final long SCORE_UPDATE_FREQUENCY = 20L; // スコアアップデート更新頻度
-	private static final long RANKING_CREATE_FREQUENCY = 300L; // ランキング生成更新頻度
+	private static final long RANKING_CREATE_FREQUENCY = 300L; // ランキング更新頻度
 	static MamiyaFumin plugin;
 	static int magnification = 20 * 2;
 	static int displayHours;
@@ -184,16 +184,12 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		}
 	}
 
-	// プレイヤーを追加
-	public void addPlayer(Player player, int currentPoint, int totalPoint, int bestPoint) {
-
-	}
-
 	public static MamiyaFumin getPlugin() {
 		return plugin;
 	}
 
 	// プレイヤーの最後に就寝してからの経過時間をリセットする
+	// （現在のスコアをリセットするときは必ず累積スコアに現在のスコアを加算してから行ってください）
 	public static boolean resetStatistic(Player p, Statistic statistic) {
 		try {
 			int slr = p.getStatistic(statistic);
@@ -230,8 +226,10 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		return url;
 	}
 
-	public PlayerFumin getPlayerFumin(Player player) {
+	public static PlayerFumin getPlayerFumin(Player player) {
 		return new PlayerFumin(player);
 	}
+
+
 
 }

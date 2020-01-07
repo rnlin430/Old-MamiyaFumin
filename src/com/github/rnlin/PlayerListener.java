@@ -56,18 +56,23 @@ public class PlayerListener implements Listener {
 		Player player;
 		try {
 			player = plugin.getServer().getPlayer(e.getController().getName());
-		} catch (Exception e2) {
-			System.out.println("[Debug] PlayerListener.onAfkChange(): " + e2);
+		} catch (Exception e1) {
+			System.out.println("[Debug] PlayerListener.onAfkChange():e1 " + e1);
 			player = (Player) plugin.getServer().getOfflinePlayer(e.getController().getName());
 		}
 
 		try {
 			if (!(e.getController().isAfk())) {
-				updateScore(player);
+				saveTotalBestScore(player);
+
+				// 現在のスコアをリセット前に累積スコアに現在のスコアを加算
+				MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
+						player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
+
 				MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 			}
 		} catch (Exception e2) {
-			System.out.println("[Debug] PlayerListener.onAfkChange(): " + e2);
+			System.out.println("[Debug] PlayerListener.onAfkChange():e2 " + e2);
 		}
 	}
 
@@ -79,19 +84,22 @@ public class PlayerListener implements Listener {
 		Essentials ess = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
 		if (ess.getUser(player).isAfk()) {
 			MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
-
 		}
 		if (player.isDead()) {
 			MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		}
-
 	}
 
 	// プレイヤーがベッドを右クリックしたときのイベントハンドラ
 	@EventHandler
 	public void onPlayerBedEnter(PlayerBedEnterEvent e) {
 		Player player = e.getPlayer();
-		updateScore(player);
+		saveTotalBestScore(player);
+
+		// 現在のスコアをリセット前に累積スコアに現在のスコアを加算
+		MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
+				player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
+
 		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 	}
 
@@ -100,13 +108,16 @@ public class PlayerListener implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		if (!(e.getEntity() instanceof Player)) return;
 		Player player = e.getEntity();
-		updateScore(player);
-		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+		saveTotalBestScore(player);
 
+		// 現在のスコアをリセット前に累積スコアに現在のスコアを加算
+		MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
+				player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
+		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
 	}
 
 	// プレイヤーの現在のスコアを加算&最大スコアをコンフィグに保存&更新
-	private void updateScore(Player player) {
+	private void saveTotalBestScore(Player player) {
 		UUID uuid = player.getUniqueId();
 		String stringuuid = uuid.toString();
 		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
@@ -129,7 +140,7 @@ public class PlayerListener implements Listener {
 	}
 
 
-//	private void updateBestScore(Player player) {
+//	private void saveBestScore(Player player) {
 //		UUID uuid = player.getUniqueId();
 //		String stringuuid = uuid.toString();
 //		int currentscore = player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;

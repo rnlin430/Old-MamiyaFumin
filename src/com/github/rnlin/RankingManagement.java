@@ -7,12 +7,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.github.rnlin.MamiyaFumin.FUMIN_TOTALSCORE_KEY;
+import static com.github.rnlin.MamiyaFumin.scoreList;
 
 // 現在のスコア順位オブジェクト
 // 一定時間毎に自動更新
 // getRankingList()で取得できるリストは一定時間更新のため、遅延があります。
+// 遅延の無いリアルタイムのランキングを取得する場合はrun()後にgetRankingList()で取得してください（CPUに高負荷のため連続使用は禁止）。
 public class RankingManagement extends BukkitRunnable {
-	MamiyaFumin plugin = null;
+	MamiyaFumin plugin;
 	private HashMap<String, Integer> stringScorelist;
 	private HashMap<String, Integer> stringTotalScorelist;
 	private HashMap<String, Integer> stringBestScorelist;
@@ -60,37 +62,51 @@ public class RankingManagement extends BukkitRunnable {
 			try {
 				stringScorelist.put(playername, value);
 			} catch (NullPointerException e) {
-				System.out.println("RankingManagement.convertToStringScoreList() => " + e);
+				System.out.println("RankingManagement.convertToStringScoreList(): => " + e);
 			}
 		}
 	}
 
 	// TotalScore順位表示用リスト(StringName, value)作成
 	private void convertToStringTotalList() {
-		Set<String> keys = plugin.cumulativePlayerscoreConfig.getKeys(false);
-		for (String key : keys) {
-			String stringname;
-			UUID uuid = UUID.fromString(key);
+		String stringname;
+		for (UUID uuid : MamiyaFumin.cumulativeScore.keySet()) {
 
-			int value1 = Integer.parseInt(Objects.requireNonNull(plugin.cumulativePlayerscoreConfig.getString(
-					key + "." + FUMIN_TOTALSCORE_KEY)));
+			int value1 = MamiyaFumin.cumulativeScore.get(uuid);
+			value1 += scoreList.get(uuid);
 			try {
 				stringname = plugin.getServer().getPlayer(uuid).getName();
 			} catch (Exception e) {
 				stringname = plugin.getServer().getOfflinePlayer(uuid).getName();
 			}
-			try {
-				// player.dataの値(ベッドに寝る、ベッド右クリック、afk時のトータルスコア) + 現在のスコアを計算
-				value1 = value1 + MamiyaFumin.scoreList.get(plugin.getServer().getPlayer(stringname).getUniqueId());
-			} catch (Exception e) {
-				OfflinePlayer op = plugin.getServer().getOfflinePlayer(uuid);
-				if (op.hasPlayedBefore()) {
-					value1 = value1 + MamiyaFumin.scoreList.get(op.getUniqueId());
-				}
-			}
 			stringTotalScorelist.put(stringname, value1);
 		}
-		// トータルスコアがplayer.dataに保存されていないプレイヤーの現在のスコアをトータルスコアとして順位表示用リストに保存
+//		Set<String> keys = plugin.cumulativePlayerscoreConfig.getKeys(false);
+//		for (String key : keys) {
+//			String stringname;
+//			UUID uuid = UUID.fromString(key);
+//
+//			int value1 = Integer.parseInt(Objects.requireNonNull(plugin.cumulativePlayerscoreConfig.getString(
+//					key + "." + FUMIN_TOTALSCORE_KEY)));
+//			try {
+//				stringname = plugin.getServer().getPlayer(uuid).getName();
+//			} catch (Exception e) {
+//				stringname = plugin.getServer().getOfflinePlayer(uuid).getName();
+//			}
+//			try {
+//				// player.dataの値(ベッドに寝る、ベッド右クリック、afk時のトータルスコア) + 現在のスコアを計算
+//				value1 = value1 + MamiyaFumin.scoreList.get(plugin.getServer().getPlayer(stringname).getUniqueId());
+//			} catch (Exception e) {
+//				OfflinePlayer op = plugin.getServer().getOfflinePlayer(uuid);
+//				if (op.hasPlayedBefore()) {
+//					value1 = value1 + MamiyaFumin.scoreList.get(op.getUniqueId());
+//				}
+//			}
+//			stringTotalScorelist.put(stringname, value1);
+//		}
+
+		// トータルスコアがMamiyaFumin.cumulativeScoreに保存されていないプレイヤーの
+		// 現在のスコアをトータルスコアとして順位表示用リストに保存（0（累積スコア） + 現在のスコア）
 		for (String name : stringScorelist.keySet()) {
 			if (!stringTotalScorelist.containsKey(name)) {
 				stringTotalScorelist.put(name, stringScorelist.get(name));
@@ -114,11 +130,12 @@ public class RankingManagement extends BukkitRunnable {
 			try {
 				stringBestScorelist.put(playername, value);
 			} catch (NullPointerException e) {
-				System.out.println("1:" + e);
+				System.out.println("RankingManagement.convertToStringBestList(): => " + e);
 			}
 		}
 	}
 
+	// 遅延無しのランキングを取得する場合はrun()後にgetRankingListを使用してください
 	public List<Entry<String, Integer>> getRankingList(ScoreType type) {
 		if (type == ScoreType.CURRENT) {
 			return rankingScore;
@@ -138,17 +155,14 @@ public class RankingManagement extends BukkitRunnable {
 			list_entries = new ArrayList<Entry<String, Integer>>(stringScorelist.entrySet());
 
 			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-				// compareを使用して値を比較する
 				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
-					// 降順
 					return obj2.getValue().compareTo(obj1.getValue());
 				}
 			});
-
 			for (Entry<String, Integer> entry : list_entries) {
 			}
 		} catch (NullPointerException e) {
-			System.out.println("getDescendingOrderScore():" + e);
+			System.out.println("RankingManagement.getDescendingOrderScore(): => " + e);
 		}
 		return list_entries;
 	}
@@ -160,17 +174,14 @@ public class RankingManagement extends BukkitRunnable {
 			list_entries = new ArrayList<Entry<String, Integer>>(stringTotalScorelist.entrySet());
 
 			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-				// compareを使用して値を比較する
 				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
-					// 降順
 					return obj2.getValue().compareTo(obj1.getValue());
 				}
 			});
-
 			for (Entry<String, Integer> entry : list_entries) {
 			}
 		} catch (NullPointerException e) {
-			System.out.println("getDescendingOrderTotalScore():" + e);
+			System.out.println("RankingManagement.getDescendingOrderTotalScore(): => " + e);
 		}
 		return list_entries;
 	}
@@ -182,18 +193,15 @@ public class RankingManagement extends BukkitRunnable {
 			list_entries = new ArrayList<Entry<String, Integer>>(stringBestScorelist.entrySet());
 
 			Collections.sort(list_entries, new Comparator<Entry<String, Integer>>() {
-				//compareを使用して値を比較する
 				public int compare(Entry<String, Integer> obj1, Entry<String, Integer> obj2) {
-					// 降順
 					return obj2.getValue().compareTo(obj1.getValue());
 				}
 			});
-
 			for (Entry<String, Integer> entry : list_entries) {
 // System.out.println(entry.getKey() + " : " + entry.getValue());
 			}
 		} catch (NullPointerException e) {
-			System.out.println("getDescendingOrderBestScore():" + e);
+			System.out.println("RankingManagement.getDescendingOrderBestScore(): => " + e);
 		}
 		return list_entries;
 	}

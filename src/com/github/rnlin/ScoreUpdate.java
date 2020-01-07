@@ -30,7 +30,7 @@ public class ScoreUpdate extends BukkitRunnable {
 		}
 		// プレイヤーリストにいる一人一人の現在の統計値を監視しベストスコアが更新されているかscoreBestlistに格納
 		// （負荷軽減のため全てのプレイヤ―はPlugin読み込み時に格納）
-		// コミット:b054c04より後 => ディスクのベストスコアと現在のスコアを比較しメモリ上に格納 =>
+		// commit:ca46e80 以降 => ディスクのベストスコアと現在のスコアを比較しメモリ上に格納 =>
 		// メモリ上のスコアと現在のスコアを比較しメモリ上の値を更新に変更
 		for (Player player : plugin.playerList) {
 			UUID uuid = player.getUniqueId();

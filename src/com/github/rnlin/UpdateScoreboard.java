@@ -23,6 +23,7 @@ public class UpdateScoreboard extends BukkitRunnable {
 		if (count > 0) {
 			count--;
 			sbm.updateScoreboardScore();
+			sbm.updateScoreboarsRank();
 			sbm.setPlayerScoreboad();
 		} else {
 			this.cancel();

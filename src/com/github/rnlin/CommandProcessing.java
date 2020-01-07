@@ -14,7 +14,7 @@ public class CommandProcessing {
 
 	static boolean displayRanking(MamiyaFumin plugin, CommandSender sender, String args, ScoreType type){
 		try {
-			List<Entry<String, Integer>> RANKINGi = plugin.getRankingManagement().getRankingList(type);
+			List<Entry<String, Integer>> RANKINGi = MamiyaFumin.getRankingManagement().getRankingList(type);
 
 			if(Integer.parseInt(args) <= 0) {
 				sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "1以上を指定してください。");
