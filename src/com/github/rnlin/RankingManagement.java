@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static com.github.rnlin.MamiyaFumin.FUMIN_TOTALSCORE_KEY;
+
 // 現在のスコア順位オブジェクト
 // 一定時間毎に自動更新
 // getRankingList()で取得できるリストは一定時間更新のため、遅延があります。
@@ -71,7 +73,7 @@ public class RankingManagement extends BukkitRunnable {
 			UUID uuid = UUID.fromString(key);
 
 			int value1 = Integer.parseInt(Objects.requireNonNull(plugin.cumulativePlayerscoreConfig.getString(
-					key + "." + PlayerListener.FUMIN_TOTALSCORE_KEY)));
+					key + "." + FUMIN_TOTALSCORE_KEY)));
 			try {
 				stringname = plugin.getServer().getPlayer(uuid).getName();
 			} catch (Exception e) {

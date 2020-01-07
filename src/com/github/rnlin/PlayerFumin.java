@@ -41,8 +41,10 @@ public class PlayerFumin {
         return new int[]{0, 0, 0};
     }
 
+    //Todo 実装
     public boolean increaseTotalScore(int point) {
-
+        // logic
+        return true;
     }
 
     public boolean decreaseCurrentScore(int point) {

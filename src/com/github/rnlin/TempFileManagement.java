@@ -13,7 +13,7 @@ public class TempFileManagement {
 
 	// scorelistをtemp.ymlに保存
 	public void saveScorelist() {
-		HashMap<String, Integer> STRING_SCORELIST = new HashMap<String, Integer>();
+		HashMap<String, Integer> STRING_SCORELIST = new HashMap<>();
 		if (MamiyaFumin.scoreList == null)
 			return;
 		for (UUID uuid : MamiyaFumin.scoreList.keySet()) {
@@ -25,7 +25,7 @@ public class TempFileManagement {
 	}
 
 	public HashMap<UUID, Integer> restoreScorelist() {
-		HashMap<UUID, Integer> tempscorelist = new HashMap<UUID, Integer>();
+		HashMap<UUID, Integer> tempscorelist = new HashMap<>();
 		for (String key : plugin.tempConfig.getConfigurationSection(FUMIN_TEMP_KEY).getKeys(false)) {
 			int value = Integer.parseInt(plugin.tempConfig.getString(FUMIN_TEMP_KEY + "." + key));
 			UUID uuid = UUID.fromString(key);

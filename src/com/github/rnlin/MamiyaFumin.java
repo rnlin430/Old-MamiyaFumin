@@ -4,8 +4,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,18 +25,20 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	static MamiyaFumin plugin;
 	static int magnification = 20 * 2;
 	static int displayHours;
+	protected static final String FUMIN_TOTALSCORE_KEY = ".FuminTotalScore";
+	protected static final String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
 
 	private static long rankingCreateFrequency = 300L; // ランキング生成更新頻度
 	private static RankingManagement rankingManagement;
 
-	protected final String[] COMMANDS = new String[]{
+	protected final String[] COMMANDS = new String[] {
 			"mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest"
 	};
 
-	protected Collection<? extends Player> playerList; // ワールドにいるプレイヤーリストを格納するListを宣言
+	Collection<? extends Player> playerList; // ワールドにいるプレイヤーリストを格納するListを宣言
 
 	public static HashMap<UUID, Integer> scoreList = new HashMap<UUID, Integer>(); // UUIDとScoreDataを格納するHashMapを宣言
-	public static HashMap<UUID, Integer> scoreTotallist = new HashMap<UUID, Integer>(); // 未使用
+	public static HashMap<UUID, Integer> cumulativeScore = new HashMap<UUID, Integer>(); // トータルスコア = 累積スコア+現在のスコア
 	public static HashMap<UUID, Integer> scoreBestlist  = new HashMap<UUID, Integer>();
 
 	public Essentials ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
@@ -57,6 +61,37 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	public void onDisable() {
 		super.onDisable();
 		tfm.saveScorelist();
+		saveCumulativeScoreList();
+		saveScoreBestList();
+	}
+
+	// メモリ上のベストスコアをディスクに保存
+	private void saveScoreBestList() throws NullPointerException {
+		for (UUID uuid : scoreBestlist.keySet()) {
+
+			String stringuuid = uuid.toString();
+			int currentscore = Objects.requireNonNull(MamiyaFumin.scoreList.get(uuid));
+			if (plugin.cumulativePlayerscoreConfig.contains(stringuuid + FUMIN_BESTSCORE_KEY)) {
+				int result = Math.max(currentscore,
+						plugin.cumulativePlayerscoreConfig.getInt(stringuuid + FUMIN_BESTSCORE_KEY));
+				plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, result);
+				plugin.customconfigCumulative.saveConfig();
+			}
+			else {
+				plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_BESTSCORE_KEY, currentscore);
+				plugin.customconfigCumulative.saveConfig();
+			}
+		}
+	}
+
+	// メモリ上の累積スコアをディスクに保存
+	private void saveCumulativeScoreList() {
+		for (UUID uuid : cumulativeScore.keySet()){
+			int score = cumulativeScore.get(uuid);
+			String stringuuid = uuid.toString();
+			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY, score);
+		}
+
 	}
 
 	@Override
@@ -86,6 +121,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		//プラグインロード時に各スコアデータを作成
 		creatScore();
 		creatBestScore();
+		createCumulativeScore();
 
 		plugin = this;
 		MainCommands maincommand = new MainCommands();
@@ -108,7 +144,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		return rankingManagement;
 	}
 
-	// 現在のワールドにいるプレイヤーとTempからスコアデータを作成
+	// 現在のワールドにいるプレイヤーとTempからスコアデータを作成(プラグイン読み込み時に作成)
 	private void creatScore() {
 		// プレイヤーをUUIDに変換し点数0とセットでリストに格納
 		for (Player player : playerList) {
@@ -127,12 +163,12 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		}
 	}
 
-	// player.ymlからベストスコアデータを作成
+	// player.ymlからベストスコアデータを作成(プラグイン読み込み時に作成)
 	private void creatBestScore() {
 
 		for (String key : cumulativePlayerscoreConfig.getKeys(false)) {
 // System.out.println("\u001b[31m" + key + "\u001b[00m");
-			int value = cumulativePlayerscoreConfig.getInt(key + ".FuminBestScore");
+			int value = cumulativePlayerscoreConfig.getInt(key + FUMIN_BESTSCORE_KEY);
 // System.out.println("\u001b[31m" + value + "\u001b[00m");
 			UUID uuid = UUID.fromString(key);
 			scoreBestlist.put(uuid, value);
@@ -140,28 +176,18 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 // System.out.println("\u001b[33m" + scoreBestlist + "\u001b[00m");
 	}
 
+	// player.ymlから累積スコアデータをメモリ上に作成(プラグイン読み込み時に作成)
+	private void createCumulativeScore() {
+		for (String key : cumulativePlayerscoreConfig.getKeys(false)) {
+			int value = cumulativePlayerscoreConfig.getInt(key + FUMIN_TOTALSCORE_KEY);
+			UUID uuid = UUID.fromString(key);
+			cumulativeScore.put(uuid, value);
+		}
+	}
+
 	// プレイヤーを追加
 	public void addPlayer(Player player, int currentPoint, int totalPoint, int bestPoint) {
 
-	}
-
-	// プレイヤーのスコアに指定ポイント付与
-	public void addScore(Player player, int point) {
-		UUID uuid = player.getUniqueId();
-		Integer temp = scoreList.get(uuid);
-		int value = temp.intValue();
-		value = value + point;
-		Integer new_scoredata = new Integer(value);
-		scoreList.put(uuid, new_scoredata);
-	}
-
-	// プレイヤーのスコアに指定ポイント付与
-	public void addScore(UUID uuid, int point) {
-		Integer temp = scoreList.get(uuid);
-		int value = temp.intValue();
-		value = value + point;
-		Integer new_scoredata = new Integer(value);
-		scoreList.put(uuid, new_scoredata);
 	}
 
 	public static MamiyaFumin getPlugin() {
@@ -188,7 +214,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	// 設定を読み込み
 	void initializingSetting() {
-		// cinfig.ymlを読み込む
+		// config.ymlを読み込む
 		settingConfig = getConfig();
 		settingConfig.getBoolean("enablefumin");
 		displayHours = settingConfig.getInt("ScoreboardDisplayHours");
@@ -205,13 +231,8 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		return url;
 	}
 
-	public void decrementCurrentScore(Player player, int point) {
-
-	}
-
 	public PlayerFumin getPlayerFumin(Player player) {
 		return new PlayerFumin(player);
 	}
-
 
 }

@@ -13,6 +13,9 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.github.rnlin.RankingManagement.ScoreType;
 
+import static com.github.rnlin.MamiyaFumin.FUMIN_BESTSCORE_KEY;
+import static com.github.rnlin.MamiyaFumin.FUMIN_TOTALSCORE_KEY;
+
 // スコアボードを生成し各種操作を行います
 public class ScoreboardManagement {
 	private MamiyaFumin plugin;
@@ -34,9 +37,9 @@ public class ScoreboardManagement {
 		score = MamiyaFumin.scoreList.get(uuid);
 
 		// player.dataの値（ベッドに寝る、ベッド右クリック、afk時のトータルスコア + 現在のスコアを計算
-		totalscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_TOTALSCORE_KEY)
+		totalscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + FUMIN_TOTALSCORE_KEY)
 				+ MamiyaFumin.scoreList.get(uuid);
-		bestscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_BESTSCORE_KEY);
+		bestscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + FUMIN_BESTSCORE_KEY);
 		RankingManagement frps = new RankingManagement(plugin);
 
 		// プレイヤーネームでランクを検索
@@ -91,7 +94,7 @@ public class ScoreboardManagement {
 		UUID uuid = player.getUniqueId();
 		score = MamiyaFumin.scoreList.get(uuid);
 		// プレイヤーの現在のスコアを加算&最大スコアを保存
-		totalscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + PlayerListener.FUMIN_TOTALSCORE_KEY)
+		totalscore = plugin.cumulativePlayerscoreConfig.getInt(uuid.toString() + FUMIN_TOTALSCORE_KEY)
 				+ MamiyaFumin.scoreList.get(uuid);
 		bestscore = Math.max(MamiyaFumin.scoreBestlist.get(uuid), score);
 	}
