@@ -2,9 +2,7 @@ package com.github.rnlin;
 
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.UUID;
 
-import com.github.rnlin.rnlibrary.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -38,7 +36,7 @@ public class ScoreboardManagement {
 
 		// プレイヤーネームでランクを検索
 		MamiyaFumin.getRankingManagement().run(); // 最新のランキングを取得するためにランキングの情報を更新
-		updateScoreboarsRank();
+		updateScoreboardRank();
 	}
 
 	public void setPlayerScoreboad() {
@@ -73,7 +71,7 @@ public class ScoreboardManagement {
 	}
 
 	// スコアボードのランキングを更新します（更新頻度はRankingManagementインスタンス内の更新頻度に依存）
-	public void updateScoreboarsRank() {
+	public void updateScoreboardRank() {
 
 		// プレイヤーネームでランクを検索
 		List<Entry<String, Integer>> list = getRankingManagement().getRankingList(ScoreType.CURRENT);

@@ -1,13 +1,16 @@
 package com.github.rnlin;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import com.github.rnlin.rnlibrary.ConsoleLog;
 import com.github.rnlin.rnlibrary.PlayerMessage;
+import net.minecraft.server.v1_14_R1.IPlayerFileData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ObjectUtils;
 import org.bukkit.entity.Player;
 
 import com.github.rnlin.RankingManagement.ScoreType;
@@ -120,13 +123,10 @@ public class MainCommands implements CommandExecutor {
 					Player player = (Player) sender;
 					PlayerFumin playerf = MamiyaFumin.getPlayerFumin(player);
 					int num = Integer.parseInt(args[1]);
-//					int score = playerf.getCurrentScore();
-//					PlayerMessage.sendInfo(
-//							player, player.getDisplayName() + " さんの現在のスコアは" + String.valueOf(score) + "です。");
-					if(0 <= num){
+					if (0 <= num){
 						playerf.increaseCurrentScore(num);
 					}
-					else if(num <= -1) {
+					else if (num <= -1) {
 						playerf.decreaseCurrentScore(num);
 					}
 					int score = playerf.getCurrentScore();
@@ -142,14 +142,39 @@ public class MainCommands implements CommandExecutor {
 
 					return true;
 				}
-				if (args[0].equalsIgnoreCase("addPlayerScore")) {
-
-					return true;
-				}
 				if (args[0].equalsIgnoreCase("setMagnification")) {
 
 					return true;
 				}
+			case 3:
+				if (args[0].equalsIgnoreCase("addPlayerScore")) {
+					if(!(sender instanceof Player)) {
+						ConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
+						return true;
+					}
+					String name = args[1];
+					Player player;
+					try {
+						player = plugin.getServer().getPlayer(name);
+					} catch (NullPointerException e) {
+						player = (Player) plugin.getServer().getOfflinePlayer(UUID.fromString(name));
+					}
+					PlayerFumin playerf = MamiyaFumin.getPlayerFumin(player);
+
+					int num = Integer.parseInt(args[2]);
+					if (0 <= num){
+						playerf.increaseCurrentScore(num);
+					}
+					else if (num <= -1) {
+						playerf.decreaseCurrentScore(num);
+					}
+					int score = playerf.getCurrentScore();
+					PlayerMessage.sendInfo(
+							player, player.getDisplayName() + " さんの現在のスコアが" + score + "になりました。");
+					return true;
+				}
+				return false;
+
 			case 5:
 				if(args[0].equalsIgnoreCase("setdummyplayer")) {
 					String name = args[1];

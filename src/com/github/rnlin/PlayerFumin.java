@@ -1,59 +1,62 @@
 package com.github.rnlin;
 
 import com.github.rnlin.rnlibrary.ConsoleLog;
-import com.github.rnlin.rnlibrary.PlayerMessage;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.UUID;
 
 import static java.lang.Math.abs;
-import static java.lang.String.*;
 
 public class PlayerFumin {
 
+    @NotNull
     private final Player player;
 
     public PlayerFumin(@Nonnull Player player) {
         this.player = player;
     }
 
-    // 現在の不眠ポイントを取得します。最新が欲しい場合は
+    // 現在の不眠ポイントを取得します。最新の値を取得するにはMamiyaFumin.getScoreUpdate().run()を呼びます。
     public int getCurrentScore() {
         UUID uuid = player.getUniqueId();
         try {
             return Objects.requireNonNull(MamiyaFumin.scoreList.get(uuid));
         } catch (NullPointerException e) {
+            System.out.println("PlayerFumin.getCurrentScore():e => " + e);
+            ConsoleLog.sendWarning("不眠ポイントの取得に失敗しました。");
             return 0;
         }
     }
 
     //Todo 実装
     // プレイヤーを削除します。
-    public void removePlayer(Player player) {
+    public void removePlayer() {
     }
 
     // 現在のトータルスコアを取得します。
     public int getTotalScore() {
         UUID uuid = player.getUniqueId();
         //リセットor減算された累積スコア + 現在のスコア
-        int TotalScore = MamiyaFumin.cumulativeScore.get(uuid) + MamiyaFumin.scoreList.get(uuid);
-        return TotalScore;
+        int total = MamiyaFumin.cumulativeScore.get(uuid) + MamiyaFumin.scoreList.get(uuid);
+        return total;
     }
 
     //Todo 実装
     // 現在のベストスコアを取得します。
     public int getBestScore() {
         UUID uuid = player.getUniqueId();
-        int bestscore = Math.max(player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification,
+        int best = Math.max(player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification,
                 MamiyaFumin.scoreBestlist.get(uuid));
-        return bestscore;
+        return best;
     }
 
     //Todo 実装
     // 現在のランキング（現在、トータル、ベスト）を取得します。
+    @NotNull
     public int[] getRanking() {
         // logic
         return new int[]{0, 0, 0};
