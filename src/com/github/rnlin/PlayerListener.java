@@ -16,8 +16,7 @@ import com.earth2me.essentials.Essentials;
 
 import net.ess3.api.events.AfkStatusChangeEvent;
 
-import static com.github.rnlin.MamiyaFumin.FUMIN_BESTSCORE_KEY;
-import static com.github.rnlin.MamiyaFumin.FUMIN_TOTALSCORE_KEY;
+import static com.github.rnlin.MamiyaFumin.*;
 
 public class PlayerListener implements Listener {
 	private MamiyaFumin plugin;
@@ -31,16 +30,25 @@ public class PlayerListener implements Listener {
 	// プレイヤーがログインするときのイベントハンドラ
 	@EventHandler
 	public void onLogin(PlayerJoinEvent e) {
-		//ログインしたプレイヤーのスコアデータを追加
 		Player player = (Player) e.getPlayer();
 		UUID u = player.getUniqueId();
-		Integer scoredata = new Integer(0);
-		MamiyaFumin.scoreList.put(u, scoredata);
+		if(!scoreList.containsKey(u)) {
+			//新しくログインしたプレイヤーのスコアデータを作成
+			Integer scoredata = new Integer(0);
+			MamiyaFumin.scoreList.put(u, scoredata);
 
-		//ログインしたプレイヤーのベストスコアをメモリ上に追加
+			//ログインしたプレイヤーのベストスコアをメモリ上に追加
 			int bestscore = Math.max(
 					MamiyaFumin.scoreBestlist.get(u), MamiyaFumin.scoreList.get(u));
 			MamiyaFumin.scoreBestlist.put(u, bestscore);
+			return;
+		}
+		// スコアデータがある場合はスコアデータに統計値が合わせる（統計値を書き換える）
+		int score = scoreList.get(u);
+		player.setStatistic(Statistic.TIME_SINCE_REST, score * magnification);
+		int bestscore = Math.max(
+				MamiyaFumin.scoreBestlist.get(u), MamiyaFumin.scoreList.get(u));
+		MamiyaFumin.scoreBestlist.put(u, bestscore);
 	}
 
 	// プレイヤーがログアウトするときのイベントハンドラ
@@ -69,7 +77,7 @@ public class PlayerListener implements Listener {
 				MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
 						player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
 
-				MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+				Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
 			}
 		} catch (Exception e2) {
 			System.out.println("[Debug] PlayerListener.onAfkChange():e2 " + e2);
@@ -83,10 +91,10 @@ public class PlayerListener implements Listener {
 
 		Essentials ess = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
 		if (ess.getUser(player).isAfk()) {
-			MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+			Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		}
 		if (player.isDead()) {
-			MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+			Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
 		}
 	}
 
@@ -100,7 +108,7 @@ public class PlayerListener implements Listener {
 		MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
 				player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
 
-		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+		Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
 	}
 
 	// プレイヤーが死んだときのイベントハンドラ
@@ -113,7 +121,7 @@ public class PlayerListener implements Listener {
 		// 現在のスコアをリセット前に累積スコアに現在のスコアを加算
 		MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
 				player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
-		MamiyaFumin.resetStatistic(player, Statistic.TIME_SINCE_REST);
+		Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
 	}
 
 	// プレイヤーの現在のスコアを加算&最大スコアをコンフィグに保存&更新

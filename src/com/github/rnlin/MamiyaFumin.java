@@ -1,12 +1,9 @@
 package com.github.rnlin;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
-
+import com.earth2me.essentials.Essentials;
+import com.github.rnlin.mamiyafumin.api.MamiyaFuminAPI;
+import com.github.rnlin.mamiyafumin.manager.ScoreManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,15 +11,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.earth2me.essentials.Essentials;
-/*
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * <pre>
+ * MamiyaFumin プラグイン
+ * スコア操作は MamiyFuminAPI から行ってください。
  * ランキングリストは原則RankingManagement.getRankingList(ScoreType)を用いて取得してください。
  * RankingManagementはgetRankingManagement()で取得します。
+ * </pre>
+ * @author rnlin
  */
 public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	private static final long SCORE_UPDATE_FREQUENCY = 20L; // スコアアップデート更新頻度
 	private static final long RANKING_CREATE_FREQUENCY = 300L; // ランキング更新頻度
+	private static MamiyaFumin instance;
 	static MamiyaFumin plugin;
 	static int magnification = 20 * 2;
 	static int displayHours;
@@ -56,6 +65,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	public FileConfiguration tempConfig;
 
 	TempFileManagement tfm;
+	private ScoreManager manager;
 
 	@Override
 	public void onDisable() {
@@ -98,6 +108,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	public void onEnable() {
 		super.onEnable();
 		info("MamiyaFumin is roading!");
+		manager = new ScoreManager();
 		playerListener = new PlayerListener(this);
 
 		// config.ymlが存在しない場合ファイルに出力
@@ -137,6 +148,25 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		rankingManagement.runTaskTimer(this, 4L, RANKING_CREATE_FREQUENCY);
 	}
 
+	/**
+	 * MamiyaFumin APIを返します。
+	 * @return MamiyaFumin API
+	 */
+	public MamiyaFuminAPI getMamiyaFuminAPI() {
+		return manager;
+	}
+
+	/**
+	 * MamiyaFumin インスタンスを返します。
+	 * @return MamiyaFumin インスタンス
+	 */
+	public static MamiyaFumin getInstance() {
+		if ( instance == null ) {
+			instance = (MamiyaFumin) Bukkit.getPluginManager().getPlugin("MamiyaFumin");
+		}
+		return instance;
+	}
+
 	// RankingManagementオブジェクトを取得します
 	public static RankingManagement getRankingManagement() throws NullPointerException {
 		if(rankingManagement == null){
@@ -166,7 +196,6 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	// player.ymlからベストスコアデータを作成(プラグイン読み込み時に作成)
 	private void creatBestScore() {
-
 		for (String key : cumulativePlayerscoreConfig.getKeys(false)) {
 // System.out.println("\u001b[31m" + key + "\u001b[00m");
 			int value = cumulativePlayerscoreConfig.getInt(key + FUMIN_BESTSCORE_KEY);
@@ -184,25 +213,6 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 			UUID uuid = UUID.fromString(key);
 			cumulativeScore.put(uuid, value);
 		}
-	}
-
-	public static MamiyaFumin getPlugin() {
-		return plugin;
-	}
-
-	// プレイヤーの最後に就寝してからの経過時間をリセットする
-	// （現在のスコアをリセットするときは必ず累積スコアに現在のスコアを加算してから行ってください）
-	public static boolean resetStatistic(Player p, Statistic statistic) {
-		try {
-			int slr = p.getStatistic(statistic);
-			if (slr == 0)
-				return true;
-			p.decrementStatistic(statistic, slr);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			return false;
-		}
-		return true;
 	}
 
 	public void info(String s) {

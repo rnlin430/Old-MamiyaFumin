@@ -1,11 +1,13 @@
 package com.github.rnlin;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.github.rnlin.rnlibrary.ConsoleLog;
 import com.github.rnlin.rnlibrary.PlayerMessage;
 import net.minecraft.server.v1_14_R1.IPlayerFileData;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +24,7 @@ public class MainCommands implements CommandExecutor {
 	private static final long SCOREBOARD_UPDATE_FREQUENCY 	= 15L;
 
 	private static final String PLAYER_ONLY_MESSAGE = "このコマンドはゲーム内（プレイヤー）からのみ実行できます。";
-	private MamiyaFumin plugin = MamiyaFumin.getPlugin();
+	private MamiyaFumin plugin = MamiyaFumin.getInstance();
 	private static HashMap<Player, Integer> scoreboadkeeper = new HashMap<>();
 
 	@Override
@@ -118,6 +120,7 @@ public class MainCommands implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("addPlayerScore")) {
 					if(!(sender instanceof Player)) {
 						ConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
+						ConsoleLog.sendDescription("/mamiyafumin <addplayerscore> <MCID> <point>");
 						return true;
 					}
 					Player player = (Player) sender;
@@ -148,17 +151,14 @@ public class MainCommands implements CommandExecutor {
 				}
 			case 3:
 				if (args[0].equalsIgnoreCase("addPlayerScore")) {
-					if(!(sender instanceof Player)) {
-						ConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
-						return true;
-					}
 					String name = args[1];
 					Player player;
-					try {
+
 						player = plugin.getServer().getPlayer(name);
-					} catch (NullPointerException e) {
-						player = (Player) plugin.getServer().getOfflinePlayer(UUID.fromString(name));
-					}
+						if(player == null){
+							PlayerMessage.debugMessage(sender, "addPlayerScore(): => %s");
+							MamiyaFumin.getInstance().getMamiyaFuminAPI().getCurrentScore(Bukkit.getOfflinePlayer(name).getUniqueId());
+						}
 					PlayerFumin playerf = MamiyaFumin.getPlayerFumin(player);
 
 					int num = Integer.parseInt(args[2]);
@@ -170,7 +170,7 @@ public class MainCommands implements CommandExecutor {
 					}
 					int score = playerf.getCurrentScore();
 					PlayerMessage.sendInfo(
-							player, player.getDisplayName() + " さんの現在のスコアが" + score + "になりました。");
+							sender, player.getDisplayName() + " さんの現在のスコアが" + score + "になりました。");
 					return true;
 				}
 				return false;

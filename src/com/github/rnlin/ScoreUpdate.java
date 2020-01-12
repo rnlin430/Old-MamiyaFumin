@@ -28,6 +28,7 @@ public class ScoreUpdate extends BukkitRunnable {
 			Integer new_scoredata = new Integer(temp);
 			MamiyaFumin.scoreList.put(uuid, new_scoredata);
 		}
+
 		// プレイヤーリストにいる一人一人の現在の統計値を監視しベストスコアが更新されているかscoreBestlistに格納
 		// （負荷軽減のため全てのプレイヤ―はPlugin読み込み時に格納）
 		// commit:ca46e80 以降 => ディスクのベストスコアと現在のスコアを比較しメモリ上に格納 =>

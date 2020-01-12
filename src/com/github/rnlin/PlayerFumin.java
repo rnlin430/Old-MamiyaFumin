@@ -1,16 +1,19 @@
 package com.github.rnlin;
 
-import com.github.rnlin.rnlibrary.ConsoleLog;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.UUID;
 
 import static java.lang.Math.abs;
 
+/**
+ * PlayerFuminクラスからプレイヤーのスコア操作を行います。
+ * @apiNote  スコアの保持は行っていません。
+ * オンラインプレイヤーのみ。
+ */
 public class PlayerFumin {
 
     @NotNull
@@ -20,16 +23,8 @@ public class PlayerFumin {
         this.player = player;
     }
 
-    // 現在の不眠ポイントを取得します。最新の値を取得するにはMamiyaFumin.getScoreUpdate().run()を呼びます。
     public int getCurrentScore() {
-        UUID uuid = player.getUniqueId();
-        try {
-            return Objects.requireNonNull(MamiyaFumin.scoreList.get(uuid));
-        } catch (NullPointerException e) {
-            System.out.println("PlayerFumin.getCurrentScore():e => " + e);
-            ConsoleLog.sendWarning("不眠ポイントの取得に失敗しました。");
-            return 0;
-        }
+        return player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification;
     }
 
     //Todo 実装
@@ -37,16 +32,15 @@ public class PlayerFumin {
     public void removePlayer() {
     }
 
-    // 現在のトータルスコアを取得します。
+    // トータルスコアを取得します。
     public int getTotalScore() {
         UUID uuid = player.getUniqueId();
         //リセットor減算された累積スコア + 現在のスコア
-        int total = MamiyaFumin.cumulativeScore.get(uuid) + MamiyaFumin.scoreList.get(uuid);
+        int total = MamiyaFumin.cumulativeScore.get(uuid) + getCurrentScore();
         return total;
     }
 
-    //Todo 実装
-    // 現在のベストスコアを取得します。
+    // ベストスコアを取得します。
     public int getBestScore() {
         UUID uuid = player.getUniqueId();
         int best = Math.max(player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification,
@@ -117,4 +111,5 @@ public class PlayerFumin {
         MamiyaFumin.scoreList.put(player.getUniqueId(), score + point);
         return true;
     }
+
 }
