@@ -3,6 +3,7 @@ package com.github.rnlin;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.github.rnlin.rnlibrary.ConsoleLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -84,6 +85,8 @@ public class ScoreboardManagement {
 			}
 		}
 		rank = list.indexOf(temp) + 1;
+
+		ConsoleLog.sendDebugMessage("rank=>" + Integer.toString(rank));
 
 		// プレイヤーネームでトータルスコアランクを検索
 		list = getRankingManagement().getRankingList(ScoreType.TOTAL);

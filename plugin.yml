@@ -1,8 +1,8 @@
 name: MamiyaFumin
 main: com.github.rnlin.MamiyaFumin
-version: 0.4.16
+version: 0.5
 author: rnlin
-description: MamiyaFumin for Spigot ver.1.13.2
+description: MamiyaFumin for Spigot ver.1.15.2
 
 commands:
   mamiyafumin:

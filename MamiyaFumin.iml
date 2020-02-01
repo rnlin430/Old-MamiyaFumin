@@ -25,14 +25,14 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="spigot-1.13.2.jar">
+      <library>
         <CLASSES>
-          <root url="jar://G:/minecraftserver/spigot1.13.2/spigot-1.13.2.jar!/" />
+          <root url="jar://G:/minecraftserver/1.15.2/spigot-1.15.2.jar!/" />
         </CLASSES>
-        <JAVADOC>
-          <root url="https://hub.spigotmc.org/javadocs/spigot/" />
-        </JAVADOC>
-        <SOURCES />
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://G:/minecraftserver/1.15.2/spigot-1.15.2.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
@@ -42,19 +42,6 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://G:/minecraftserver/1.14.4/spigot-1.14.4.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="https://hub.spigotmc.org/javadocs/spigot/overview-summary.html" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://G:/minecraftserver/1.14.4/spigot-1.14.4.jar!/" />
-        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.jetbrains:annotations:16.0.2" level="project" />

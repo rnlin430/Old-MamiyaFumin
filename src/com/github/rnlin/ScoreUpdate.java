@@ -36,9 +36,15 @@ public class ScoreUpdate extends BukkitRunnable {
 		for (Player player : plugin.playerList) {
 			UUID uuid = player.getUniqueId();
 			String stringuuid = uuid.toString();
+			if(MamiyaFumin.scoreBestlist.containsKey(uuid)) {
 				int bestscore = Math.max(
 						MamiyaFumin.scoreBestlist.get(uuid), MamiyaFumin.scoreList.get(uuid));
 				MamiyaFumin.scoreBestlist.put(uuid, bestscore);
+			// BestListにデータが無い場合は新しく作成する
+			} else {
+				MamiyaFumin.scoreBestlist.put(uuid, 0);
+			}
+
 			}
 
 		// トータルスコアはディスク上の値が古い可能性があるのでここではメモリ上に展開しない

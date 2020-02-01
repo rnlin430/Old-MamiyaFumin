@@ -1,12 +1,11 @@
 package com.github.rnlin;
 
+import org.bukkit.scheduler.BukkitRunnable;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import static com.github.rnlin.MamiyaFumin.FUMIN_TOTALSCORE_KEY;
 import static com.github.rnlin.MamiyaFumin.scoreList;
 
 // 現在のスコア順位オブジェクト
@@ -36,11 +35,13 @@ public class RankingManagement extends BukkitRunnable {
 
 	@Override
 	public void run() {
- // System.out.println("\u001b[31m" + "Class:RankingManagement.run() => update" + "\u001b[00m");
+  //System.out.println("\u001b[31m" + "Class:RankingManagement.run() => update" + "\u001b[00m");
 		convertToStringScoreList();
 		convertToStringTotalList();
 		convertToStringBestList();
+		//Todo 非同期処理化
 		rankingScore = getDescendingOrderScore();
+		System.out.println(rankingScore);
 		rankingTotal = getDescendingOrderTotalScore();
 		rankingBest = getDescendingOrderBestScore();
 	}

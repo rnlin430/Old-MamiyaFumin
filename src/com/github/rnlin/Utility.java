@@ -10,8 +10,6 @@ import java.util.UUID;
 
 public class Utility {
 
-
-
     // プレイヤーの最後に就寝してからの経過時間をリセットする
     // （現在のスコアをリセットするときは必ず累積スコアに現在のスコアを加算してから行ってください）
     public static boolean resetStatistic(Player p, Statistic statistic) {
@@ -40,13 +38,25 @@ public class Utility {
         }
     }
 
-    public static boolean setOffLinePlayerScore(UUID uuid, int point) {
-        if(Bukkit.getOfflinePlayer(uuid).isOnline()) {
+    // オフラインプレイヤーのスコアを指定分追加する
+    public static boolean addOffLinePlayerScore(UUID uuid, int point) {
+        if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
             ConsoleLog.sendDebugMessage("Utility.setOfflinePlayerScore(): =>" +
                     " Bukkit.getOfflinePlayer(uuid).isOnline() == true");
+            return false;
         }
         int score = MamiyaFumin.scoreList.get(uuid);
-        MamiyaFumin.scoreList.put(uuid, score + point);
-        return true;
+        if (0 <= point){
+            MamiyaFumin.scoreList.put(uuid, score + point);
+            return true;
+        } else if (point < 0 && Math.abs(point) < score){
+            MamiyaFumin.scoreList.put(uuid, score + point);
+            return true;
+        } else if (point < 0 && Math.abs(point) >= score) {
+            // MamiyaFumin.scoreList.put(uuid, 0);
+            return false;
+
+        }
+        return false;
     }
 }

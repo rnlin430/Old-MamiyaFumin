@@ -1,21 +1,17 @@
 package com.github.rnlin;
 
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
-
+import com.github.rnlin.RankingManagement.ScoreType;
 import com.github.rnlin.rnlibrary.ConsoleLog;
 import com.github.rnlin.rnlibrary.PlayerMessage;
-import net.minecraft.server.v1_14_R1.IPlayerFileData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ObjectUtils;
 import org.bukkit.entity.Player;
 
-import com.github.rnlin.RankingManagement.ScoreType;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class MainCommands implements CommandExecutor {
 
@@ -120,7 +116,7 @@ public class MainCommands implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("addPlayerScore")) {
 					if(!(sender instanceof Player)) {
 						ConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
-						ConsoleLog.sendDescription("/mamiyafumin <addplayerscore> <MCID> <point>");
+						ConsoleLog.sendDescription("/mamiyafumin <addplayerscore> <point>");
 						return true;
 					}
 					Player player = (Player) sender;
@@ -150,27 +146,57 @@ public class MainCommands implements CommandExecutor {
 					return true;
 				}
 			case 3:
-				if (args[0].equalsIgnoreCase("addPlayerScore")) {
+				if(args[0].equalsIgnoreCase("addPlayerScore")) {
 					String name = args[1];
 					Player player;
+					player = plugin.getServer().getPlayer(name);
+					int num;
+					try{
+						num = (int) Double.parseDouble(args[2]);
+					} catch (NumberFormatException e) {
+						PlayerMessage.sendInfo(sender, "スコアを変更できませんでした。コマンドを確認してください。");
+						return true;
+					}
+					int resultscore = 0;
 
-						player = plugin.getServer().getPlayer(name);
-						if(player == null){
-							PlayerMessage.debugMessage(sender, "addPlayerScore(): => %s");
-							MamiyaFumin.getInstance().getMamiyaFuminAPI().getCurrentScore(Bukkit.getOfflinePlayer(name).getUniqueId());
+					// オフラインの場合
+					if (player == null) {
+// PlayerMessage.debugMessage(sender, "addPlayerScore(): => %s");
+						UUID uuid = Bukkit.getOfflinePlayer(name).getUniqueId();
+						if (!MamiyaFumin.scoreList.containsKey(uuid)) {
+							PlayerMessage.sendInfo(sender, "名前が間違っています。");
+							return true;
 						}
-					PlayerFumin playerf = MamiyaFumin.getPlayerFumin(player);
+						int currentscore =
+								MamiyaFumin.getInstance().getMamiyaFuminAPI().getCurrentScore(uuid);
+						if (Utility.addOffLinePlayerScore(uuid, num)){
+							resultscore = Utility.getCurrentScore(uuid);
+						}
+						else {
+							PlayerMessage.sendInfo(sender, "スコアを変更できませんでした。ポイントが足りない可能性があります。");
+							PlayerMessage.sendInfo(sender, "現在のスコア:" + currentscore);
+							return true;
+						}
+					}
+					else if (player.isOnline()) {
+						// オンラインの場合
+						PlayerFumin playerf = MamiyaFumin.getPlayerFumin(player);
+						if (0 <= num){
+							playerf.increaseCurrentScore(num);
+						}
+						else if (num <= -1) {
+							if (playerf.decreaseCurrentScore(num)){
+							} else {
+								PlayerMessage.sendInfo(sender, "スコアを変更できませんでした。ポイントが足りない可能性があります。");
+								PlayerMessage.sendInfo(sender, "現在のスコア:" + playerf.getCurrentScore());
+								return true;
+							}
+						}
+						resultscore = playerf.getCurrentScore();
+					}
 
-					int num = Integer.parseInt(args[2]);
-					if (0 <= num){
-						playerf.increaseCurrentScore(num);
-					}
-					else if (num <= -1) {
-						playerf.decreaseCurrentScore(num);
-					}
-					int score = playerf.getCurrentScore();
 					PlayerMessage.sendInfo(
-							sender, player.getDisplayName() + " さんの現在のスコアが" + score + "になりました。");
+							sender, name + " さんの現在のスコアが" + resultscore + "になりました。");
 					return true;
 				}
 				return false;

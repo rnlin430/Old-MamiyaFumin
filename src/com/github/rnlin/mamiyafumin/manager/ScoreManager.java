@@ -79,8 +79,11 @@ public class ScoreManager implements MamiyaFuminAPI {
                     return false;
                 }
             case TOTAL:
-
+                //Todo 実装
+                return true;
             case BEST:
+                //Todo 実装
+                return true;
         }
         return false;
     }
@@ -90,20 +93,27 @@ public class ScoreManager implements MamiyaFuminAPI {
 
         switch(type) {
             case CURRENT:
+                // プレイヤーがオンラインかどうか判定する
                 if(Bukkit.getOfflinePlayer(uuid).isOnline()) {
                     Player player = Bukkit.getPlayer(uuid);
                     int currentScore = MamiyaFumin.getPlayerFumin(player).getCurrentScore();
                     if(value > currentScore) {
                         MamiyaFumin.getPlayerFumin(player).increaseCurrentScore(value - currentScore);
-                    }
-                    else {
+                    } else {
                         MamiyaFumin.getPlayerFumin(player).decreaseCurrentScore(currentScore - value);
                     }
                 }
-                Utility.setOffLinePlayerScore(uuid, value);
-                return true;
+                else{
+                    // スコアをセットする
+                    MamiyaFumin.scoreList.put(uuid, value);
+                    return true;
+                }
             case TOTAL:
+                //Todo 実装
+                return true;
             case BEST:
+                //Todo 実装
+                return true;
         }
         return false;
     }

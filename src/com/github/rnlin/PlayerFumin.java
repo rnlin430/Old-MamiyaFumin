@@ -36,7 +36,12 @@ public class PlayerFumin {
     public int getTotalScore() {
         UUID uuid = player.getUniqueId();
         //リセットor減算された累積スコア + 現在のスコア
-        int total = MamiyaFumin.cumulativeScore.get(uuid) + getCurrentScore();
+        int total;
+        if(MamiyaFumin.cumulativeScore.containsKey(uuid)) {
+            total = MamiyaFumin.cumulativeScore.get(uuid) + getCurrentScore();
+        } else {
+            total = getCurrentScore();
+        }
         return total;
     }
 
@@ -72,25 +77,24 @@ public class PlayerFumin {
     // 現在のスコアを減らした分は、自動的にトータルスコアに加算されます。
     public boolean decreaseCurrentScore(int point) {
         int value = abs(point);
-        if(getCurrentScore() - value < 0) return false;
+        int currentscore = getCurrentScore();
+        if(currentscore - value < 0) return false;
 
         UUID uuid = player.getUniqueId();
         int score = MamiyaFumin.scoreList.get(uuid);
         // 現在のスコアからポイントを引いた値と、統計値からポイント分を引いた値が等しいかを確認
         // メモリ上のスコアは遅延があるため一致しない可能性がある
-        if( (score - value != player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification - value) ) {
+        if(!(score == currentscore)) {
             MamiyaFumin.getScoreUpdate().run(); //スコアを最新にする。
-//            System.out.println("値が不正確な可能性があります。処理を中止しました。");
-//            ConsoleLog.sendDebugMessage("メモリ上のスコア: " + score);
-//            ConsoleLog.sendDebugMessage("統計値のスコア: " + player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification);
-//            PlayerMessage.debugMessage(player, "PlayerFumin.decreaseCurrentScore():値が不正確な可能性があります。処理を中止しました。" +
-//                    "お手数ですが、管理者及びプラグイン制作者に連絡してください。");
-//            return false;
         }
-        player.decrementStatistic(Statistic.TIME_SINCE_REST, value * MamiyaFumin.magnification);
-        MamiyaFumin.scoreList.put(player.getUniqueId(), score - value);
-        increaseTotalScore(point); // 減らした分をトータルスコアに加算
-        return true;
+        if(value > score){
+            return false;
+        } else {
+            player.decrementStatistic(Statistic.TIME_SINCE_REST, value * MamiyaFumin.magnification);
+            MamiyaFumin.scoreList.put(player.getUniqueId(), score - value);
+            increaseTotalScore(value); // 減らした分をトータルスコアに加算
+            return true;
+        }
     }
 
     public boolean increaseCurrentScore(int point) {
