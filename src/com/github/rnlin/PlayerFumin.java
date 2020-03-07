@@ -62,7 +62,13 @@ public class PlayerFumin {
     }
 
     public boolean increaseTotalScore(int point) {
-        int value = MamiyaFumin.cumulativeScore.get(player.getUniqueId());
+        int value;
+        try{
+            value = MamiyaFumin.cumulativeScore.get(player.getUniqueId());
+        }catch (NullPointerException e) {
+            value = 0;
+        }
+
         MamiyaFumin.cumulativeScore.put(player.getUniqueId(), value + point);
         return true;
     }

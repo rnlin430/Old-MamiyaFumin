@@ -1,6 +1,7 @@
 package com.github.rnlin.mamiyafumin.manager;
 
 import com.github.rnlin.MamiyaFumin;
+import com.github.rnlin.PlayerFumin;
 import com.github.rnlin.Utility;
 import com.github.rnlin.mamiyafumin.api.MamiyaFuminAPI;
 import com.github.rnlin.rnlibrary.ConsoleLog;
@@ -125,7 +126,40 @@ public class ScoreManager implements MamiyaFuminAPI {
 
     @Override
     public boolean addScore(UUID uuid, ScoreType type, int value) {
-        return false;
+        switch (type) {
+            case CURRENT:
+                // プレイヤーがオンラインかどうか判定する
+                if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
+                    Player player = Bukkit.getPlayer(uuid);
+                    PlayerFumin pf = MamiyaFumin.getPlayerFumin(player);
+                    if (0 <= value) {
+                        pf.increaseCurrentScore(value);
+                    } else {
+                        pf.decreaseCurrentScore(value);
+                    }
+                    return true;
+                } else {
+                    // スコアをセットする
+                    if (0 <= value) {
+                        int result = MamiyaFumin.scoreList.get(uuid) + value;
+                        MamiyaFumin.scoreList.put(uuid, result);
+                    } else {
+                        int result = MamiyaFumin.scoreList.get(uuid) + value;
+                        if (0 <= result) {
+                            MamiyaFumin.scoreList.put(uuid, result);
+                        } else {
+                            MamiyaFumin.scoreList.put(uuid, 0);
+                        }
+                        return true;
+                    }
+                    return true;
+                }
+            case TOTAL:
+                return true;
+            case BEST:
+                return true;
+        }
+        return true;
     }
 
     @Override

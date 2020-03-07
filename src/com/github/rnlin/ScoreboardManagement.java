@@ -85,8 +85,7 @@ public class ScoreboardManagement {
 			}
 		}
 		rank = list.indexOf(temp) + 1;
-
-		ConsoleLog.sendDebugMessage("rank=>" + Integer.toString(rank));
+//ConsoleLog.sendDebugMessage("rank + 1=>" + Integer.toString(rank + 1));
 
 		// プレイヤーネームでトータルスコアランクを検索
 		list = getRankingManagement().getRankingList(ScoreType.TOTAL);

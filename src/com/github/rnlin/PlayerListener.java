@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import com.earth2me.essentials.Essentials;
 
 import net.ess3.api.events.AfkStatusChangeEvent;
+import sun.plugin2.message.BestJREAvailableMessage;
 
 import static com.github.rnlin.MamiyaFumin.*;
 
@@ -36,10 +37,21 @@ public class PlayerListener implements Listener {
 			//新しくログインしたプレイヤーのスコアデータを作成
 			Integer scoredata = new Integer(0);
 			MamiyaFumin.scoreList.put(u, scoredata);
-
 			//ログインしたプレイヤーのベストスコアをメモリ上に追加
+			int bScore, cScore;
+			if(MamiyaFumin.scoreBestlist.get(u) == null) {
+				bScore = 0;
+			} else {
+				bScore = MamiyaFumin.scoreBestlist.get(u);
+			}
+			if(MamiyaFumin.scoreList.get(u) == null) {
+				cScore = 0;
+			} else {
+				cScore = MamiyaFumin.scoreList.get(u);
+			}
+
 			int bestscore = Math.max(
-					MamiyaFumin.scoreBestlist.get(u), MamiyaFumin.scoreList.get(u));
+					bScore, cScore);
 			MamiyaFumin.scoreBestlist.put(u, bestscore);
 			return;
 		}

@@ -30,10 +30,10 @@ import java.util.UUID;
 public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	private static final long SCORE_UPDATE_FREQUENCY = 20L; // スコアアップデート更新頻度
-	private static final long RANKING_CREATE_FREQUENCY = 20L; // ランキング更新頻度
+	private static final long RANKING_CREATE_FREQUENCY = 300L; // ランキング更新頻度
 	private static MamiyaFumin instance;
 	static MamiyaFumin plugin;
-	static int magnification = 20 * 2;
+	public static int magnification = 20 * 2;
 	static int displayHours;
 	protected static final String FUMIN_TOTALSCORE_KEY = ".FuminTotalScore";
 	protected static final String FUMIN_BESTSCORE_KEY = ".FuminBestScore";
@@ -244,6 +244,10 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	public static ScoreUpdate getScoreUpdate() {
 		return scoreUpdate;
+	}
+
+	public int getMagnification() {
+		return magnification;
 	}
 
 }

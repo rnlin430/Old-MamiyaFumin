@@ -41,7 +41,6 @@ public class RankingManagement extends BukkitRunnable {
 		convertToStringBestList();
 		//Todo 非同期処理化
 		rankingScore = getDescendingOrderScore();
-		System.out.println(rankingScore);
 		rankingTotal = getDescendingOrderTotalScore();
 		rankingBest = getDescendingOrderBestScore();
 	}

@@ -1,8 +1,10 @@
 name: MamiyaFumin
 main: com.github.rnlin.MamiyaFumin
-version: 0.5
+version: '0.5'
 author: rnlin
+api-version: '1.15'
 description: MamiyaFumin for Spigot ver.1.15.2
+depend: [Essentials]
 
 commands:
   mamiyafumin:
