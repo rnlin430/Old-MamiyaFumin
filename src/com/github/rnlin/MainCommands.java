@@ -34,11 +34,11 @@ public class MainCommands implements CommandExecutor {
 			switch (args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "■ MamiyaFumin ■");
-				sender.sendMessage(ChatColor.WHITE + "Spigotバージョン : 1.14.2");
+				sender.sendMessage(ChatColor.WHITE + "Spigotバージョン : " + plugin.getDescription().getAPIVersion());
 				sender.sendMessage(ChatColor.WHITE + "Pluginバージョン : " + plugin.getDescription().getVersion());
 				sender.sendMessage(ChatColor.AQUA + "ダウンロードURL : " + plugin.getSiteURL());
 				sender.sendMessage(ChatColor.AQUA + "コマンド一覧 : " + "/mamiyafumin command");
-				sender.sendMessage(ChatColor.DARK_AQUA + "Developed by rnlin(Twitter: @rnlin)");
+				sender.sendMessage(ChatColor.DARK_AQUA + "Developed by" + plugin.getDescription().getAuthors());
 				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "--------");
 				return true;
 			case 1:
