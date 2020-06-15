@@ -1,6 +1,6 @@
 name: MamiyaFumin
 main: com.github.rnlin.MamiyaFumin
-version: '0.5-SNPSHOT'
+version: '0.5.1-SNPSHOT'
 author: rnlin(Twitter @rnlin)
 api-version: '1.15'
 description: MamiyaFumin for Spigot ver.1.15.2
