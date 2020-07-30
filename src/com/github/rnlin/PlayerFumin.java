@@ -111,8 +111,8 @@ public class PlayerFumin {
         if( (score + point != player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification + point) ) {
             MamiyaFumin.getScoreUpdate().run(); //スコアを最新にする。
 //            System.out.println("値が不正確な可能性があります。処理を中止しました。" );
-//            ConsoleLog.sendDebugMessage("メモリ上のスコア: " + score);
-//            ConsoleLog.sendDebugMessage("統計値のスコア: " + player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification);
+//            FuminConsoleLog.sendDebugMessage("メモリ上のスコア: " + score);
+//            FuminConsoleLog.sendDebugMessage("統計値のスコア: " + player.getStatistic(Statistic.TIME_SINCE_REST)/MamiyaFumin.magnification);
 //            PlayerMessage.debugMessage(player, "PlayerFumin.decreaseCurrentScore():値が不正確な可能性があります。処理を中止しました。" +
 //                    "お手数ですが、管理者及びプラグイン制作者に連絡してください。");
 //            return false;

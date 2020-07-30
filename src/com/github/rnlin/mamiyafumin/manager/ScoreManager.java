@@ -4,7 +4,7 @@ import com.github.rnlin.MamiyaFumin;
 import com.github.rnlin.PlayerFumin;
 import com.github.rnlin.Utility;
 import com.github.rnlin.mamiyafumin.api.MamiyaFuminAPI;
-import com.github.rnlin.rnlibrary.ConsoleLog;
+import com.github.rnlin.rnlibrary.FuminConsoleLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -62,7 +62,7 @@ public class ScoreManager implements MamiyaFuminAPI {
                 try {
                     currentScore = MamiyaFumin.getPlayerFumin(player).getCurrentScore();
                 } catch (Exception e1) {
-                    ConsoleLog.sendWarning("ScoreManager.setScore():e1 => ");
+                    FuminConsoleLog.sendWarning("ScoreManager.setScore():e1 => ");
                     System.out.println(e1);
                     return false;
                 }
@@ -75,7 +75,7 @@ public class ScoreManager implements MamiyaFuminAPI {
                         return true;
                     }
                 } catch (Exception e2) {
-                    ConsoleLog.sendWarning("ScoreManager.setScore():e2 => ");
+                    FuminConsoleLog.sendWarning("ScoreManager.setScore():e2 => ");
                     System.out.println(e2);
                     return false;
                 }

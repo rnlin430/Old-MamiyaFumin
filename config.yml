@@ -1,9 +1,10 @@
 #
 # Configuration MamiyaFumin
-# Version: 0.4.16
+# Version: 0.6
 # Author: rnlin
 #
 
 enablefumin: true
 ScoreboardDisplayHours: 10
 FuminPointMagnification: 40
+SpawnPhantomMessage: "§8あなたはファントムが出現する時間起き続けています。"

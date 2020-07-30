@@ -31,7 +31,7 @@ public class PlayerListener implements Listener {
 	// プレイヤーがログインするときのイベントハンドラ
 	@EventHandler
 	public void onLogin(PlayerJoinEvent e) {
-		Player player = (Player) e.getPlayer();
+		Player player = e.getPlayer();
 		UUID u = player.getUniqueId();
 		if(!scoreList.containsKey(u)) {
 			//新しくログインしたプレイヤーのスコアデータを作成
@@ -50,16 +50,18 @@ public class PlayerListener implements Listener {
 				cScore = MamiyaFumin.scoreList.get(u);
 			}
 
-			int bestscore = Math.max(
-					bScore, cScore);
+			int bestscore = Math.max(bScore, cScore);
 			MamiyaFumin.scoreBestlist.put(u, bestscore);
+
+
 			return;
 		}
 		// スコアデータがある場合はスコアデータに統計値が合わせる（統計値を書き換える）
 		int score = scoreList.get(u);
 		player.setStatistic(Statistic.TIME_SINCE_REST, score * magnification);
 		int bestscore = Math.max(
-				MamiyaFumin.scoreBestlist.get(u), MamiyaFumin.scoreList.get(u));
+				MamiyaFumin.scoreBestlist.get(u), MamiyaFumin.scoreList.get(u)
+		);
 		MamiyaFumin.scoreBestlist.put(u, bestscore);
 	}
 
@@ -77,7 +79,7 @@ public class PlayerListener implements Listener {
 		try {
 			player = plugin.getServer().getPlayer(e.getController().getName());
 		} catch (Exception e1) {
-			System.out.println("[Debug] PlayerListener.onAfkChange():e1 " + e1);
+System.out.println("[Debug] PlayerListener#onAfkChange e1=" + e1);
 			player = (Player) plugin.getServer().getOfflinePlayer(e.getController().getName());
 		}
 
@@ -100,13 +102,17 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onChangePlayerStatistic(PlayerStatisticIncrementEvent e) {
 		Player player = e.getPlayer();
+		Statistic type = e.getStatistic();
+		if (type != Statistic.TIME_SINCE_REST) return;
 
 		Essentials ess = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
 		if (ess.getUser(player).isAfk()) {
 			Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
+			e.setCancelled(true);
 		}
 		if (player.isDead()) {
 			Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
+			e.setCancelled(true);
 		}
 	}
 

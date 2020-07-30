@@ -66,6 +66,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	TempFileManagement tfm;
 	private ScoreManager manager;
+	public PhantomMesasgeTask phantomMessageTask;
 
 	@Override
 	public void onDisable() {
@@ -101,7 +102,6 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 			String stringuuid = uuid.toString();
 			plugin.cumulativePlayerscoreConfig.set(stringuuid + FUMIN_TOTALSCORE_KEY, score);
 		}
-
 	}
 
 	@Override
@@ -110,6 +110,9 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		info("MamiyaFumin is roading!");
 		manager = new ScoreManager();
 		playerListener = new PlayerListener(this);
+
+		this.phantomMessageTask = new PhantomMesasgeTask(getInstance(), null);
+		phantomMessageTask.runTaskTimerAsynchronously(getInstance(), 20L, 20*20L);
 
 		// config.ymlが存在しない場合ファイルに出力
 		saveDefaultConfig();
@@ -226,6 +229,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		settingConfig.getBoolean("enablefumin");
 		displayHours = settingConfig.getInt("ScoreboardDisplayHours");
 		magnification = settingConfig.getInt("FuminPointMagnification");
+		phantomMessageTask.setPhantomSpawnTimeMessage(settingConfig.getString("SpawnPhantomMessage"));
 	}
 
 	public URL getSiteURL() {

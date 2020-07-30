@@ -1,6 +1,6 @@
 package com.github.rnlin;
 
-import com.github.rnlin.rnlibrary.ConsoleLog;
+import com.github.rnlin.rnlibrary.FuminConsoleLog;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
@@ -19,21 +19,19 @@ public class Utility {
                 return true;
             p.decrementStatistic(statistic, slr);
         } catch (Exception e) {
-            System.out.println(e.toString());
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
-    // プレイヤーの最後に就寝してからの経過時間をリセットする
-    // （現在のスコアをリセットするときは必ず累積スコアに現在のスコアを加算してから行ってください）
-    // オフラインかオンラインでも取得可能
+    // プレイヤーの現在のスコアを取得
     public static int getCurrentScore (UUID uuid) {
         try {
             return Objects.requireNonNull(MamiyaFumin.scoreList.get(uuid));
         } catch (NullPointerException e) {
-            System.out.println("PlayerFumin.getCurrentScore():e => " + e);
-            ConsoleLog.sendWarning("不眠ポイントの取得に失敗しました。");
+            e.printStackTrace();
+            FuminConsoleLog.sendWarning("不眠ポイントの取得に失敗しました。");
             return 0;
         }
     }
@@ -41,15 +39,15 @@ public class Utility {
     // オフラインプレイヤーのスコアを指定分追加する
     public static boolean addOffLinePlayerScore(UUID uuid, int point) {
         if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
-            ConsoleLog.sendDebugMessage("Utility.setOfflinePlayerScore(): =>" +
+            FuminConsoleLog.sendDebugMessage("Utility.setOfflinePlayerScore(): =>" +
                     " Bukkit.getOfflinePlayer(uuid).isOnline() == true");
             return false;
         }
         int score = MamiyaFumin.scoreList.get(uuid);
-        if (0 <= point){
+        if (0 <= point) {
             MamiyaFumin.scoreList.put(uuid, score + point);
             return true;
-        } else if (point < 0 && Math.abs(point) < score){
+        } else if (point < 0 && Math.abs(point) < score) {
             MamiyaFumin.scoreList.put(uuid, score + point);
             return true;
         } else if (point < 0 && Math.abs(point) >= score) {
@@ -59,4 +57,6 @@ public class Utility {
         }
         return false;
     }
+
+
 }
