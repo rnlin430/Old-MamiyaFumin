@@ -44,6 +44,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 	protected final String[] COMMANDS = new String[] {
 			"mamiyafumin", "fuminrank", "fumintop", "fuminstats", "fuminlevel", "fuminitemlist", "fuminbest"
 	};
+	public String playerDeathMessage;
 
 	Collection<? extends Player> playerList; // ワールドにいるプレイヤーリストを格納するListを宣言
 
@@ -230,6 +231,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		displayHours = settingConfig.getInt("ScoreboardDisplayHours");
 		magnification = settingConfig.getInt("FuminPointMagnification");
 		phantomMessageTask.setPhantomSpawnTimeMessage(settingConfig.getString("SpawnPhantomMessage"));
+		playerDeathMessage = settingConfig.getString("PlayerDeathMessage");
 	}
 
 	public URL getSiteURL() {

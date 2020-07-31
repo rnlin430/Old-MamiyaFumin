@@ -3,7 +3,7 @@ main: com.github.rnlin.MamiyaFumin
 version: '0.6-SNAPSHOT'
 author: rnlin(Twitter @rnlin)
 api-version: '1.16'
-description: MamiyaFumin for Spigot ver.1.15.2
+description: MamiyaFumin for Spigot ver.1.16.1
 depend: [Essentials]
 
 commands:

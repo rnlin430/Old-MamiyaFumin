@@ -7,4 +7,5 @@
 enablefumin: true
 ScoreboardDisplayHours: 10
 FuminPointMagnification: 40
-SpawnPhantomMessage: "§8あなたはファントムが出現する時間起き続けています。"
+SpawnPhantomMessage: "§8あなたはファントムが出現するほど起き続けています。"
+PlayerDeathMessage: null

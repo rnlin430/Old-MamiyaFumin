@@ -79,7 +79,7 @@ public class PlayerListener implements Listener {
 		try {
 			player = plugin.getServer().getPlayer(e.getController().getName());
 		} catch (Exception e1) {
-System.out.println("[Debug] PlayerListener#onAfkChange e1=" + e1);
+//System.out.println("[Debug] PlayerListener#onAfkChange e1=" + e1);
 			player = (Player) plugin.getServer().getOfflinePlayer(e.getController().getName());
 		}
 
@@ -135,11 +135,13 @@ System.out.println("[Debug] PlayerListener#onAfkChange e1=" + e1);
 		if (!(e.getEntity() instanceof Player)) return;
 		Player player = e.getEntity();
 		saveTotalBestScore(player);
-
 		// 現在のスコアをリセット前に累積スコアに現在のスコアを加算
 		MamiyaFumin.getPlayerFumin(player).increaseTotalScore(
 				player.getStatistic(Statistic.TIME_SINCE_REST) / MamiyaFumin.magnification);
 		Utility.resetStatistic(player, Statistic.TIME_SINCE_REST);
+		if (plugin.playerDeathMessage != null) {
+			player.sendMessage(plugin.playerDeathMessage);
+		}
 	}
 
 	// プレイヤーの現在のスコアを加算&最大スコアをコンフィグに保存&更新

@@ -27,6 +27,16 @@ public class MainCommands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlabel, String[] args) {
 		if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[0])) {
+			if (args.length == 0) {
+				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "■ MamiyaFumin ■");
+				sender.sendMessage(ChatColor.WHITE + "Spigotバージョン: " + plugin.getDescription().getAPIVersion());
+				sender.sendMessage(ChatColor.WHITE + "Pluginバージョン: " + plugin.getDescription().getVersion());
+				sender.sendMessage(ChatColor.AQUA + "ダウンロードURL  " + plugin.getSiteURL());
+				sender.sendMessage(ChatColor.AQUA + "コマンド一覧: " + "/mamiyafumin command");
+				sender.sendMessage(ChatColor.DARK_AQUA + "Developed by " + plugin.getDescription().getAuthors());
+				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "--------");
+				return true;
+			}
 			if (!sender.hasPermission("mamiyafumin.command.main.mamiyafumin")) {
 				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
 				return true;
@@ -34,13 +44,6 @@ public class MainCommands implements CommandExecutor {
 
 			switch (args.length) {
 				case 0:
-					sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "■ MamiyaFumin ■");
-					sender.sendMessage(ChatColor.WHITE + "Spigotバージョン : " + plugin.getDescription().getAPIVersion());
-					sender.sendMessage(ChatColor.WHITE + "Pluginバージョン : " + plugin.getDescription().getVersion());
-					sender.sendMessage(ChatColor.AQUA + "ダウンロードURL : " + plugin.getSiteURL());
-					sender.sendMessage(ChatColor.AQUA + "コマンド一覧 : " + "/mamiyafumin command");
-					sender.sendMessage(ChatColor.DARK_AQUA + "Developed by" + plugin.getDescription().getAuthors());
-					sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "--------");
 					return true;
 				case 1:
 					if (args[0].equalsIgnoreCase("on")) {
@@ -67,6 +70,8 @@ public class MainCommands implements CommandExecutor {
 						sender.sendMessage(ChatColor.WHITE + "- 本プラグインのコマンド一覧を表示します。");
 						sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin setPhantomMessage <message/none>");
 						sender.sendMessage(ChatColor.WHITE + "- ファントムがスポーンする時間になったときにプレイヤーにお知らせするメッセージを設定します。");
+						sender.sendMessage(ChatColor.LIGHT_PURPLE + "/mamiyafumin setDeathMessage <message/none>");
+						sender.sendMessage(ChatColor.WHITE + "- プレイヤー死亡時(不眠スコアリセット時)にお知らせするメッセージを設定します。");
 						sender.sendMessage(ChatColor.LIGHT_PURPLE + "/fumintop [PageNumber]");
 						sender.sendMessage(ChatColor.WHITE + "- 現在のまんまみーや不眠ランキングを表示します。");
 						sender.sendMessage(ChatColor.WHITE + "- aliases: [ft,fmtop,fmt]");
@@ -134,6 +139,22 @@ public class MainCommands implements CommandExecutor {
 						}
 						String message = args[1].replace("&", "§");
 						plugin.settingConfig.set("SpawnPhantomMessage", message);
+						plugin.saveConfig();
+						plugin.phantomMessageTask.setPhantomSpawnTimeMessage(message);
+						sender.sendMessage("メッセージは " + message + ChatColor.RESET + " になりました。");
+						return true;
+					}
+					if (args[0].equalsIgnoreCase("setDeathMessage")) {
+
+						if (args[1].equalsIgnoreCase("none")) {
+							plugin.settingConfig.set("PlayerDeathMessage", null);
+							plugin.saveConfig();
+							plugin.phantomMessageTask.setPhantomSpawnTimeMessage(null);
+							sender.sendMessage("メッセージは削除されました。");
+							return true;
+						}
+						String message = args[1].replace("&", "§");
+						plugin.settingConfig.set("PlayerDeathMessage", message);
 						plugin.saveConfig();
 						plugin.phantomMessageTask.setPhantomSpawnTimeMessage(message);
 						sender.sendMessage("メッセージは " + message + ChatColor.RESET + " になりました。");
@@ -254,6 +275,10 @@ public class MainCommands implements CommandExecutor {
 
 			// fumintop
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[2])) {
+			if (!sender.hasPermission("mamiyafumin.command.fumintop")) {
+				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
+				return true;
+			}
 			switch (args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin Point"
@@ -272,6 +297,10 @@ public class MainCommands implements CommandExecutor {
 			}
 			// fuminstats
 		} else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[3])) {
+			if (!sender.hasPermission("mamiyafumin.command.fuminstats")) {
+				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
+				return true;
+			}
 			if (!(sender instanceof Player)) {
 				FuminConsoleLog.sendCaution(PLAYER_ONLY_MESSAGE);
 				return true;
@@ -314,6 +343,10 @@ public class MainCommands implements CommandExecutor {
 		}
 		// fuminrank
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[1])) {
+			if (!sender.hasPermission("mamiyafumin.command.fuminrank")) {
+				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
+				return true;
+			}
 			switch (args.length) {
 			case 0:
 				sender.sendMessage(ChatColor.YELLOW + "==MamiyaFumin " + ChatColor.DARK_GREEN + "Fumin TotalPoint"
@@ -334,17 +367,29 @@ public class MainCommands implements CommandExecutor {
 		}
 		// fuminlevel
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[4])) {
+			if (!sender.hasPermission("mamiyafumin.command.fuminlevel")) {
+				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
+				return true;
+			}
 			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "");
 			return true;
 
 		}
 		// fuminitemlist
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[5])) {
+			if (!sender.hasPermission("mamiyafumin.command.fuminitemlist")) {
+				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
+				return true;
+			}
 			sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "");
 			return true;
 		}
 		// fuminbest
 		else if (cmd.getName().equalsIgnoreCase(plugin.COMMANDS[6])) {
+			if (!sender.hasPermission("mamiyafumin.command.fuminbest")) {
+				sender.sendMessage(ChatColor.DARK_RED + cmd.getPermissionMessage());
+				return true;
+			}
 			switch (args.length) {
 				case 0:
 					sender.sendMessage(ChatColor.YELLOW + "--MamiyaFumin " + ChatColor.DARK_PURPLE + "Fumin BestPoint"
