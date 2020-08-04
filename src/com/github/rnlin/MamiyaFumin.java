@@ -67,7 +67,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 
 	TempFileManagement tfm;
 	private ScoreManager manager;
-	public PhantomMesasgeTask phantomMessageTask;
+	public PhantomMessageTask phantomMessageTask;
 
 	@Override
 	public void onDisable() {
@@ -112,7 +112,7 @@ public class MamiyaFumin extends JavaPlugin implements Listener {
 		manager = new ScoreManager();
 		playerListener = new PlayerListener(this);
 
-		this.phantomMessageTask = new PhantomMesasgeTask(getInstance(), null);
+		this.phantomMessageTask = new PhantomMessageTask(getInstance(), null);
 		phantomMessageTask.runTaskTimerAsynchronously(getInstance(), 20L, 20*20L);
 
 		// config.ymlが存在しない場合ファイルに出力

@@ -74,3 +74,4 @@ fabric.properties
 
 #Library
 lib/
+.idea/$CACHE_FILE$

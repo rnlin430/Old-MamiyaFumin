@@ -3,34 +3,31 @@ package com.github.rnlin;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhantomMesasgeTask extends BukkitRunnable {
+public class PhantomMessageTask extends BukkitRunnable {
 
     private String phantomSpawnTimeMessage;
     private MamiyaFumin plugin;
 
     private List<Player> playerList = new ArrayList<>();
 
-    public PhantomMesasgeTask(MamiyaFumin plugin, String message) {
+    public PhantomMessageTask(MamiyaFumin plugin, String message) {
         this.plugin = plugin;
         this.phantomSpawnTimeMessage = message;
     }
 
-    @Nullable
     public String getPhantomSpawnTimeMessage() {
         return phantomSpawnTimeMessage;
     }
 
-    public void setPhantomSpawnTimeMessage(@Nullable String message) {
+    public void setPhantomSpawnTimeMessage(String message) {
         this.phantomSpawnTimeMessage = message;
     }
 
-    public static boolean isSpawnPhantom(@NotNull Player player) {
+    public static boolean isSpawnPhantom(Player player) {
         double s = player.getStatistic(Statistic.TIME_SINCE_REST);
         double phantomSpawnLimitTime = (20D*60D*20D*3D);
         if (s >= phantomSpawnLimitTime) {
@@ -40,7 +37,7 @@ public class PhantomMesasgeTask extends BukkitRunnable {
         }
     }
 
-    private void sendMessage(@NotNull Player player) {
+    private void sendMessage(Player player) {
         if (phantomSpawnTimeMessage == null) {
             return;
         }
